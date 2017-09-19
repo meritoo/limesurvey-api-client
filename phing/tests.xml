@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Meritoo Package" basedir="." default="build:main" phingVersion="2.14.0">
+    <!--
+    The AutoloaderTask is required to load binaries installed by Composer.
+    The "autoloaderpath" attribute of this task is not required, because it's default value is: vendor/autoload.php.
+
+    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+    2017-02-23
+    -->
+    <autoloader />
+
+    <!-- Properties -->
+    <if>
+        <available file="phing/properties" property="custom.properties.available"/>
+        <then>
+            <property file="phing/properties" />
+        </then>
+        <else>
+            <property file="phing/properties.dist" />
+        </else>
+    </if>
+
+    <!-- Filesets -->
+    <fileset id="sourcecode" dir="${dir.src}">
+        <include name="**/*.php" />
+        <exclude name="*Test.php" />
+        <exclude name="**/*Test.php" />
+        <exclude name="**/Resources/**" />
+        <exclude name="**/DataFixtures/**" />
+        <exclude name="**/Tests/**" />
+    </fileset>
+    <fileset id="tests" dir="${dir.tests}">
+        <include name="**/*Test*.php" />
+    </fileset>
+
+    <!-- Default / main target -->
+    <target name="build:main"
+            depends="build:fix-coding-standards, build:clean, build:prepare, build:check, build:test, app:checkout"
+            description="Runs all tests and builds everything" />
+    <!--
+    Before:
+    depends="build:fix-coding-standards, build:clean, build:prepare, build:check, build:test, build:doc, app:checkout"
+
+    After:
+    depends="build:fix-coding-standards, build:clean, build:prepare, build:check, build:test, app:checkout"
+
+    The "build:doc" task is disabled, because it cannot be installed via Composer:
+    a) phpdocumentor/phpdocumentor v2.9.0 requires symfony/validator ~2.2
+    b) symfony/validator ~2.2 causes to remove symfony/symfony 3.*
+
+    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+    2017-02-22
+    -->
+
+    <!-- Fixing coding standards using the PHP Coding Standards Fixer (http://cs.sensiolabs.org) -->
+    <target name="build:fix-coding-standards" description="Fixes coding standards using the PHP Coding Standards Fixer">
+        <echo msg="Fixing coding standards using the PHP Coding Standards Fixer (http://cs.sensiolabs.org)..." />
+
+        <!--
+        Attention.
+        Rules for formatting are defined in /.php_cs.dist file.
+        -->
+
+        <exec
+            passthru="true"
+            command="${phpCsFixer.path} fix --verbose"
+        />
+    </target>
+
+    <!-- Doc target -->
+    <!--
+    Disabled, because it cannot be installed via Composer:
+    a) phpdocumentor/phpdocumentor v2.9.0 requires symfony/validator ~2.2
+    b) symfony/validator ~2.2 causes to remove symfony/symfony 3.*
+
+    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+    2017-02-22
+    -->
+    <!--<target name="build:doc"-->
+            <!--depends="build:prepare, doc:phpdoc2"-->
+            <!--description="Generates API documentation" />-->
+
+    <!-- Check target -->
+    <target name="build:check"
+            depends="check:cs, check:md, check:cpd, check:depend, check:loc"
+            description="Analyzes code" />
+
+    <!-- Test target -->
+    <target name="build:test"
+            depends="test:phpunit"
+            description="Executes all tests" />
+
+    <!-- Project build clean -->
+    <target name="build:clean" description="Cleans up build directories">
+        <echo msg="Cleaning docs and reports directories..." />
+        <!--<delete dir="${dir.docs}" />-->
+        <delete dir="${dir.reports}" />
+    </target>
+
+    <!-- Project build prepare -->
+    <target name="build:prepare" description="Create build directories">
+        <echo msg="Creating build directories..." />
+        <!--<mkdir dir="${dir.docs}" />-->
+        <!--<mkdir dir="${dir.docs.phpdoc2}" />-->
+        <mkdir dir="${dir.reports}" />
+        <mkdir dir="${dir.reports.coverage}" />
+        <mkdir dir="${dir.reports.pdepend}" />
+    </target>
+
+    <!-- PHPDocumentor2 API documentation target -->
+    <!--
+    Disabled, because it cannot be installed via Composer:
+    a) phpdocumentor/phpdocumentor v2.9.0 requires symfony/validator ~2.2
+    b) symfony/validator ~2.2 causes to remove symfony/symfony 3.*
+
+    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+    2017-02-22
+
+    <target name="doc:phpdoc2" description="Generates API documentations">
+        <echo msg="Generating API Documentation with phpDocumentor 2..." />
+        <phpdoc2 title="${phing.project.name}"
+                 destdir="${dir.docs.phpdoc2}"
+                 template="responsive">
+            <fileset refid="sourcecode" />
+        </phpdoc2>
+    </target>
+    -->
+
+    <!-- Symfony2 code sniffer -->
+    <!--
+    Attention 1.
+    To use Symfony2 standards to check coding you have to:
+    copy, symlink or check out repo to a folder called Symfony2 inside the phpcs Standards directory.
+
+    Example:
+    $ pear config-show | grep php_dir
+    $ cd /path/to/pear/PHP/CodeSniffer/Standards
+    $ git clone git://github.com/opensky/Symfony2-coding-standard.git Symfony2
+
+    Attention 2.
+    PSR2 standard is used instead of Symfony2 standard, because after installation squizlabs/php_codesniffer package
+    via Composer the Symfony2 standard is not included / available in this package. In this case the PHP Coding
+    Standards Fixer (http://cs.sensiolabs.org) is used.
+
+    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+    2017-02-22
+    -->
+    <target name="check:cs" description="Checks coding standard">
+        <echo msg="Checking coding standard..." />
+        <phpcodesniffer standard="PSR2" showWarnings="true">
+            <fileset refid="sourcecode" />
+            <formatter type="checkstyle" outfile="${dir.reports}/checkstyle.xml" />
+            <formatter type="csv" outfile="${dir.reports}/checkstyle.csv" />
+            <formatter type="summary" outfile="${dir.reports}/checkstyle_summary.txt" />
+        </phpcodesniffer>
+    </target>
+
+    <!-- copy/paste detector -->
+    <target name="check:cpd" description="Checks similar code blocks.">
+        <echo msg="Checking similar code blocks..." />
+        <phpcpd>
+            <fileset refid="sourcecode" />
+            <formatter type="pmd" outfile="${dir.reports}/pmd-cpd.xml" />
+        </phpcpd>
+
+        <!--
+        Previous / old version
+
+        Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+        2017-02-22
+
+        <exec command="phpcpd \-\-log-pmd=${dir.reports}/pmd-cpd.xml ${dir.src}" />
+        -->
+    </target>
+
+    <!-- Mess detector -->
+    <target name="check:md" description="Generate code metrics">
+        <echo msg="Generating code metrics..." />
+        <phpmd rulesets="codesize,controversial,design,naming,unusedcode">
+            <fileset refid="sourcecode" />
+            <formatter type="html" outfile="${dir.reports}/phpmd.html" />
+            <formatter type="text" outfile="${dir.reports}/phpmd.txt" />
+        </phpmd>
+    </target>
+
+    <!-- Code dependency -->
+    <target name="check:depend" description="Checks coupling and dependency">
+        <echo msg="Checking coupling and dependency..." />
+        <phpdepend>
+            <fileset refid="sourcecode" />
+            <logger type="jdepend-xml" outfile="${dir.reports.pdepend}/jdepend.xml" />
+            <logger type="jdepend-chart" outfile="${dir.reports.pdepend}/dependencies.svg" />
+            <logger type="overview-pyramid" outfile="${dir.reports.pdepend}/overview-pyramid.svg" />
+        </phpdepend>
+    </target>
+
+    <!-- Measure the size and analyzing the structure of a project -->
+    <target name="check:loc" description="Measures the size and analyzes the structure of a project">
+        <echo msg="Measuring the size and analyzing the structure of a project..." />
+        <phploc reportType="txt" reportName="phploc" reportDirectory="${dir.reports}">
+            <fileset refid="sourcecode" />
+        </phploc>
+
+        <!--
+        Previous / old version
+
+        Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+        2017-02-22
+
+        <exec command="phploc \-\-log-csv=${dir.reports}/phploc.csv ${dir.src}" />
+        -->
+    </target>
+
+    <!-- Unit tests -->
+    <target name="test:phpunit" description="Executes PHPUnit tests">
+        <!-- Check test database -->
+        <if>
+            <not>
+                <available file="${dir.data.tests}" type="dir" property="dir.data.tests.available" />
+            </not>
+            <then>
+                <mkdir dir="${dir.data.tests}" />
+            </then>
+        </if>
+        <if>
+            <not>
+                <available file="${tests.database}" property="tests.database.available" />
+            </not>
+            <then>
+                <touch file="${tests.database}" />
+            </then>
+        </if>
+        <echo msg="Running unit tests..." />
+        <coverage-setup database="${dir.reports.coverage}/coverage.db">
+            <fileset refid="sourcecode" />
+        </coverage-setup>
+        <exec command="${phpUnit.path} --verbose --configuration ${project.basedir}/phpunit.xml.dist" passthru="true" />
+        <!--
+        I have to use ExecTask to run PHPUnit instead of PHPUnitTask, because tests are not running if PHPUnitTask is
+        used (don't know why):
+        Total tests run: 0, Failures: 0, Errors: 0, Incomplete: 0, Skipped: 0
+
+        Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+        2017-02-23
+
+        <phpunit configuration="${project.basedir}/phpunit.xml.dist" printsummary="true">
+            <formatter type="xml" todir="${dir.reports}" outfile="phpunit.xml" />
+            <formatter type="plain" todir="${dir.reports}" outfile="phpunit.txt" />
+            <formatter type="clover" todir="${dir.reports.coverage}" />
+            <formatter type="summary" todir="${dir.reports}" outfile="phpunit_summary.txt" />
+        </phpunit>
+        -->
+
+        <!--
+        Previous / old version
+
+        Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+        2017-02-22
+
+        <if>
+            <istrue value="${phpunit.useExec}" />
+            <then>
+                <if>
+                    <istrue value="${phpunit.withCoverage}" />
+                    <then>
+                        <echo message="Running tests with code coverage..." />
+                        <exec command="phpunit \-\-log-junit ${dir.reports}/phpunit.xml \-\-coverage-clover ${dir.reports.coverage}/clover-coverage.xml \-\-coverage-crap4j ${dir.reports.coverage}/crap4j-coverage.xml \-\-coverage-html ${dir.reports.coverage}/ -c ${project.basedir} \-\-colors" passthru="true" checkreturn="true" />
+                    </then>
+                    <else>
+                        <echo message="Running tests without code coverage..." />
+                        <exec command="phpunit \-\-log-junit ${dir.reports}/phpunit.xml -c ${project.basedir} \-\-colors" passthru="true" checkreturn="true" />
+                    </else>
+                </if>
+            </then>
+            <else>
+                <if>
+                    <istrue value="${phpunit.withCoverage}" />
+                    <then>
+                        <echo message="Running tests with code coverage..." />
+                        <coverage-setup database="${dir.reports.coverage}/coverage.db">
+                            <fileset refid="sourcecode" />
+                        </coverage-setup>
+                        <phpunit printsummary="true" codecoverage="true">
+                            <formatter type="xml" todir="${dir.reports}" outfile="phpunit.xml" />
+                            <formatter type="plain" todir="${dir.reports}" outfile="phpunit.txt" />
+                            <formatter type="clover" todir="${dir.reports.coverage}" />
+                            <formatter type="summary" todir="${dir.reports}" outfile="phpunit_summary.txt" />
+                        </phpunit>
+                    </then>
+                    <else>
+                        <echo message="Running tests without code coverage..." />
+                        <phpunit printsummary="true">
+                            <formatter todir="${dir.reports}" type="xml" outfile="phpunit.xml" />
+                            <batchtest>
+                                <fileset refid="tests" />
+                            </batchtest>
+                        </phpunit>
+                    </else>
+                </if>
+            </else>
+        </if>
+        -->
+    </target>
+
+    <!-- Checkout and finalization -->
+    <target name="app:checkout">
+        <tstamp>
+            <format property="date_end" pattern="%Y-%m-%d %H:%M" />
+        </tstamp>
+
+        <echo msg="--------------------------------------------" />
+        <echo msg="Build tests finished at: ${date_end}" />
+        <echo msg="--------------------------------------------" />
+    </target>
+</project>

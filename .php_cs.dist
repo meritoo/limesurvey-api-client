@@ -1,0 +1,30 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    /*
+     * Do not verify:
+     * - all DependencyInjection/Configuration classes: the Configuration.php files
+     * - autoloader from /app directory: autoload.php
+     */
+    ->notPath('/DependencyInjection\/Configuration\.php/')
+    ->notPath('/autoload\.php/')
+    ->in([
+        __DIR__ . '/src',
+        __DIR__ . '/tests',
+    ]);
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@Symfony'               => true,
+        'phpdoc_summary'         => false,
+        'phpdoc_separation'      => false,
+        'phpdoc_align'           => false,
+        'cast_spaces'            => false,
+        'binary_operator_spaces' => [
+            'align_double_arrow' => true,
+        ],
+        'concat_space'           => [
+            'spacing' => 'one',
+        ],
+    ])
+    ->setFinder($finder);

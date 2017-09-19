@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Meritoo Package" basedir="." default="build:main" phingVersion="2.14.0">
+    <!-- Properties -->
+    <if>
+        <available file="phing/properties" property="custom.properties.available"/>
+        <then>
+            <property file="phing/properties" />
+        </then>
+        <else>
+            <property file="phing/properties.dist" />
+        </else>
+    </if>
+
+    <!-- Default / main target -->
+    <target name="build:main"
+            depends="build:app, build:tests"
+            description="Builds everything and runs all tests" />
+
+    <!-- Build app -->
+    <target name="build:app" description="Prepares app to build and tests">
+        <phing phingfile="phing/app.xml" haltonfailure="true" />
+    </target>
+
+    <!-- Build tests -->
+    <target name="build:tests" description="Runs all tests, checks and creates docs">
+        <phing phingfile="phing/tests.xml" haltonfailure="true" />
+
+        <!--
+        Conditional running of tests.
+        Disabled, because not required.
+
+        Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
+        2017-02-22
+
+        <if>
+            <equals arg1="${env}" arg2="test" />
+            <then>
+                <phing phingfile="phing/tests.xml" haltonfailure="true" />
+            </then>
+            <else>
+                <echo message="[Skipped] Running tests, checks and creating docs, because it's a not 'test' environment..." />
+            </else>
+        </if>
+        -->
+    </target>
+</project>

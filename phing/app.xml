@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Meritoo Package" basedir="." default="build:main" phingVersion="2.14.0">
+    <!-- Properties -->
+    <if>
+        <available file="phing/properties" property="custom.properties.available"/>
+        <then>
+            <property file="phing/properties" />
+        </then>
+        <else>
+            <property file="phing/properties.dist" />
+        </else>
+    </if>
+
+    <!-- Default / main target -->
+    <target name="build:main"
+            depends="build:app"
+            description="Builds the application" />
+
+    <!-- App target -->
+    <target name="build:app"
+            depends="app:composer, app:vendors, app:checkout"
+            description="Prepares app to build." />
+
+    <!-- Check / update composer -->
+    <target name="app:composer" description="Checks / updates composer">
+        <echo msg="Checking / updating composer..." />
+
+        <if>
+            <available file="composer.phar" />
+            <then>
+                <echo msg="[Skipped] Downloading of Composer skipped, because exist in the project..." />
+            </then>
+            <else>
+                <if>
+                    <os family="windows" />
+                    <then>
+                        <fail message="Composer not found! Go to http://getcomposer.org/download and download the Composer." />
+                    </then>
+                    <else>
+                        <exec command="${composer.download_command}" checkreturn="true" />
+                    </else>
+                </if>
+            </else>
+        </if>
+        <composer command="selfupdate" />
+    </target>
+
+    <!-- Project Install/update vendors -->
+    <target name="app:vendors" description="Installs / updates vendors">
+        <echo msg="Installing / updating vendors..." />
+
+        <if>
+            <istrue value="${composer.self-update}"/>
+            <then>
+                <composer php="${composer.php}" composer="${composer.path}" command="self-update"/>
+            </then>
+        </if>
+
+        <if>
+            <istrue value="${composer.validate}"/>
+            <then>
+                <composer php="${composer.php}" composer="${composer.path}" command="validate"/>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1="${env}" arg2="prod" />
+            <then>
+                <composer php="${composer.php}" composer="${composer.path}" command="install">
+                    <arg value="--optimize-autoloader" />
+                </composer>
+            </then>
+            <else>
+                <composer php="${composer.php}" composer="${composer.path}" command="install" />
+            </else>
+        </if>
+    </target>
+
+    <!-- Checkout and finalization -->
+    <target name="app:checkout">
+        <tstamp>
+            <format property="date_end" pattern="%Y-%m-%d %H:%M" />
+        </tstamp>
+
+        <echo msg="------------------------------------" />
+        <echo msg="Build finished at: ${date_end}" />
+        <echo msg="------------------------------------" />
+    </target>
+</project>
