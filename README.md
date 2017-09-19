@@ -1,6 +1,8 @@
 # Meritoo LimeSurvey API Client
 Client of the [LimeSurvey's API](https://manual.limesurvey.org/RemoteControl_2_API).
 
+[![Travis](https://img.shields.io/travis/rust-lang/rust.svg?style=flat-square)](https://travis-ci.org/meritoo/limesurvey-api-client) [![Packagist](https://img.shields.io/packagist/v/meritoo/limesurvey-api-client.svg?style=flat-square)](https://packagist.org/packages/meritoo/limesurvey-api-client) [![StyleCI](https://styleci.io/repos/104114960/shield?branch=master)](https://styleci.io/repos/104114960) [![license](https://img.shields.io/github/license/meritoo/limesurvey-api-client.svg?style=flat-square)](https://github.com/meritoo/limesurvey-api-client) [![GitHub commits](https://img.shields.io/github/commits-since/meritoo/limesurvey-api-client/0.0.1.svg?style=flat-square)](https://github.com/meritoo/limesurvey-api-client) [![Coverage Status](https://coveralls.io/repos/github/meritoo/limesurvey-api-client/badge.svg?branch=master)](https://coveralls.io/github/meritoo/limesurvey-api-client?branch=master)
+
 ## Installation
 
 Run [Composer](https://getcomposer.org) to install this package in your project:
