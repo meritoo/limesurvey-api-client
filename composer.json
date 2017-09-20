@@ -3,7 +3,7 @@
     "description": "Client of LimeSurvey API",
     "type": "library",
     "license": "MIT",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "authors": [
         {
             "name": "Meritoo",
@@ -15,13 +15,13 @@
         "meritoo/common-library": "~0.0.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.8.35 || ^5.4.3",
-        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7",
+        "squizlabs/php_codesniffer": "^2.9",
         "phpmd/phpmd": "^2.6",
         "sebastian/phpcpd": "^3.0",
         "pdepend/pdepend": "^2.5",
         "phploc/phploc": "^4.0",
-        "friendsofphp/php-cs-fixer": "^2.5"
+        "friendsofphp/php-cs-fixer": "^2.6"
     },
     "autoload": {
         "psr-4": {
