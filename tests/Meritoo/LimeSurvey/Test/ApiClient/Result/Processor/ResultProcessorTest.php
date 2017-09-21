@@ -68,7 +68,7 @@ class ResultProcessorTest extends BaseTestCase
 
     public function testGetItemInstanceVisibilityAndArguments()
     {
-        $this->verifyMethodVisibilityAndArguments(ResultProcessor::class, 'getItemInstance', OopVisibilityType::IS_PRIVATE, 1, 1);
+        static::assertMethodVisibilityAndArguments(ResultProcessor::class, 'getItemInstance', OopVisibilityType::IS_PRIVATE, 1, 1);
     }
 
     public function testRunWithUnknownResultClass()

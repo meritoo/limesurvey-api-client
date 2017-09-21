@@ -24,7 +24,7 @@ class SessionManagerTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        $this->verifyConstructorVisibilityAndArguments(SessionManager::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(SessionManager::class, OopVisibilityType::IS_PUBLIC, 1, 1);
     }
 
     public function testGetSessionKeyWhenFailedWithoutReason()

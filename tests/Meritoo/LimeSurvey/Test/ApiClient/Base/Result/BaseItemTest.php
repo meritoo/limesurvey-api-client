@@ -8,8 +8,8 @@
 
 namespace Meritoo\LimeSurvey\Test\ApiClient\Base\Result;
 
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseItem;
-use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 
 /**
@@ -18,7 +18,7 @@ use ReflectionClass;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class BaseItemTest extends PHPUnit_Framework_TestCase
+class BaseItemTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {

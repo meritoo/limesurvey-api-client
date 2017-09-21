@@ -33,7 +33,7 @@ class JsonRpcClientManagerTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        $this->verifyConstructorVisibilityAndArguments(JsonRpcClientManager::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(JsonRpcClientManager::class, OopVisibilityType::IS_PUBLIC, 1, 1);
     }
 
     public function testRunMethod()
@@ -85,7 +85,7 @@ class JsonRpcClientManagerTest extends BaseTestCase
 
     public function testGetRpcClientVisibilityAndArguments()
     {
-        $this->verifyMethodVisibilityAndArguments(JsonRpcClientManager::class, 'getRpcClient', OopVisibilityType::IS_PROTECTED);
+        static::assertMethodVisibilityAndArguments(JsonRpcClientManager::class, 'getRpcClient', OopVisibilityType::IS_PROTECTED);
     }
 
     /**

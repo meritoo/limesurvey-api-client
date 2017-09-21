@@ -71,7 +71,7 @@ class ResultTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        $this->verifyConstructorVisibilityAndArguments(Result::class, OopVisibilityType::IS_PUBLIC, 2, 2);
+        static::assertConstructorVisibilityAndArguments(Result::class, OopVisibilityType::IS_PUBLIC, 2, 2);
     }
 
     public function testIsEmpty()
@@ -112,12 +112,12 @@ class ResultTest extends BaseTestCase
 
     public function testGetProcessedDataVisibilityAndArguments()
     {
-        $this->verifyMethodVisibilityAndArguments(Result::class, 'getProcessedData', OopVisibilityType::IS_PRIVATE, 1, 1);
+        static::assertMethodVisibilityAndArguments(Result::class, 'getProcessedData', OopVisibilityType::IS_PRIVATE, 1, 1);
     }
 
     public function testGetResultProcessorVisibilityAndArguments()
     {
-        $this->verifyMethodVisibilityAndArguments(Result::class, 'getResultProcessor', OopVisibilityType::IS_PRIVATE);
+        static::assertMethodVisibilityAndArguments(Result::class, 'getResultProcessor', OopVisibilityType::IS_PRIVATE);
     }
 
     /**

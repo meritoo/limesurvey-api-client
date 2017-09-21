@@ -71,12 +71,12 @@ class ClientTest extends BaseTestCase
 
     public function testGetRpcClientManagerVisibilityAndArguments()
     {
-        $this->verifyMethodVisibilityAndArguments(Client::class, 'getRpcClientManager', OopVisibilityType::IS_PRIVATE);
+        static::assertMethodVisibilityAndArguments(Client::class, 'getRpcClientManager', OopVisibilityType::IS_PRIVATE);
     }
 
     public function testGetSessionManagerVisibilityAndArguments()
     {
-        $this->verifyMethodVisibilityAndArguments(Client::class, 'getRpcClientManager', OopVisibilityType::IS_PRIVATE);
+        static::assertMethodVisibilityAndArguments(Client::class, 'getRpcClientManager', OopVisibilityType::IS_PRIVATE);
     }
 
     /**
