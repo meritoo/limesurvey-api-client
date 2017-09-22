@@ -15,7 +15,6 @@ use Meritoo\LimeSurvey\ApiClient\Exception\UnknownInstanceOfResultItem;
 use Meritoo\LimeSurvey\ApiClient\Result\Processor\ResultProcessor;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 use Meritoo\LimeSurvey\Test\ApiClient\Result\Item\SurveyTest;
-use ReflectionClass;
 
 /**
  * Test case of the processor of the raw data fetched while talking to the LimeSurvey's API
@@ -27,10 +26,7 @@ class ResultProcessorTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        $reflection = new ReflectionClass(ResultProcessor::class);
-        $constructor = $reflection->getConstructor();
-
-        static::assertNull($constructor);
+        static::assertHasNoConstructor(ResultProcessor::class);
     }
 
     public function testProcessWithEmptyRawData()

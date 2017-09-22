@@ -42,6 +42,11 @@ class QuestionShortTest extends BaseTestCase
      */
     private $question2ndInstance;
 
+    public function testConstructorVisibilityAndArguments()
+    {
+        static::assertHasNoConstructor(QuestionShort::class);
+    }
+
     public function testCreateOfTheQuestionShort()
     {
         $processor = new ResultProcessor();

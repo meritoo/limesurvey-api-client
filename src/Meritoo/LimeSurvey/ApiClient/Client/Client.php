@@ -92,7 +92,7 @@ class Client
             ->getSessionKey($username, $password);
 
         /*
-         * Use the session's key as of the method's arguments
+         * Use the session's key as one of the method's arguments
          */
         array_unshift($arguments, $sessionKey);
 

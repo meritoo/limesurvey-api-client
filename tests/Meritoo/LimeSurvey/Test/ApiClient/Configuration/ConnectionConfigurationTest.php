@@ -11,6 +11,7 @@ namespace Meritoo\LimeSurvey\Test\ApiClient\Configuration;
 use Generator;
 use Meritoo\Common\Exception\Regex\InvalidUrlException;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Configuration\ConnectionConfiguration;
 
 /**
@@ -21,6 +22,11 @@ use Meritoo\LimeSurvey\ApiClient\Configuration\ConnectionConfiguration;
  */
 class ConnectionConfigurationTest extends BaseTestCase
 {
+    public function testConstructorVisibilityAndArguments()
+    {
+        static::assertConstructorVisibilityAndArguments(ConnectionConfiguration::class, OopVisibilityType::IS_PUBLIC, 4, 3);
+    }
+
     /**
      * @param mixed $emptyBaseUrl Empty base url
      * @dataProvider provideEmptyBaseUrl

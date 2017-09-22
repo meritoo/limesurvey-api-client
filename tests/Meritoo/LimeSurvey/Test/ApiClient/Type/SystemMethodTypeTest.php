@@ -19,6 +19,11 @@ use Meritoo\LimeSurvey\ApiClient\Type\SystemMethodType;
  */
 class SystemMethodTypeTest extends BaseTypeTestCase
 {
+    public function testConstructorVisibilityAndArguments()
+    {
+        static::assertHasNoConstructor(SystemMethodType::class);
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -21,6 +21,11 @@ use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
  */
 class MethodTypeTest extends BaseTypeTestCase
 {
+    public function testConstructorVisibilityAndArguments()
+    {
+        static::assertHasNoConstructor(MethodType::class);
+    }
+
     /**
      * @param string $incorrectMethod Type of method to verify
      * @dataProvider provideIncorrectMethod

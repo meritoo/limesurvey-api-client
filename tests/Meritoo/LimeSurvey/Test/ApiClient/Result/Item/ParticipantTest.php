@@ -9,10 +9,10 @@
 namespace Meritoo\LimeSurvey\Test\ApiClient\Result\Item;
 
 use DateTime;
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Result\Processor\ResultProcessor;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
-use PHPUnit_Framework_TestCase;
 
 /**
  * Test case of the one item of the result/data: full data of participant
@@ -20,7 +20,7 @@ use PHPUnit_Framework_TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class ParticipantTest extends PHPUnit_Framework_TestCase
+class ParticipantTest extends BaseTestCase
 {
     /**
      * Raw data of participants
@@ -42,6 +42,11 @@ class ParticipantTest extends PHPUnit_Framework_TestCase
      * @var Participant
      */
     private $participant2ndInstance;
+
+    public function testConstructorVisibilityAndArguments()
+    {
+        static::assertHasNoConstructor(Participant::class);
+    }
 
     public function testCreateOfTheParticipant()
     {

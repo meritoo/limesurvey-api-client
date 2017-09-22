@@ -34,6 +34,11 @@ class ClientTest extends BaseTestCase
      */
     private $configuration;
 
+    public function testConstructorVisibilityAndArguments()
+    {
+        static::assertConstructorVisibilityAndArguments(Client::class, OopVisibilityType::IS_PUBLIC, 3, 1);
+    }
+
     /**
      * @param string $incorrectMethod Incorrect name of method to call
      * @dataProvider provideIncorrectMethod

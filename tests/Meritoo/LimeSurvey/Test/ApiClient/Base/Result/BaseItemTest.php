@@ -10,7 +10,6 @@ namespace Meritoo\LimeSurvey\Test\ApiClient\Base\Result;
 
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseItem;
-use ReflectionClass;
 
 /**
  * Test case of the base class for one item of result/data fetched while talking to the LimeSurvey's API
@@ -22,10 +21,7 @@ class BaseItemTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        $reflection = new ReflectionClass(BaseItem::class);
-        $constructor = $reflection->getConstructor();
-
-        static::assertNull($constructor);
+        static::assertHasNoConstructor(BaseItem::class);
     }
 
     public function testSetValues()

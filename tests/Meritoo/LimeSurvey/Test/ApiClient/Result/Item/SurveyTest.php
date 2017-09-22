@@ -9,10 +9,10 @@
 namespace Meritoo\LimeSurvey\Test\ApiClient\Result\Item;
 
 use DateTime;
+use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Survey;
 use Meritoo\LimeSurvey\ApiClient\Result\Processor\ResultProcessor;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
-use PHPUnit_Framework_TestCase;
 
 /**
  * Test case of the one item of the result/data: survey
@@ -20,7 +20,7 @@ use PHPUnit_Framework_TestCase;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class SurveyTest extends PHPUnit_Framework_TestCase
+class SurveyTest extends BaseTestCase
 {
     /**
      * Raw data of surveys
@@ -42,6 +42,11 @@ class SurveyTest extends PHPUnit_Framework_TestCase
      * @var Survey
      */
     private $survey2ndInstance;
+
+    public function testConstructorVisibilityAndArguments()
+    {
+        static::assertHasNoConstructor(Survey::class);
+    }
 
     public function testCreateOfTheSurvey()
     {
