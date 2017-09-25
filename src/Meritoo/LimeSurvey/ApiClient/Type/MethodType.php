@@ -20,6 +20,16 @@ use Meritoo\LimeSurvey\ApiClient\Exception\UnknownMethodException;
 class MethodType extends BaseType
 {
     /**
+     * Add participants to the tokens collection of the survey
+     *
+     * Returns the inserted data including additional new information like the Token entry ID and the token string.
+     * In case of errors in some data, return it in errors.
+     *
+     * @var string
+     */
+    const ADD_PARTICIPANTS = 'add_participants';
+
+    /**
      * Add a response to the survey responses collection.
      * Returns the id of the inserted survey response.
      *
@@ -104,6 +114,7 @@ class MethodType extends BaseType
         $method = static::getValidatedMethod($method);
 
         return in_array($method, [
+            static::ADD_PARTICIPANTS,
             static::LIST_PARTICIPANTS,
             static::LIST_QUESTIONS,
             static::LIST_SURVEYS,

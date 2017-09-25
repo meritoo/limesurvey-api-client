@@ -162,6 +162,7 @@ class MethodTypeTest extends BaseTypeTestCase
     protected function getAllExpectedTypes()
     {
         return [
+            'ADD_PARTICIPANTS'           => MethodType::ADD_PARTICIPANTS,
             'ADD_RESPONSE'               => MethodType::ADD_RESPONSE,
             'EXPORT_STATISTICS'          => MethodType::EXPORT_STATISTICS,
             'GET_PARTICIPANT_PROPERTIES' => MethodType::GET_PARTICIPANT_PROPERTIES,

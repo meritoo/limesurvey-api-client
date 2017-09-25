@@ -81,6 +81,7 @@ class ResultProcessor
         $method = MethodType::getValidatedMethod($method);
 
         switch ($method) {
+            case MethodType::ADD_PARTICIPANTS:
             case MethodType::GET_PARTICIPANT_PROPERTIES:
                 $item = new Participant();
                 break;
