@@ -103,6 +103,18 @@ class Client
             ->getRpcClientManager()
             ->runMethod($method, $arguments);
 
+        /*
+         * Raw data is unknown?
+         * Let's use an empty array instead
+         *
+         * Required to avoid bug:
+         * Argument 2 passed to Meritoo\LimeSurvey\ApiClient\Result\Result::__construct() must be of the type array,
+         * null given
+         */
+        if (null === $rawData) {
+            $rawData = [];
+        }
+
         return new Result($method, $rawData);
     }
 
