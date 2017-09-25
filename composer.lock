@@ -769,16 +769,16 @@
         },
         {
             "name": "meritoo/common-library",
-            "version": "0.0.7",
+            "version": "0.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/meritoo/common-library.git",
-                "reference": "94a464cb4ded35c53638a404657a15a114437815"
+                "reference": "ffa3fbffe77c1caa4afb9aa26bd851c9ecd38cfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/meritoo/common-library/zipball/94a464cb4ded35c53638a404657a15a114437815",
-                "reference": "94a464cb4ded35c53638a404657a15a114437815",
+                "url": "https://api.github.com/repos/meritoo/common-library/zipball/ffa3fbffe77c1caa4afb9aa26bd851c9ecd38cfc",
+                "reference": "ffa3fbffe77c1caa4afb9aa26bd851c9ecd38cfc",
                 "shasum": ""
             },
             "require": {
@@ -788,13 +788,13 @@
                 "symfony/http-foundation": "^3.3"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.1",
+                "friendsofphp/php-cs-fixer": "^2.6",
                 "pdepend/pdepend": "^2.5",
-                "phploc/phploc": "^3.0",
+                "phploc/phploc": "^4.0",
                 "phpmd/phpmd": "^2.6",
-                "phpunit/phpunit": "^4.8 || ^5.0",
+                "phpunit/phpunit": "^5.7",
                 "sebastian/phpcpd": "^3.0",
-                "squizlabs/php_codesniffer": "^2.8"
+                "squizlabs/php_codesniffer": "^2.9"
             },
             "type": "library",
             "autoload": {
@@ -815,7 +815,7 @@
                 }
             ],
             "description": "Useful classes, methods, extensions etc.",
-            "time": "2017-09-19T16:09:13+00:00"
+            "time": "2017-09-22T21:27:21+00:00"
         },
         {
             "name": "psr/log",
@@ -1998,16 +1998,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.21",
+            "version": "5.7.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3b91adfb64264ddec5a2dee9851f354aa66327db"
+                "reference": "10df877596c9906d4110b5b905313829043f2ada"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3b91adfb64264ddec5a2dee9851f354aa66327db",
-                "reference": "3b91adfb64264ddec5a2dee9851f354aa66327db",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/10df877596c9906d4110b5b905313829043f2ada",
+                "reference": "10df877596c9906d4110b5b905313829043f2ada",
                 "shasum": ""
             },
             "require": {
@@ -2076,7 +2076,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-06-21T08:11:54+00:00"
+            "time": "2017-09-24T07:23:38+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
