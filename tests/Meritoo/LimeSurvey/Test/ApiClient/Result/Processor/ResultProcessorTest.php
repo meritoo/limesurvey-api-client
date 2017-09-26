@@ -12,6 +12,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseItem;
 use Meritoo\LimeSurvey\ApiClient\Exception\UnknownInstanceOfResultItem;
+use Meritoo\LimeSurvey\ApiClient\Result\Item\Survey;
 use Meritoo\LimeSurvey\ApiClient\Result\Processor\ResultProcessor;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 use Meritoo\LimeSurvey\Test\ApiClient\Result\Item\SurveyTest;
@@ -39,12 +40,24 @@ class ResultProcessorTest extends BaseTestCase
 
     public function testProcessWithIterableData()
     {
+        $surveysRawData = SurveyTest::getSurveysRawData();
         $processor = new ResultProcessor();
-        $processed = $processor->process(MethodType::LIST_SURVEYS, SurveyTest::getSurveysRawData());
+        $processed = $processor->process(MethodType::LIST_SURVEYS, $surveysRawData);
 
-        static::assertNotEmpty($processed);
         static::assertTrue(is_array($processed));
         static::assertCount(2, $processed);
+
+        /* @var Survey $firstSurvey */
+        $firstSurvey = $processed[0];
+
+        /* @var Survey $secondSurvey */
+        $secondSurvey = $processed[1];
+
+        static::assertEquals($surveysRawData[0]['sid'], $firstSurvey->getId());
+        static::assertEquals($surveysRawData[1]['sid'], $secondSurvey->getId());
+
+        static::assertEquals($surveysRawData[0]['surveyls_title'], $firstSurvey->getTitle());
+        static::assertEquals($surveysRawData[1]['surveyls_title'], $secondSurvey->getTitle());
     }
 
     public function testProcessWithNotIterableData()

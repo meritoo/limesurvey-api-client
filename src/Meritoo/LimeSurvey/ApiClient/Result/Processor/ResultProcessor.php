@@ -55,9 +55,9 @@ class ResultProcessor
          */
         if (MethodType::isResultIterable($method)) {
             $items = [];
-            $emptyItem = clone $item;
 
             foreach ($rawData as $itemData) {
+                $emptyItem = clone $item;
                 $items[] = $emptyItem->setValues($itemData);
             }
 
