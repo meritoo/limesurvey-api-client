@@ -46,28 +46,28 @@ class ResultTest extends BaseTestCase
     private $notIterableData;
 
     /**
+     * Result with empty data returned by the LimeSurvey's API.
      * Mock of the tested class.
-     * With empty data returned by the LimeSurvey's API.
      *
      * @var PHPUnit_Framework_MockObject_MockObject
      */
-    private $emptyDataMock;
+    private $emptyDataResult;
 
     /**
+     * Result with iterable, not empty data.
      * Mock of the tested class.
-     * With iterable, not empty data.
      *
      * @var PHPUnit_Framework_MockObject_MockObject
      */
-    private $iterableDataMock;
+    private $iterableDataResult;
 
     /**
+     * Result with not iterable, not empty data.
      * Mock of the tested class.
-     * With not iterable, not empty data.
      *
      * @var PHPUnit_Framework_MockObject_MockObject
      */
-    private $notIterableDataMock;
+    private $notIterableDataResult;
 
     public function testConstructorVisibilityAndArguments()
     {
@@ -76,15 +76,15 @@ class ResultTest extends BaseTestCase
 
     public function testIsEmpty()
     {
-        static::assertTrue($this->emptyDataMock->isEmpty());
-        static::assertFalse($this->iterableDataMock->isEmpty());
+        static::assertTrue($this->emptyDataResult->isEmpty());
+        static::assertFalse($this->iterableDataResult->isEmpty());
     }
 
     public function testGetDataUsingProcessedData()
     {
-        $emptyData = $this->emptyDataMock->getData();
-        $iterableData = $this->iterableDataMock->getData();
-        $notIterableData = $this->notIterableDataMock->getData();
+        $emptyData = $this->emptyDataResult->getData();
+        $iterableData = $this->iterableDataResult->getData();
+        $notIterableData = $this->notIterableDataResult->getData();
 
         static::assertEmpty($emptyData);
         static::assertNotEmpty($iterableData);
@@ -97,8 +97,8 @@ class ResultTest extends BaseTestCase
 
     public function testGetDataUsingRawData()
     {
-        $emptyData = $this->emptyDataMock->getData(true);
-        $iterableData = $this->iterableDataMock->getData(true);
+        $emptyData = $this->emptyDataResult->getData(true);
+        $iterableData = $this->iterableDataResult->getData(true);
 
         static::assertEmpty($emptyData);
         static::assertNotEmpty($iterableData);
@@ -149,24 +149,24 @@ class ResultTest extends BaseTestCase
             ],
         ];
 
-        $emptyDataArguments = [
+        $emptyData = [
             MethodType::LIST_SURVEYS,
             $this->emptyData,
         ];
 
-        $iterableDataArguments = [
+        $iterableData = [
             MethodType::LIST_SURVEYS,
             $this->iterableData,
         ];
 
-        $notIterableDataArguments = [
+        $notIterableData = [
             MethodType::GET_PARTICIPANT_PROPERTIES,
             $this->notIterableData,
         ];
 
-        $this->emptyDataMock = $this->getResultMock($emptyDataArguments);
-        $this->iterableDataMock = $this->getResultMock($iterableDataArguments);
-        $this->notIterableDataMock = $this->getResultMock($notIterableDataArguments);
+        $this->emptyDataResult = $this->getResultMock($emptyData);
+        $this->iterableDataResult = $this->getResultMock($iterableData);
+        $this->notIterableDataResult = $this->getResultMock($notIterableData);
     }
 
     /**
