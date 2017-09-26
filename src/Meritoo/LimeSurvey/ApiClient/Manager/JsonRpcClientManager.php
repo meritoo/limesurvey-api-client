@@ -3,7 +3,9 @@
 namespace Meritoo\LimeSurvey\ApiClient\Manager;
 
 use JsonRPC\Client as RpcClient;
+use JsonRPC\Exception\InvalidJsonFormatException;
 use Meritoo\LimeSurvey\ApiClient\Configuration\ConnectionConfiguration;
+use Meritoo\LimeSurvey\ApiClient\Exception\InvalidResultOfMethodRunException;
 use Meritoo\LimeSurvey\ApiClient\Exception\UnknownMethodException;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 
@@ -47,14 +49,22 @@ class JsonRpcClientManager
      * @return mixed
      *
      * @throws UnknownMethodException
+     * @throws InvalidResultOfMethodRunException
      */
     public function runMethod($method, $arguments = [])
     {
+        $result = null;
         $method = MethodType::getValidatedMethod($method);
 
-        return $this
-            ->getRpcClient()
-            ->execute($method, $arguments);
+        try {
+            $result = $this
+                ->getRpcClient()
+                ->execute($method, $arguments);
+        } catch (InvalidJsonFormatException $exception) {
+            throw new InvalidResultOfMethodRunException($exception, $method);
+        }
+
+        return $result;
     }
 
     /**

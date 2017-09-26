@@ -9,9 +9,11 @@
 namespace Meritoo\LimeSurvey\Test\ApiClient\Manager;
 
 use JsonRPC\Client as RpcClient;
+use JsonRPC\Exception\InvalidJsonFormatException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Configuration\ConnectionConfiguration;
+use Meritoo\LimeSurvey\ApiClient\Exception\InvalidResultOfMethodRunException;
 use Meritoo\LimeSurvey\ApiClient\Manager\JsonRpcClientManager;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 use Meritoo\LimeSurvey\Test\ApiClient\Result\Item\SurveyTest;
@@ -81,6 +83,27 @@ class JsonRpcClientManagerTest extends BaseTestCase
 
         /* @var JsonRpcClientManager $manager */
         static::assertEquals(SurveyTest::getSurveysRawData(), $manager->runMethod(MethodType::LIST_SURVEYS));
+    }
+
+    public function testRunMethodWithException()
+    {
+        $this->expectException(InvalidResultOfMethodRunException::class);
+
+        $manager = $this->createPartialMock(JsonRpcClientManager::class, ['getRpcClient']);
+        $rpcClient = $this->createMock(RpcClient::class);
+
+        $rpcClient
+            ->expects(self::once())
+            ->method('execute')
+            ->willThrowException(new InvalidJsonFormatException('bla bla'));
+
+        $manager
+            ->expects(static::once())
+            ->method('getRpcClient')
+            ->willReturn($rpcClient);
+
+        /* @var JsonRpcClientManager $manager */
+        $manager->runMethod(MethodType::LIST_SURVEYS);
     }
 
     public function testGetRpcClientVisibilityAndArguments()
