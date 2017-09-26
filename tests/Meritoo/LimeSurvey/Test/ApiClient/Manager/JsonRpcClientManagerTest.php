@@ -36,7 +36,7 @@ class JsonRpcClientManagerTest extends BaseTestCase
         static::assertConstructorVisibilityAndArguments(JsonRpcClientManager::class, OopVisibilityType::IS_PUBLIC, 1, 1);
     }
 
-    public function testRunMethod()
+    public function testRunMethodWithEmptyArrayReturned()
     {
         $rpcClient = $this->createMock(RpcClient::class);
 
@@ -51,12 +51,12 @@ class JsonRpcClientManagerTest extends BaseTestCase
             ->getMock();
 
         $rpcClient
-            ->expects(static::any())
+            ->expects(static::once())
             ->method('execute')
             ->willReturn([]);
 
         $manager
-            ->expects(static::any())
+            ->expects(static::once())
             ->method('getRpcClient')
             ->willReturn($rpcClient);
 
@@ -64,18 +64,18 @@ class JsonRpcClientManagerTest extends BaseTestCase
         static::assertEquals([], $manager->runMethod(MethodType::LIST_SURVEYS));
     }
 
-    public function testRunMethodWithMockedRpcClient()
+    public function testRunMethodWithRawDataReturned()
     {
         $rpcClient = $this->createMock(RpcClient::class);
         $manager = $this->createPartialMock(JsonRpcClientManager::class, ['getRpcClient']);
 
         $rpcClient
-            ->expects(static::any())
+            ->expects(static::once())
             ->method('execute')
             ->willReturn(SurveyTest::getSurveysRawData());
 
         $manager
-            ->expects(static::any())
+            ->expects(static::once())
             ->method('getRpcClient')
             ->willReturn($rpcClient);
 
