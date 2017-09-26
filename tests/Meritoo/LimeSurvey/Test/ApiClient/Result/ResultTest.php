@@ -12,6 +12,7 @@ use DateTime;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseItem;
+use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
 use Meritoo\LimeSurvey\ApiClient\Result\Result;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -46,6 +47,14 @@ class ResultTest extends BaseTestCase
     private $notIterableData;
 
     /**
+     * Status provided instead of real data.
+     * An array with one key: "status".
+     *
+     * @var array
+     */
+    private $statusInsteadData;
+
+    /**
      * Result with empty data returned by the LimeSurvey's API.
      * Mock of the tested class.
      *
@@ -68,6 +77,13 @@ class ResultTest extends BaseTestCase
      * @var PHPUnit_Framework_MockObject_MockObject
      */
     private $notIterableDataResult;
+
+    /**
+     * Result with status provided instead of real data
+     *
+     * @var Result
+     */
+    private $statusInsteadDataResult;
 
     public function testConstructorVisibilityAndArguments()
     {
@@ -110,6 +126,12 @@ class ResultTest extends BaseTestCase
         static::assertEquals($this->iterableData, $iterableData);
     }
 
+    public function testGetDataUsingProcessedDataWhoCannotBeProcessed()
+    {
+        $this->expectException(CannotProcessDataException::class);
+        $this->statusInsteadDataResult->getData();
+    }
+
     public function testGetProcessedDataVisibilityAndArguments()
     {
         static::assertMethodVisibilityAndArguments(Result::class, 'getProcessedData', OopVisibilityType::IS_PRIVATE, 1, 1);
@@ -118,6 +140,20 @@ class ResultTest extends BaseTestCase
     public function testGetResultProcessorVisibilityAndArguments()
     {
         static::assertMethodVisibilityAndArguments(Result::class, 'getResultProcessor', OopVisibilityType::IS_PRIVATE);
+    }
+
+    public function testGetStatusWhenIsNotProvided()
+    {
+        $result = new Result(MethodType::ADD_PARTICIPANTS, []);
+
+        static::assertEquals(null, $result->getStatus());
+        static::assertEquals([], $result->getData(true));
+    }
+
+    public function testGetStatusWhenIsProvided()
+    {
+        static::assertEquals($this->statusInsteadData['status'], $this->statusInsteadDataResult->getStatus());
+        static::assertEquals([], $this->statusInsteadDataResult->getData(true));
     }
 
     /**
@@ -149,6 +185,10 @@ class ResultTest extends BaseTestCase
             ],
         ];
 
+        $this->statusInsteadData = [
+            'status' => 'Invalid data',
+        ];
+
         $emptyData = [
             MethodType::LIST_SURVEYS,
             $this->emptyData,
@@ -167,6 +207,7 @@ class ResultTest extends BaseTestCase
         $this->emptyDataResult = $this->getResultMock($emptyData);
         $this->iterableDataResult = $this->getResultMock($iterableData);
         $this->notIterableDataResult = $this->getResultMock($notIterableData);
+        $this->statusInsteadDataResult = new Result(MethodType::LIST_PARTICIPANTS, $this->statusInsteadData);
     }
 
     /**

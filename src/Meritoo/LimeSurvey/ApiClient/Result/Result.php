@@ -10,6 +10,7 @@ namespace Meritoo\LimeSurvey\ApiClient\Result;
 
 use Meritoo\Common\Collection\Collection;
 use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseItem;
+use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
 use Meritoo\LimeSurvey\ApiClient\Result\Processor\ResultProcessor;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 
@@ -36,6 +37,13 @@ class Result
     private $rawData;
 
     /**
+     * Status, information returned instead of usual/normal result
+     *
+     * @var string
+     */
+    private $status;
+
+    /**
      * Processor of the raw data fetched while talking to the LimeSurvey's API
      *
      * @var ResultProcessor
@@ -52,7 +60,7 @@ class Result
     public function __construct($method, array $rawData)
     {
         $this->method = MethodType::getValidatedMethod($method);
-        $this->rawData = $rawData;
+        $this->setRawDataAndStatus($rawData);
     }
 
     /**
@@ -71,14 +79,41 @@ class Result
      * @param bool $raw (optional) If is set to true, raw data provided by the LimeSurvey's API will be returned.
      *                  Otherwise - prepared/processed.
      * @return array|Collection|BaseItem
+     * @throws CannotProcessDataException
      */
     public function getData($raw = false)
     {
+        /*
+         * Raw data should be returned only?
+         * Let's do it
+         */
         if ($raw) {
             return $this->rawData;
         }
 
-        return $this->getProcessedData($this->rawData);
+        /*
+         * Status is unknown?
+         * Let's process the raw data
+         */
+        if (empty($this->status)) {
+            return $this->getProcessedData($this->rawData);
+        }
+
+        /*
+         * Oops, the raw data returned by the LimeSurvey's API cannot be processed, because status was provided.
+         * Well, probably something is broken and... there is no data.
+         */
+        throw new CannotProcessDataException($this->status);
+    }
+
+    /**
+     * Returns status, information returned instead of usual/normal result
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**
@@ -118,5 +153,24 @@ class Result
         }
 
         return $this->resultProcessor;
+    }
+
+    /**
+     * Sets status, information returned instead of usual/normal result and raw data returned by the LimeSurvey's API
+     *
+     * @param array $rawData Raw data returned by the LimeSurvey's API
+     */
+    private function setRawDataAndStatus(array $rawData)
+    {
+        /*
+         * Status was provided?
+         * Well, probably something is broken and... there is no data
+         */
+        if (isset($rawData['status'])) {
+            $this->status = trim($rawData['status']);
+            $rawData = [];
+        }
+
+        $this->rawData = $rawData;
     }
 }
