@@ -12,6 +12,7 @@ use Generator;
 use Meritoo\Common\Test\Base\BaseTypeTestCase;
 use Meritoo\LimeSurvey\ApiClient\Exception\UnknownMethodException;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
+use Meritoo\LimeSurvey\ApiClient\Type\SystemMethodType;
 
 /**
  * Test case of the type of method used while talking with LimeSurvey's API
@@ -87,6 +88,14 @@ class MethodTypeTest extends BaseTypeTestCase
 
         yield[
             MethodType::LIST_SURVEYS,
+        ];
+
+        yield[
+            SystemMethodType::GET_SESSION_KEY,
+        ];
+
+        yield[
+            SystemMethodType::RELEASE_SESSION_KEY,
         ];
     }
 

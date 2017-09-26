@@ -96,7 +96,7 @@ class MethodType extends BaseType
      */
     public static function getValidatedMethod($method)
     {
-        if ((new static())->isCorrectType($method)) {
+        if ((new static())->isCorrectType($method) || (new SystemMethodType())->isCorrectType($method)) {
             return $method;
         }
 

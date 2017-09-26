@@ -77,7 +77,8 @@ class Client
     public function run($method, $arguments = [])
     {
         /*
-         * Let's validate method
+         * Let's validate method.
+         * It's called in the JsonRpcClientManager::runMethod() too, but I want to verify it before getting session key.
          */
         $method = MethodType::getValidatedMethod($method);
 
