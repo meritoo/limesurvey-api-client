@@ -85,7 +85,10 @@ class JsonRpcClientManager
              * The "debug" mode is turned on?
              */
             if ($this->connectionConfiguration->isDebugModeOn()) {
-                $this->rpcClient->getHttpClient()->withDebug();
+                $this
+                    ->rpcClient
+                    ->getHttpClient()
+                    ->withDebug();
             }
         }
 

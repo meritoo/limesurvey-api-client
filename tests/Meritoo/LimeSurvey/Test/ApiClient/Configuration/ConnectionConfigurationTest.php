@@ -22,6 +22,13 @@ use Meritoo\LimeSurvey\ApiClient\Configuration\ConnectionConfiguration;
  */
 class ConnectionConfigurationTest extends BaseTestCase
 {
+    /**
+     * Simple instance of the configuration
+     *
+     * @var ConnectionConfiguration
+     */
+    private $simpleConfiguration;
+
     public function testConstructorVisibilityAndArguments()
     {
         static::assertConstructorVisibilityAndArguments(ConnectionConfiguration::class, OopVisibilityType::IS_PUBLIC, 4, 3);
@@ -49,69 +56,55 @@ class ConnectionConfigurationTest extends BaseTestCase
 
     public function testConstructor()
     {
-        $configuration = new ConnectionConfiguration('http://test.com', 'test1', 'test2');
-
-        static::assertEquals('http://test.com', $configuration->getBaseUrl());
-        static::assertEquals('test1', $configuration->getUsername());
-        static::assertEquals('test2', $configuration->getPassword());
-        static::assertFalse($configuration->isDebugModeOn());
+        static::assertEquals('http://test.com', $this->simpleConfiguration->getBaseUrl());
+        static::assertEquals('test1', $this->simpleConfiguration->getUsername());
+        static::assertEquals('test2', $this->simpleConfiguration->getPassword());
+        static::assertFalse($this->simpleConfiguration->isDebugModeOn());
     }
 
     public function testSetBaseUrl()
     {
-        $configuration = new ConnectionConfiguration('http://test.com', 'test1', 'test2');
+        $this->simpleConfiguration->setBaseUrl('http://lorem.ipsum');
+        static::assertEquals('http://lorem.ipsum', $this->simpleConfiguration->getBaseUrl());
 
-        $configuration->setBaseUrl('http://lorem.ipsum');
-        static::assertEquals('http://lorem.ipsum', $configuration->getBaseUrl());
-
-        $configuration->setBaseUrl('http://lorem.ipsum/');
-        static::assertEquals('http://lorem.ipsum', $configuration->getBaseUrl());
+        $this->simpleConfiguration->setBaseUrl('http://lorem.ipsum/');
+        static::assertEquals('http://lorem.ipsum', $this->simpleConfiguration->getBaseUrl());
     }
 
     public function testSetRemoteControlUrl()
     {
-        $configuration = new ConnectionConfiguration('http://test.com', 'test1', 'test2');
-        $configuration->setRemoteControlUrl('/lorem/ipsum');
-
-        static::assertEquals('/lorem/ipsum', $configuration->getRemoteControlUrl());
+        $this->simpleConfiguration->setRemoteControlUrl('/lorem/ipsum');
+        static::assertEquals('/lorem/ipsum', $this->simpleConfiguration->getRemoteControlUrl());
     }
 
     public function testSetUsername()
     {
-        $configuration = new ConnectionConfiguration('http://test.com', 'test1', 'test2');
-        $configuration->setUsername('lorem');
-
-        static::assertEquals('lorem', $configuration->getUsername());
+        $this->simpleConfiguration->setUsername('lorem');
+        static::assertEquals('lorem', $this->simpleConfiguration->getUsername());
     }
 
     public function testSetPassword()
     {
-        $configuration = new ConnectionConfiguration('http://test.com', 'test1', 'test2');
-        $configuration->setPassword('ipsum');
-
-        static::assertEquals('ipsum', $configuration->getPassword());
+        $this->simpleConfiguration->setPassword('ipsum');
+        static::assertEquals('ipsum', $this->simpleConfiguration->getPassword());
     }
 
     public function testSetDebugMode()
     {
-        $configuration = new ConnectionConfiguration('http://test.com', 'test1', 'test2');
+        $this->simpleConfiguration->setDebugMode();
+        static::assertFalse($this->simpleConfiguration->isDebugModeOn());
 
-        $configuration->setDebugMode();
-        static::assertFalse($configuration->isDebugModeOn());
+        $this->simpleConfiguration->setDebugMode(false);
+        static::assertFalse($this->simpleConfiguration->isDebugModeOn());
 
-        $configuration->setDebugMode(false);
-        static::assertFalse($configuration->isDebugModeOn());
-
-        $configuration->setDebugMode(true);
-        static::assertTrue($configuration->isDebugModeOn());
+        $this->simpleConfiguration->setDebugMode(true);
+        static::assertTrue($this->simpleConfiguration->isDebugModeOn());
     }
 
     public function testGetFullUrl()
     {
-        $configuration = new ConnectionConfiguration('http://test.com', 'test1', 'test2');
-        $configuration->setRemoteControlUrl('lorem/ipsum');
-
-        static::assertEquals('http://test.com/lorem/ipsum', $configuration->getFullUrl());
+        $this->simpleConfiguration->setRemoteControlUrl('lorem/ipsum');
+        static::assertEquals('http://test.com/lorem/ipsum', $this->simpleConfiguration->getFullUrl());
     }
 
     /**
@@ -148,5 +141,14 @@ class ConnectionConfigurationTest extends BaseTestCase
         yield[
             'htp:/dolor.com',
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->simpleConfiguration = new ConnectionConfiguration('http://test.com', 'test1', 'test2');
     }
 }
