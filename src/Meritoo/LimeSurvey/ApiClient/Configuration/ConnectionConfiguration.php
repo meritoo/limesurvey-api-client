@@ -75,7 +75,7 @@ class ConnectionConfiguration
      * @param string $password             Password used to authenticate to LimeSurvey
      * @param bool   $debugMode            (optional) If is set to true, the "debug" mode is turned on. Otherwise -
      *                                     turned off.
-     * @param bool   $verifySslCertificate (optional) If is set to true,  the SSL certificate verification is turned
+     * @param bool   $verifySslCertificate (optional) If is set to true, the SSL certificate verification is turned
      *                                     on. Otherwise - turned off.
      */
     public function __construct($baseUrl, $username, $password, $debugMode = false, $verifySslCertificate = true)
