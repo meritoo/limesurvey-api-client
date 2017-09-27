@@ -23,11 +23,18 @@ use Meritoo\LimeSurvey\ApiClient\Configuration\ConnectionConfiguration;
 class ConnectionConfigurationTest extends BaseTestCase
 {
     /**
-     * Simple instance of the configuration
+     * Configuration with default values of optional constructor's arguments
      *
      * @var ConnectionConfiguration
      */
-    private $simpleConfiguration;
+    private $configurationWithDefaults;
+
+    /**
+     * Configuration without default values of optional constructor's arguments
+     *
+     * @var ConnectionConfiguration
+     */
+    private $configurationAnother;
 
     public function testConstructorVisibilityAndArguments()
     {
@@ -56,67 +63,92 @@ class ConnectionConfigurationTest extends BaseTestCase
 
     public function testConstructor()
     {
-        static::assertEquals('http://test.com', $this->simpleConfiguration->getBaseUrl());
-        static::assertEquals('test1', $this->simpleConfiguration->getUsername());
-        static::assertEquals('test2', $this->simpleConfiguration->getPassword());
-        static::assertFalse($this->simpleConfiguration->isDebugModeOn());
+        static::assertEquals('http://test.com', $this->configurationWithDefaults->getBaseUrl());
+        static::assertEquals('test1', $this->configurationWithDefaults->getUsername());
+        static::assertEquals('test2', $this->configurationWithDefaults->getPassword());
+        static::assertFalse($this->configurationWithDefaults->isDebugModeOn());
+        static::assertTrue($this->configurationWithDefaults->isVerifySslCertificateOn());
+
+        static::assertEquals('http://lets-test.com', $this->configurationAnother->getBaseUrl());
+        static::assertEquals('test11', $this->configurationAnother->getUsername());
+        static::assertEquals('test22', $this->configurationAnother->getPassword());
+        static::assertTrue($this->configurationAnother->isDebugModeOn());
+        static::assertFalse($this->configurationAnother->isVerifySslCertificateOn());
     }
 
     public function testSetBaseUrl()
     {
-        $this->simpleConfiguration->setBaseUrl('http://lorem.ipsum');
-        static::assertEquals('http://lorem.ipsum', $this->simpleConfiguration->getBaseUrl());
+        $this->configurationWithDefaults->setBaseUrl('http://lorem.ipsum');
+        static::assertEquals('http://lorem.ipsum', $this->configurationWithDefaults->getBaseUrl());
 
-        $this->simpleConfiguration->setBaseUrl('http://lorem.ipsum/');
-        static::assertEquals('http://lorem.ipsum', $this->simpleConfiguration->getBaseUrl());
+        $this->configurationWithDefaults->setBaseUrl('http://lorem.ipsum/');
+        static::assertEquals('http://lorem.ipsum', $this->configurationWithDefaults->getBaseUrl());
     }
 
     public function testSetRemoteControlUrl()
     {
-        $this->simpleConfiguration->setRemoteControlUrl('/lorem/ipsum');
-        static::assertEquals('/lorem/ipsum', $this->simpleConfiguration->getRemoteControlUrl());
+        $this->configurationWithDefaults->setRemoteControlUrl('/lorem/ipsum');
+        static::assertEquals('/lorem/ipsum', $this->configurationWithDefaults->getRemoteControlUrl());
     }
 
     public function testSetUsername()
     {
-        $this->simpleConfiguration->setUsername('lorem');
-        static::assertEquals('lorem', $this->simpleConfiguration->getUsername());
+        $this->configurationWithDefaults->setUsername('lorem');
+        static::assertEquals('lorem', $this->configurationWithDefaults->getUsername());
     }
 
     public function testSetPassword()
     {
-        $this->simpleConfiguration->setPassword('ipsum');
-        static::assertEquals('ipsum', $this->simpleConfiguration->getPassword());
+        $this->configurationWithDefaults->setPassword('ipsum');
+        static::assertEquals('ipsum', $this->configurationWithDefaults->getPassword());
     }
 
     public function testSetDebugMode()
     {
-        $this->simpleConfiguration->setDebugMode();
-        static::assertFalse($this->simpleConfiguration->isDebugModeOn());
+        $this->configurationWithDefaults->setDebugMode();
+        $this->configurationAnother->setDebugMode();
 
-        $this->simpleConfiguration->setDebugMode(false);
-        static::assertFalse($this->simpleConfiguration->isDebugModeOn());
+        static::assertFalse($this->configurationWithDefaults->isDebugModeOn());
+        static::assertFalse($this->configurationAnother->isDebugModeOn());
 
-        $this->simpleConfiguration->setDebugMode(true);
-        static::assertTrue($this->simpleConfiguration->isDebugModeOn());
+        $this->configurationWithDefaults->setDebugMode(false);
+        $this->configurationAnother->setDebugMode(false);
+
+        static::assertFalse($this->configurationWithDefaults->isDebugModeOn());
+        static::assertFalse($this->configurationAnother->isDebugModeOn());
+
+        $this->configurationWithDefaults->setDebugMode(true);
+        $this->configurationAnother->setDebugMode(true);
+
+        static::assertTrue($this->configurationWithDefaults->isDebugModeOn());
+        static::assertTrue($this->configurationAnother->isDebugModeOn());
     }
 
     public function testSetVerifySslCertificate()
     {
-        $this->simpleConfiguration->setVerifySslCertificate();
-        static::assertTrue($this->simpleConfiguration->isVerifySslCertificateOn());
+        $this->configurationWithDefaults->setVerifySslCertificate();
+        $this->configurationAnother->setVerifySslCertificate();
 
-        $this->simpleConfiguration->setVerifySslCertificate(false);
-        static::assertFalse($this->simpleConfiguration->isVerifySslCertificateOn());
+        static::assertTrue($this->configurationWithDefaults->isVerifySslCertificateOn());
+        static::assertTrue($this->configurationAnother->isVerifySslCertificateOn());
 
-        $this->simpleConfiguration->setVerifySslCertificate(true);
-        static::assertTrue($this->simpleConfiguration->isVerifySslCertificateOn());
+        $this->configurationWithDefaults->setVerifySslCertificate(false);
+        $this->configurationAnother->setVerifySslCertificate(false);
+
+        static::assertFalse($this->configurationWithDefaults->isVerifySslCertificateOn());
+        static::assertFalse($this->configurationAnother->isVerifySslCertificateOn());
+
+        $this->configurationWithDefaults->setVerifySslCertificate(true);
+        $this->configurationAnother->setVerifySslCertificate(true);
+
+        static::assertTrue($this->configurationWithDefaults->isVerifySslCertificateOn());
+        static::assertTrue($this->configurationAnother->isVerifySslCertificateOn());
     }
 
     public function testGetFullUrl()
     {
-        $this->simpleConfiguration->setRemoteControlUrl('lorem/ipsum');
-        static::assertEquals('http://test.com/lorem/ipsum', $this->simpleConfiguration->getFullUrl());
+        $this->configurationWithDefaults->setRemoteControlUrl('lorem/ipsum');
+        static::assertEquals('http://test.com/lorem/ipsum', $this->configurationWithDefaults->getFullUrl());
     }
 
     /**
@@ -161,6 +193,8 @@ class ConnectionConfigurationTest extends BaseTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->simpleConfiguration = new ConnectionConfiguration('http://test.com', 'test1', 'test2');
+
+        $this->configurationWithDefaults = new ConnectionConfiguration('http://test.com', 'test1', 'test2');
+        $this->configurationAnother = new ConnectionConfiguration('http://lets-test.com', 'test11', 'test22', true, false);
     }
 }

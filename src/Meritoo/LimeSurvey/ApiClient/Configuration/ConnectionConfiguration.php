@@ -84,7 +84,8 @@ class ConnectionConfiguration
             ->setBaseUrl($baseUrl)
             ->setUsername($username)
             ->setPassword($password)
-            ->setDebugMode($debugMode);
+            ->setDebugMode($debugMode)
+            ->setVerifySslCertificate($verifySslCertificate);
     }
 
     /**
