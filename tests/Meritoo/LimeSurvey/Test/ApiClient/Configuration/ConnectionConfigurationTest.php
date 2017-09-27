@@ -31,7 +31,7 @@ class ConnectionConfigurationTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(ConnectionConfiguration::class, OopVisibilityType::IS_PUBLIC, 4, 3);
+        static::assertConstructorVisibilityAndArguments(ConnectionConfiguration::class, OopVisibilityType::IS_PUBLIC, 5, 3);
     }
 
     /**
@@ -99,6 +99,18 @@ class ConnectionConfigurationTest extends BaseTestCase
 
         $this->simpleConfiguration->setDebugMode(true);
         static::assertTrue($this->simpleConfiguration->isDebugModeOn());
+    }
+
+    public function testSetVerifySslCertificate()
+    {
+        $this->simpleConfiguration->setVerifySslCertificate();
+        static::assertTrue($this->simpleConfiguration->isVerifySslCertificateOn());
+
+        $this->simpleConfiguration->setVerifySslCertificate(false);
+        static::assertFalse($this->simpleConfiguration->isVerifySslCertificateOn());
+
+        $this->simpleConfiguration->setVerifySslCertificate(true);
+        static::assertTrue($this->simpleConfiguration->isVerifySslCertificateOn());
     }
 
     public function testGetFullUrl()

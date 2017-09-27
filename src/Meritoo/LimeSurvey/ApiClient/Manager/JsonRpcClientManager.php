@@ -90,6 +90,16 @@ class JsonRpcClientManager
                     ->getHttpClient()
                     ->withDebug();
             }
+
+            /*
+             * The SSL certificate verification is turned off?
+             */
+            if (!$this->connectionConfiguration->isVerifySslCertificateOn()) {
+                $this
+                    ->rpcClient
+                    ->getHttpClient()
+                    ->withoutSslVerification();
+            }
         }
 
         return $this->rpcClient;

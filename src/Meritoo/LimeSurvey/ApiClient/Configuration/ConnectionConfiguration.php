@@ -60,14 +60,25 @@ class ConnectionConfiguration
     private $debugMode = false;
 
     /**
+     * If is set to true, the SSL certificate verification is turned on. Otherwise - turned off.
+     * It's useful while running application with custom, non-official SSL certificate, e.g. while development process.
+     *
+     * @var bool
+     */
+    private $verifySslCertificate = true;
+
+    /**
      * Class constructor
      *
-     * @param string $baseUrl   Base url. Protocol & domain.
-     * @param string $username  Name of user used to authenticate to LimeSurvey
-     * @param string $password  Password used to authenticate to LimeSurvey
-     * @param bool   $debugMode (optional) If is set to true, the "debug" mode is turned on. Otherwise - turned off.
+     * @param string $baseUrl              Base url. Protocol & domain.
+     * @param string $username             Name of user used to authenticate to LimeSurvey
+     * @param string $password             Password used to authenticate to LimeSurvey
+     * @param bool   $debugMode            (optional) If is set to true, the "debug" mode is turned on. Otherwise -
+     *                                     turned off.
+     * @param bool   $verifySslCertificate (optional) If is set to true,  the SSL certificate verification is turned
+     *                                     on. Otherwise - turned off.
      */
-    public function __construct($baseUrl, $username, $password, $debugMode = false)
+    public function __construct($baseUrl, $username, $password, $debugMode = false, $verifySslCertificate = true)
     {
         $this
             ->setBaseUrl($baseUrl)
@@ -197,6 +208,30 @@ class ConnectionConfiguration
     public function setDebugMode($debugMode = false)
     {
         $this->debugMode = $debugMode;
+
+        return $this;
+    }
+
+    /**
+     * Returns information if the SSL certificate verification is turned on
+     *
+     * @return bool
+     */
+    public function isVerifySslCertificateOn()
+    {
+        return $this->verifySslCertificate;
+    }
+
+    /**
+     * Sets information if the SSL certificate verification is turned on
+     *
+     * @param bool $verifySslCertificate (optional) If is set to true, the SSL certificate verification is turned on.
+     *                                   Otherwise - turned off.
+     * @return $this
+     */
+    public function setVerifySslCertificate($verifySslCertificate = true)
+    {
+        $this->verifySslCertificate = $verifySslCertificate;
 
         return $this;
     }
