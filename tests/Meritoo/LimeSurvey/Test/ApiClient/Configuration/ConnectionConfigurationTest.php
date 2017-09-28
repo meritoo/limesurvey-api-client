@@ -76,73 +76,13 @@ class ConnectionConfigurationTest extends BaseTestCase
         static::assertFalse($this->configurationAnother->isVerifySslCertificateOn());
     }
 
-    public function testSetBaseUrl()
+    public function testGetRemoteControlUrl()
     {
-        $this->configurationWithDefaults->setBaseUrl('http://lorem.ipsum');
-        static::assertEquals('http://lorem.ipsum', $this->configurationWithDefaults->getBaseUrl());
+        $this->configurationWithDefaults->setRemoteControlUrl('lorem/ipsum');
+        static::assertEquals('lorem/ipsum', $this->configurationWithDefaults->getRemoteControlUrl());
 
-        $this->configurationWithDefaults->setBaseUrl('http://lorem.ipsum/');
-        static::assertEquals('http://lorem.ipsum', $this->configurationWithDefaults->getBaseUrl());
-    }
-
-    public function testSetRemoteControlUrl()
-    {
-        $this->configurationWithDefaults->setRemoteControlUrl('/lorem/ipsum');
-        static::assertEquals('/lorem/ipsum', $this->configurationWithDefaults->getRemoteControlUrl());
-    }
-
-    public function testSetUsername()
-    {
-        $this->configurationWithDefaults->setUsername('lorem');
-        static::assertEquals('lorem', $this->configurationWithDefaults->getUsername());
-    }
-
-    public function testSetPassword()
-    {
-        $this->configurationWithDefaults->setPassword('ipsum');
-        static::assertEquals('ipsum', $this->configurationWithDefaults->getPassword());
-    }
-
-    public function testSetDebugMode()
-    {
-        $this->configurationWithDefaults->setDebugMode();
-        $this->configurationAnother->setDebugMode();
-
-        static::assertFalse($this->configurationWithDefaults->isDebugModeOn());
-        static::assertFalse($this->configurationAnother->isDebugModeOn());
-
-        $this->configurationWithDefaults->setDebugMode(false);
-        $this->configurationAnother->setDebugMode(false);
-
-        static::assertFalse($this->configurationWithDefaults->isDebugModeOn());
-        static::assertFalse($this->configurationAnother->isDebugModeOn());
-
-        $this->configurationWithDefaults->setDebugMode(true);
-        $this->configurationAnother->setDebugMode(true);
-
-        static::assertTrue($this->configurationWithDefaults->isDebugModeOn());
-        static::assertTrue($this->configurationAnother->isDebugModeOn());
-    }
-
-    public function testSetVerifySslCertificate()
-    {
-        $this->configurationWithDefaults->setVerifySslCertificate();
-        $this->configurationAnother->setVerifySslCertificate();
-
-        static::assertTrue($this->configurationWithDefaults->isVerifySslCertificateOn());
-        static::assertTrue($this->configurationAnother->isVerifySslCertificateOn());
-
-        $this->configurationWithDefaults->setVerifySslCertificate(false);
-        $this->configurationAnother->setVerifySslCertificate(false);
-
-        static::assertFalse($this->configurationWithDefaults->isVerifySslCertificateOn());
-        static::assertFalse($this->configurationAnother->isVerifySslCertificateOn());
-
-        $this->configurationWithDefaults->setVerifySslCertificate(true);
-        $this->configurationAnother->setVerifySslCertificate(true);
-
-        static::assertTrue($this->configurationWithDefaults->isVerifySslCertificateOn());
-        static::assertTrue($this->configurationAnother->isVerifySslCertificateOn());
+        $this->configurationAnother->setRemoteControlUrl('dolor/sit');
+        static::assertEquals('dolor/sit', $this->configurationAnother->getRemoteControlUrl());
     }
 
     public function testGetFullUrl()
@@ -195,6 +135,6 @@ class ConnectionConfigurationTest extends BaseTestCase
         parent::setUp();
 
         $this->configurationWithDefaults = new ConnectionConfiguration('http://test.com', 'test1', 'test2');
-        $this->configurationAnother = new ConnectionConfiguration('http://lets-test.com', 'test11', 'test22', true, false);
+        $this->configurationAnother = new ConnectionConfiguration('http://lets-test.com/', 'test11', 'test22', true, false);
     }
 }

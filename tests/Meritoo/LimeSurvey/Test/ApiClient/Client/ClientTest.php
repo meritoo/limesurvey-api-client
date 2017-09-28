@@ -68,9 +68,15 @@ class ClientTest extends BaseTestCase
             ->method('runMethod')
             ->willReturn([]);
 
-        $this->configuration->setDebugMode($debugMode);
-        $client = new Client($this->configuration, $rpcClientManager, $sessionManager);
+        $configuration = new ConnectionConfiguration(
+            $this->configuration->getBaseUrl(),
+            $this->configuration->getUsername(),
+            $this->configuration->getPassword(),
+            $debugMode,
+            $this->configuration->isVerifySslCertificateOn()
+        );
 
+        $client = new Client($configuration, $rpcClientManager, $sessionManager);
         static::assertInstanceOf(Result::class, $client->run($method, $arguments));
     }
 
