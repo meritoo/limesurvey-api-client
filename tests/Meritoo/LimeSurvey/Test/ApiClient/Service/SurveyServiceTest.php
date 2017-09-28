@@ -28,16 +28,16 @@ use PHPUnit_Framework_MockObject_MockObject;
 class SurveyServiceTest extends BaseTestCase
 {
     /**
-     * Serves surveys.
-     * Service without surveys.
+     * Service that serves surveys.
+     * Without surveys.
      *
      * @var SurveyService
      */
     private $serviceWithoutSurveys;
 
     /**
-     * Serves surveys.
-     * Service with surveys.
+     * Service that serves surveys.
+     * With surveys.
      *
      * @var SurveyService
      */

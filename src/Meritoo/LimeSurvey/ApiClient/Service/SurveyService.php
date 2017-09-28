@@ -14,7 +14,7 @@ use Meritoo\LimeSurvey\ApiClient\Result\Item\Survey;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 
 /**
- * Serves surveys
+ * Service that serves surveys
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
