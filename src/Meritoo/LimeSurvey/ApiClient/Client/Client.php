@@ -120,6 +120,16 @@ class Client
     }
 
     /**
+     * Returns configuration used while connecting to LimeSurvey's API
+     *
+     * @return ConnectionConfiguration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+    /**
      * Returns manager of the JsonRPC client used while connecting to LimeSurvey's API
      *
      * @return JsonRpcClientManager

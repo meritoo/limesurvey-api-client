@@ -80,6 +80,12 @@ class ClientTest extends BaseTestCase
         static::assertInstanceOf(Result::class, $client->run($method, $arguments));
     }
 
+    public function testGetConfiguration()
+    {
+        $client = new Client($this->configuration);
+        static::assertEquals($this->configuration, $client->getConfiguration());
+    }
+
     public function testGetRpcClientManagerVisibilityAndArguments()
     {
         static::assertMethodVisibilityAndArguments(Client::class, 'getRpcClientManager', OopVisibilityType::IS_PRIVATE);
