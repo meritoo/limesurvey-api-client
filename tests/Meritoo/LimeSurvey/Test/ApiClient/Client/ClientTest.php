@@ -52,13 +52,14 @@ class ClientTest extends BaseTestCase
     }
 
     /**
-     * @param string $method    Name of method to call
-     * @param array  $arguments Arguments of the method to call
-     * @param bool   $debugMode If is set to true, the "debug" mode is turned on. Otherwise - turned off.
+     * @param string $method          Name of method to call
+     * @param array  $arguments       Arguments of the method to call
+     * @param bool   $debugMode       If is set to true, the "debug" mode is turned on. Otherwise - turned off.
+     * @param mixed  $expectedRawData Expected raw data returned by JsonRpcClient
      *
      * @dataProvider provideMethod
      */
-    public function testRun($method, $arguments, $debugMode)
+    public function testRun($method, $arguments, $debugMode, $expectedRawData)
     {
         $sessionManager = $this->createMock(SessionManager::class);
         $rpcClientManager = $this->createMock(JsonRpcClientManager::class);
@@ -66,7 +67,7 @@ class ClientTest extends BaseTestCase
         $rpcClientManager
             ->expects(static::any())
             ->method('runMethod')
-            ->willReturn([]);
+            ->willReturn($expectedRawData);
 
         $configuration = new ConnectionConfiguration(
             $this->configuration->getBaseUrl(),
@@ -127,18 +128,21 @@ class ClientTest extends BaseTestCase
             MethodType::GET_PARTICIPANT_PROPERTIES,
             [],
             true,
+            [],
         ];
 
         yield[
             MethodType::LIST_SURVEYS,
             [],
             false,
+            [],
         ];
 
         yield[
             MethodType::LIST_PARTICIPANTS,
             [],
             false,
+            null,
         ];
 
         /*
