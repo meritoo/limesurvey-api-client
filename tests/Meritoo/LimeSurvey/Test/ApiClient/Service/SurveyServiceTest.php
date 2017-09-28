@@ -48,6 +48,24 @@ class SurveyServiceTest extends BaseTestCase
         static::assertConstructorVisibilityAndArguments(SurveyService::class, OopVisibilityType::IS_PUBLIC, 2, 1);
     }
 
+    public function testGetClient()
+    {
+        $rpcClientManager = $this->getJsonRpcClientManager(0);
+        $sessionManager = $this->getSessionManager();
+
+        $this->createServiceWithoutSurveys($rpcClientManager, $sessionManager);
+        $this->createServiceWithSurveys($rpcClientManager, $sessionManager);
+
+        static::assertInstanceOf(Client::class, $this->serviceWithoutSurveys->getClient());
+        static::assertInstanceOf(Client::class, $this->serviceWithSurveys->getClient());
+
+        $connectionConfiguration = new ConnectionConfiguration('http://test.com', 'test', 'test');
+        $client = new Client($connectionConfiguration);
+        $surveyService = new SurveyService($client);
+
+        static::assertEquals($client, $surveyService->getClient());
+    }
+
     public function testGetAllSurveys()
     {
         $rpcClientManager = $this->getJsonRpcClientManager(1);

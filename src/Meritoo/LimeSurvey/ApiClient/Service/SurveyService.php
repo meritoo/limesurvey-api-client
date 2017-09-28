@@ -52,6 +52,16 @@ class SurveyService
     }
 
     /**
+     * Returns client of the LimeSurvey's API
+     *
+     * @return Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
      * Returns all surveys
      *
      * @return Collection

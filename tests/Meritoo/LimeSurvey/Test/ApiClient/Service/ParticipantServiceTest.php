@@ -49,6 +49,24 @@ class ParticipantServiceTest extends BaseTestCase
         static::assertConstructorVisibilityAndArguments(ParticipantService::class, OopVisibilityType::IS_PUBLIC, 2, 1);
     }
 
+    public function testGetClient()
+    {
+        $rpcClientManager = $this->getJsonRpcClientManager(0);
+        $sessionManager = $this->getSessionManager();
+
+        $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
+        $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
+
+        static::assertInstanceOf(Client::class, $this->serviceWithoutParticipants->getClient());
+        static::assertInstanceOf(Client::class, $this->serviceWithParticipants->getClient());
+
+        $connectionConfiguration = new ConnectionConfiguration('http://test.com', 'test', 'test');
+        $client = new Client($connectionConfiguration);
+        $participantService = new ParticipantService($client);
+
+        static::assertEquals($client, $participantService->getClient());
+    }
+
     public function testGetSurveyParticipantsFromEmptyParticipants()
     {
         $rpcClientManager = $this->getJsonRpcClientManager(3);

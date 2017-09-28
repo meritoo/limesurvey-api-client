@@ -54,6 +54,16 @@ class ParticipantService
     }
 
     /**
+     * Returns client of the LimeSurvey's API
+     *
+     * @return Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
      * Returns participants of given survey
      *
      * @param int $surveyId ID of survey
