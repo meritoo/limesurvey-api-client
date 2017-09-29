@@ -31,6 +31,7 @@ class ReasonTypeTest extends BaseTypeTestCase
     {
         return [
             'NO_PARTICIPANTS_FOUND' => ReasonType::NO_PARTICIPANTS_FOUND,
+            'NO_SURVEYS_FOUND'      => ReasonType::NO_SURVEYS_FOUND,
             'NO_TOKEN_TABLE'        => ReasonType::NO_TOKEN_TABLE,
         ];
     }
@@ -60,6 +61,11 @@ class ReasonTypeTest extends BaseTypeTestCase
 
         yield[
             ReasonType::NO_PARTICIPANTS_FOUND,
+            true,
+        ];
+
+        yield[
+            ReasonType::NO_SURVEYS_FOUND,
             true,
         ];
 

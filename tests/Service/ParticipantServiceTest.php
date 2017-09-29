@@ -208,7 +208,7 @@ class ParticipantServiceTest extends BaseTestCase
     }
 
     /**
-     * Returns manager of the JsonRPC client used while connecting to LimeSurvey's API
+     * Returns manager of the JsonRPC client used while connecting to LimeSurvey's API with mocked method runMethod()
      *
      * @param int   $runMethodCallCount   Count of calls of the runMethod() method (who is mocked)
      * @param array $runMethodCallResults (optional) Results of calls of the runMethod() method (who is mocked)

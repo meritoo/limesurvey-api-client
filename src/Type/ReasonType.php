@@ -20,6 +20,13 @@ class ReasonType extends BaseType
     const NO_PARTICIPANTS_FOUND = 'No survey participants found.';
 
     /**
+     * Reason of exception when there is no surveys
+     *
+     * @var string
+     */
+    const NO_SURVEYS_FOUND = 'No surveys found';
+
+    /**
      * Reason of exception when there is no table with tokens/participants of survey
      *
      * @var string

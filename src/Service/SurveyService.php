@@ -10,8 +10,10 @@ namespace Meritoo\LimeSurvey\ApiClient\Service;
 
 use Meritoo\Common\Collection\Collection;
 use Meritoo\LimeSurvey\ApiClient\Client\Client;
+use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Survey;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
+use Meritoo\LimeSurvey\ApiClient\Type\ReasonType;
 
 /**
  * Service that serves surveys
@@ -65,14 +67,29 @@ class SurveyService
      * Returns all surveys
      *
      * @return Collection
+     * @throws CannotProcessDataException
      */
     public function getAllSurveys()
     {
         if ($this->allSurveys->isEmpty()) {
-            $surveys = $this
-                ->client
-                ->run(MethodType::LIST_SURVEYS)
-                ->getData();
+            try {
+                $surveys = $this
+                    ->client
+                    ->run(MethodType::LIST_SURVEYS)
+                    ->getData();
+            } catch (CannotProcessDataException $exception) {
+                $reason = $exception->getReason();
+
+                /*
+                 * Reason of the exception is different than "Oops, there is no surveys. Everything else is fine."?
+                 * Let's throw the exception
+                 */
+                if (ReasonType::NO_SURVEYS_FOUND !== $reason) {
+                    throw $exception;
+                }
+
+                $surveys = new Collection();
+            }
 
             if (null !== $surveys) {
                 $this->allSurveys = $surveys;
