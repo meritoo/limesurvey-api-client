@@ -160,6 +160,11 @@ class ParticipantService
      */
     public function getParticipant($surveyId, $email)
     {
+        /*
+         * I have to get all participants of survey to avoid problem when participants exist but are not loaded
+         */
+        $this->getSurveyParticipants($surveyId);
+
         return $this
             ->allParticipants
             ->getParticipantOfSurvey($surveyId, $email);

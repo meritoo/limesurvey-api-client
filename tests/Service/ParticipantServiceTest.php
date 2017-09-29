@@ -125,7 +125,7 @@ class ParticipantServiceTest extends BaseTestCase
 
     public function testGetParticipant()
     {
-        $rpcClientManager = $this->getJsonRpcClientManager(0);
+        $rpcClientManager = $this->getJsonRpcClientManager(1);
         $sessionManager = $this->getSessionManager();
 
         $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
