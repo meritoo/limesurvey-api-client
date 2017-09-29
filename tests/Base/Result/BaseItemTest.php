@@ -9,6 +9,7 @@
 namespace Meritoo\LimeSurvey\Test\ApiClient\Base\Result;
 
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseItem;
 
 /**
@@ -21,31 +22,11 @@ class BaseItemTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertHasNoConstructor(BaseItem::class);
+        static::assertConstructorVisibilityAndArguments(BaseItem::class, OopVisibilityType::IS_PUBLIC, 1, 0);
     }
 
-    public function testSetValues()
+    public function testSetValuesVisibilityAndArguments()
     {
-        $mock = $this->getBaseItemMock();
-
-        static::assertInstanceOf(BaseItem::class, $mock->setValues([]));
-        static::assertInstanceOf(BaseItem::class, $mock->setValues(['lorem']));
-    }
-
-    /**
-     * Returns mock of the tested class
-     *
-     * @return BaseItem
-     */
-    private function getBaseItemMock()
-    {
-        $mock = $this->getMockForAbstractClass(BaseItem::class);
-
-        $mock
-            ->expects(static::any())
-            ->method('setValue')
-            ->willReturn(null);
-
-        return $mock;
+        static::assertMethodVisibilityAndArguments(BaseItem::class, 'setValues', OopVisibilityType::IS_PRIVATE, 1, 1);
     }
 }

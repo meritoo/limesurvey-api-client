@@ -204,11 +204,11 @@ class SurveyServiceTest extends BaseTestCase
         $client = new Client($configuration, $rpcClientManager, $sessionManager);
 
         $allSurveys = new Collection([
-            (new Survey())->setValues([
+            new Survey([
                 'sid'            => 1,
                 'surveyls_title' => 'Test',
             ]),
-            (new Survey())->setValues([
+            new Survey([
                 'sid'            => 2,
                 'surveyls_title' => 'Another Test',
             ]),

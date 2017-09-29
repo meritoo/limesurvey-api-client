@@ -8,7 +8,9 @@
 
 namespace Meritoo\LimeSurvey\ApiClient\Result\Processor;
 
+use Meritoo\Common\Utilities\Reflection;
 use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseItem;
+use Meritoo\LimeSurvey\ApiClient\Exception\IncorrectClassOfResultItemException;
 use Meritoo\LimeSurvey\ApiClient\Exception\UnknownInstanceOfResultItem;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort;
@@ -31,7 +33,9 @@ class ResultProcessor
      * @param string $method    Name of called method while talking to the LimeSurvey's API. One of the MethodType
      *                          class constants.
      * @param array  $rawData   Data returned by the LimeSurvey's API
-     * @return null|BaseItem|array
+     * @return array|BaseItem|null
+     *
+     * @throws IncorrectClassOfResultItemException
      */
     public function process($method, array $rawData)
     {
@@ -46,9 +50,9 @@ class ResultProcessor
         }
 
         /*
-         * Prepare instance of one item
+         * Prepare class name for instance of one item
          */
-        $item = $this->getItemInstance($method);
+        $itemClassName = $this->getItemClassName($method);
 
         /*
          * The raw data is or, actually, should be iterable?
@@ -57,49 +61,50 @@ class ResultProcessor
             $items = [];
 
             foreach ($rawData as $itemData) {
-                $emptyItem = clone $item;
-                $items[] = $emptyItem->setValues($itemData);
+                $items[] = new $itemClassName($itemData);
             }
 
             return $items;
         }
 
-        return $item->setValues($rawData);
+        return new $itemClassName($rawData);
     }
 
     /**
-     * Returns instance of one item of the result
+     * Returns class name used to create instance of one item of the result
      *
      * @param string $method  Name of called method while talking to the LimeSurvey's API. One of the MethodType
      *                        class constants.
-     * @return BaseItem
+     * @return string
+     *
+     * @throws IncorrectClassOfResultItemException
      * @throws UnknownInstanceOfResultItem
      */
-    private function getItemInstance($method)
+    private function getItemClassName($method)
     {
-        $item = null;
+        $className = null;
         $method = MethodType::getValidatedMethod($method);
 
         switch ($method) {
             case MethodType::ADD_PARTICIPANTS:
             case MethodType::GET_PARTICIPANT_PROPERTIES:
-                $item = new Participant();
+                $className = Participant::class;
                 break;
 
             case MethodType::GET_QUESTION_PROPERTIES:
-                $item = new Question();
+                $className = Question::class;
                 break;
 
             case MethodType::LIST_PARTICIPANTS:
-                $item = new ParticipantShort();
+                $className = ParticipantShort::class;
                 break;
 
             case MethodType::LIST_QUESTIONS:
-                $item = new QuestionShort();
+                $className = QuestionShort::class;
                 break;
 
             case MethodType::LIST_SURVEYS:
-                $item = new Survey();
+                $className = Survey::class;
                 break;
 
             /*
@@ -108,12 +113,19 @@ class ResultProcessor
         }
 
         /*
-         * Instance of the item is unknown?
+         * Oops, class name for instance of the item is unknown
          */
-        if (null === $item) {
+        if (null === $className) {
             throw new UnknownInstanceOfResultItem($method);
         }
 
-        return $item;
+        if (Reflection::isChildOfClass($className, BaseItem::class)) {
+            return $className;
+        }
+
+        /*
+         * Oops, class is incorrect (should extend BaseItem)
+         */
+        throw new IncorrectClassOfResultItemException($className);
     }
 }

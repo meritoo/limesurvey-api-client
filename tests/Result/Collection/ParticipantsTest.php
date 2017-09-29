@@ -125,9 +125,8 @@ class ParticipantsTest extends BaseTestCase
     {
         $surveyId = 1;
         $email = 'john@scott.com';
-        $participant = new Participant();
 
-        $participant->setValues([
+        $participant = new Participant([
             'firstname' => 'John',
             'lastname'  => 'Scott',
             'email'     => $email,
@@ -148,9 +147,8 @@ class ParticipantsTest extends BaseTestCase
     {
         $surveyId = 1;
         $email = 'john@scott.com';
-        $participant = new Participant();
 
-        $participant->setValues([
+        $participant = new Participant([
             'firstname' => 'John',
             'lastname'  => 'Scott',
             'email'     => $email,

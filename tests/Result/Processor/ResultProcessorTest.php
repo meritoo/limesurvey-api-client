@@ -75,9 +75,9 @@ class ResultProcessorTest extends BaseTestCase
         static::assertInstanceOf(BaseItem::class, $processed);
     }
 
-    public function testGetItemInstanceVisibilityAndArguments()
+    public function testGetItemClassNameVisibilityAndArguments()
     {
-        static::assertMethodVisibilityAndArguments(ResultProcessor::class, 'getItemInstance', OopVisibilityType::IS_PRIVATE, 1, 1);
+        static::assertMethodVisibilityAndArguments(ResultProcessor::class, 'getItemClassName', OopVisibilityType::IS_PRIVATE, 1, 1);
     }
 
     public function testRunWithUnknownResultClass()

@@ -9,6 +9,7 @@
 namespace Meritoo\LimeSurvey\Test\ApiClient\Result\Item;
 
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort;
 use Meritoo\LimeSurvey\ApiClient\Result\Processor\ResultProcessor;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
@@ -44,7 +45,7 @@ class ParticipantShortTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertHasNoConstructor(ParticipantShort::class);
+        static::assertConstructorVisibilityAndArguments(ParticipantShort::class, OopVisibilityType::IS_PUBLIC, 1, 0);
     }
 
     public function testCreateOfTheParticipant()
@@ -116,7 +117,7 @@ class ParticipantShortTest extends BaseTestCase
         parent::setUp();
         $this->rawData = static::getParticipantsRawData();
 
-        $this->participant1stInstance = (new ParticipantShort())->setValues($this->rawData[0]);
-        $this->participant2ndInstance = (new ParticipantShort())->setValues($this->rawData[1]);
+        $this->participant1stInstance = new ParticipantShort($this->rawData[0]);
+        $this->participant2ndInstance = new ParticipantShort($this->rawData[1]);
     }
 }

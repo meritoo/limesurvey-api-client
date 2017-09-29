@@ -17,12 +17,31 @@ namespace Meritoo\LimeSurvey\ApiClient\Base\Result;
 abstract class BaseItem
 {
     /**
+     * Class constructor
+     *
+     * @param array $data (optional) Data to set in properties of the item
+     */
+    public function __construct(array $data = [])
+    {
+        $this->setValues($data);
+    }
+
+    /**
+     * Sets given value in given property
+     *
+     * @param string $property Name of property to set the value
+     * @param mixed  $value    Value to set in property
+     * @return mixed
+     */
+    abstract public function setValue($property, $value);
+
+    /**
      * Sets values in each property of the item
      *
      * @param array $data Data to set in properties of the item
      * @return $this
      */
-    public function setValues($data)
+    private function setValues(array $data)
     {
         /*
          * Oops, no data
@@ -40,13 +59,4 @@ abstract class BaseItem
 
         return $this;
     }
-
-    /**
-     * Sets given value in given property
-     *
-     * @param string $property Name of property to set the value
-     * @param mixed  $value    Value to set in property
-     * @return mixed
-     */
-    abstract public function setValue($property, $value);
 }

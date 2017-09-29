@@ -10,6 +10,7 @@ namespace Meritoo\LimeSurvey\Test\ApiClient\Result\Item;
 
 use DateTime;
 use Meritoo\Common\Test\Base\BaseTestCase;
+use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Survey;
 use Meritoo\LimeSurvey\ApiClient\Result\Processor\ResultProcessor;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
@@ -45,7 +46,7 @@ class SurveyTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertHasNoConstructor(Survey::class);
+        static::assertConstructorVisibilityAndArguments(Survey::class, OopVisibilityType::IS_PUBLIC, 1, 0);
     }
 
     public function testCreateOfTheSurvey()
@@ -119,7 +120,7 @@ class SurveyTest extends BaseTestCase
         parent::setUp();
         $this->rawData = static::getSurveysRawData();
 
-        $this->survey1stInstance = (new Survey())->setValues($this->rawData[0]);
-        $this->survey2ndInstance = (new Survey())->setValues($this->rawData[1]);
+        $this->survey1stInstance = new Survey($this->rawData[0]);
+        $this->survey2ndInstance = new Survey($this->rawData[1]);
     }
 }

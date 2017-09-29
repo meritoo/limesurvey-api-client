@@ -297,13 +297,13 @@ class ParticipantServiceTest extends BaseTestCase
 
         $allParticipants = new Participants([
             1 => new Collection([
-                (new Participant())->setValues([
+                new Participant([
                     'firstname' => 'John',
                     'lastname'  => 'Scott',
                     'email'     => 'john@scott.com',
                     'completed' => 'Y',
                 ]),
-                (new Participant())->setValues([
+                new Participant([
                     'firstname' => 'Mary',
                     'lastname'  => 'Jane',
                     'email'     => 'mary@jane.com',

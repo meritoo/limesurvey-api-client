@@ -12,7 +12,8 @@ use Exception;
 use Meritoo\LimeSurvey\ApiClient\Result\Processor\ResultProcessor;
 
 /**
- * An exception used while instance of one item used by result, with data fetched from the LimeSurvey's API, is unknown
+ * An exception used while class name used to create instance of one item of the result, with data fetched from the
+ * LimeSurvey's API, is unknown
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -27,10 +28,10 @@ class UnknownInstanceOfResultItem extends Exception
      */
     public function __construct($method)
     {
-        $template = 'Instance of one item used by result the of \'%s\' LimeSurvey API\'s method is unknown. Proper'
-            . ' class is not mapped in %s::%s() method. Did you forget about this?';
+        $template = 'Class name used to create instance of one item used by result the of \'%s\' LimeSurvey API\'s'
+            . ' method is unknown. Proper class is not mapped in %s::%s() method. Did you forget about this?';
 
-        $message = sprintf($template, $method, ResultProcessor::class, 'getItemInstance');
+        $message = sprintf($template, $method, ResultProcessor::class, 'getItemClassName');
         parent::__construct($message);
     }
 }

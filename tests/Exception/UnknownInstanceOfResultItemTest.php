@@ -49,17 +49,17 @@ class UnknownInstanceOfResultItemTest extends BaseTestCase
      */
     public function provideMethodName()
     {
-        $template = 'Instance of one item used by result the of \'%s\' LimeSurvey API\'s method is unknown. Proper'
-            . ' class is not mapped in %s::%s() method. Did you forget about this?';
+        $template = 'Class name used to create instance of one item used by result the of \'%s\' LimeSurvey API\'s'
+            . ' method is unknown. Proper class is not mapped in %s::%s() method. Did you forget about this?';
 
         yield[
             MethodType::LIST_SURVEYS,
-            sprintf($template, MethodType::LIST_SURVEYS, ResultProcessor::class, 'getItemInstance'),
+            sprintf($template, MethodType::LIST_SURVEYS, ResultProcessor::class, 'getItemClassName'),
         ];
 
         yield[
             MethodType::ADD_PARTICIPANTS,
-            sprintf($template, MethodType::ADD_PARTICIPANTS, ResultProcessor::class, 'getItemInstance'),
+            sprintf($template, MethodType::ADD_PARTICIPANTS, ResultProcessor::class, 'getItemClassName'),
         ];
     }
 }
