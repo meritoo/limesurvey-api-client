@@ -13,6 +13,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Client\Client;
 use Meritoo\LimeSurvey\ApiClient\Configuration\ConnectionConfiguration;
+use Meritoo\LimeSurvey\ApiClient\Exception\MissingParticipantOfSurveyException;
 use Meritoo\LimeSurvey\ApiClient\Manager\JsonRpcClientManager;
 use Meritoo\LimeSurvey\ApiClient\Manager\SessionManager;
 use Meritoo\LimeSurvey\ApiClient\Result\Collection\Participants;
@@ -122,6 +123,44 @@ class ParticipantServiceTest extends BaseTestCase
         static::assertInstanceOf(Participant::class, $result);
     }
 
+    public function testGetParticipant()
+    {
+        $rpcClientManager = $this->getJsonRpcClientManager(0);
+        $sessionManager = $this->getSessionManager();
+
+        $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
+        $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
+
+        static::assertNull($this->serviceWithoutParticipants->getParticipant(1, 'john@scott.com'));
+        $participant = $this->serviceWithParticipants->getParticipant(1, 'john@scott.com');
+        static::assertInstanceOf(Participant::class, $participant);
+
+        static::assertEquals('John', $participant->getFirstName());
+        static::assertEquals('Scott', $participant->getLastName());
+        static::assertEquals('john@scott.com', $participant->getEmail());
+    }
+
+    public function testHasParticipantFilledSurveyWithException()
+    {
+        $this->expectException(MissingParticipantOfSurveyException::class);
+
+        $rpcClientManager = $this->getJsonRpcClientManager(1);
+        $sessionManager = $this->getSessionManager();
+        $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
+
+        $this->serviceWithoutParticipants->hasParticipantFilledSurvey(1, 'john@scott.com');
+    }
+
+    public function testHasParticipantFilledSurvey()
+    {
+        $rpcClientManager = $this->getJsonRpcClientManager(0);
+        $sessionManager = $this->getSessionManager();
+        $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
+
+        static::assertTrue($this->serviceWithParticipants->hasParticipantFilledSurvey(1, 'john@scott.com'));
+        static::assertFalse($this->serviceWithParticipants->hasParticipantFilledSurvey(1, 'mary@jane.com'));
+    }
+
     /**
      * Returns configuration used while connecting to LimeSurvey's API
      *
@@ -191,8 +230,13 @@ class ParticipantServiceTest extends BaseTestCase
                     'firstname' => 'John',
                     'lastname'  => 'Scott',
                     'email'     => 'john@scott.com',
+                    'completed' => 'Y',
                 ]),
-                new Participant(),
+                (new Participant())->setValues([
+                    'firstname' => 'Mary',
+                    'lastname'  => 'Jane',
+                    'email'     => 'mary@jane.com',
+                ]),
             ]),
             2 => new Collection([
                 new Participant(),

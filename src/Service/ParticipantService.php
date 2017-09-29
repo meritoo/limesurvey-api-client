@@ -10,6 +10,7 @@ namespace Meritoo\LimeSurvey\ApiClient\Service;
 
 use Meritoo\Common\Collection\Collection;
 use Meritoo\LimeSurvey\ApiClient\Client\Client;
+use Meritoo\LimeSurvey\ApiClient\Exception\MissingParticipantOfSurveyException;
 use Meritoo\LimeSurvey\ApiClient\Result\Collection\Participants;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
@@ -148,5 +149,39 @@ class ParticipantService
             ->addParticipants($participantCollection, $surveyId);
 
         return $participantCollection->getFirst();
+    }
+
+    /**
+     * Returns participant with given e-mail of given survey
+     *
+     * @param int    $surveyId ID of survey
+     * @param string $email    E-mail address of the participant
+     * @return Participant|null
+     */
+    public function getParticipant($surveyId, $email)
+    {
+        return $this
+            ->allParticipants
+            ->getParticipantOfSurvey($surveyId, $email);
+    }
+
+    /**
+     * Returns information if participant with given e-mail has filled given survey
+     *
+     * @param int    $surveyId ID of survey
+     * @param string $email    E-mail address of the participant
+     * @return bool
+     *
+     * @throws MissingParticipantOfSurveyException
+     */
+    public function hasParticipantFilledSurvey($surveyId, $email)
+    {
+        if ($this->hasParticipant($surveyId, $email)) {
+            return true === $this
+                    ->getParticipant($surveyId, $email)
+                    ->isCompleted();
+        }
+
+        throw new MissingParticipantOfSurveyException($surveyId, $email);
     }
 }
