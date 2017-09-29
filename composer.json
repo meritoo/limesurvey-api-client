@@ -25,8 +25,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Meritoo\\LimeSurvey\\": "src/Meritoo/LimeSurvey/",
-            "Meritoo\\LimeSurvey\\Test\\": "tests/Meritoo/LimeSurvey/Test/"
+            "Meritoo\\LimeSurvey\\ApiClient\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Meritoo\\LimeSurvey\\Test\\ApiClient\\": "tests/"
         }
     }
 }
