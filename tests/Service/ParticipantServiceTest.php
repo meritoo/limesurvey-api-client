@@ -8,17 +8,20 @@
 
 namespace Meritoo\LimeSurvey\Test\ApiClient\Service;
 
+use Exception;
 use Meritoo\Common\Collection\Collection;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Client\Client;
 use Meritoo\LimeSurvey\ApiClient\Configuration\ConnectionConfiguration;
+use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
 use Meritoo\LimeSurvey\ApiClient\Exception\MissingParticipantOfSurveyException;
 use Meritoo\LimeSurvey\ApiClient\Manager\JsonRpcClientManager;
 use Meritoo\LimeSurvey\ApiClient\Manager\SessionManager;
 use Meritoo\LimeSurvey\ApiClient\Result\Collection\Participants;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Service\ParticipantService;
+use Meritoo\LimeSurvey\ApiClient\Type\ReasonType;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
@@ -68,7 +71,7 @@ class ParticipantServiceTest extends BaseTestCase
         static::assertEquals($client, $participantService->getClient());
     }
 
-    public function testGetSurveyParticipantsFromEmptyParticipants()
+    public function testGetSurveyParticipants()
     {
         $rpcClientManager = $this->getJsonRpcClientManager(3);
         $sessionManager = $this->getSessionManager();
@@ -81,6 +84,29 @@ class ParticipantServiceTest extends BaseTestCase
 
         static::assertCount(2, $this->serviceWithParticipants->getSurveyParticipants(1));
         static::assertCount(1, $this->serviceWithParticipants->getSurveyParticipants(2));
+        static::assertCount(0, $this->serviceWithParticipants->getSurveyParticipants(3));
+    }
+
+    public function testGetSurveyParticipantsWithImportantException()
+    {
+        $this->expectException(CannotProcessDataException::class);
+        $exception = new CannotProcessDataException(ReasonType::NO_TOKEN_TABLE);
+
+        $rpcClientManager = $this->getJsonRpcClientManagerWithException(1, $exception);
+        $sessionManager = $this->getSessionManager();
+
+        $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
+        $this->serviceWithParticipants->getSurveyParticipants(3);
+    }
+
+    public function testGetSurveyParticipantsWithNoParticipantsException()
+    {
+        $exception = new CannotProcessDataException(ReasonType::NO_PARTICIPANTS_FOUND);
+
+        $rpcClientManager = $this->getJsonRpcClientManagerWithException(1, $exception);
+        $sessionManager = $this->getSessionManager();
+
+        $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
         static::assertCount(0, $this->serviceWithParticipants->getSurveyParticipants(3));
     }
 
@@ -196,6 +222,26 @@ class ParticipantServiceTest extends BaseTestCase
             ->expects(static::exactly($runMethodCallCount))
             ->method('runMethod')
             ->will(static::returnValue($runMethodCallResults));
+
+        return $rpcClientManager;
+    }
+
+    /**
+     * Returns manager of the JsonRPC client used while connecting to LimeSurvey's API with mocked method runMethod()
+     * that throws an exception
+     *
+     * @param int       $runMethodCallCount Count of calls of the runMethod() method (who is mocked)
+     * @param Exception $exception          The exception that should be thrown
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getJsonRpcClientManagerWithException($runMethodCallCount, Exception $exception)
+    {
+        $rpcClientManager = $this->createMock(JsonRpcClientManager::class);
+
+        $rpcClientManager
+            ->expects(static::exactly($runMethodCallCount))
+            ->method('runMethod')
+            ->willThrowException($exception);
 
         return $rpcClientManager;
     }

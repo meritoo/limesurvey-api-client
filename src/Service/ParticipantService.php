@@ -10,10 +10,12 @@ namespace Meritoo\LimeSurvey\ApiClient\Service;
 
 use Meritoo\Common\Collection\Collection;
 use Meritoo\LimeSurvey\ApiClient\Client\Client;
+use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
 use Meritoo\LimeSurvey\ApiClient\Exception\MissingParticipantOfSurveyException;
 use Meritoo\LimeSurvey\ApiClient\Result\Collection\Participants;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
+use Meritoo\LimeSurvey\ApiClient\Type\ReasonType;
 
 /**
  * Service that serves participants
@@ -69,6 +71,8 @@ class ParticipantService
      *
      * @param int $surveyId ID of survey
      * @return Collection
+     *
+     * @throws CannotProcessDataException
      */
     public function getSurveyParticipants($surveyId)
     {
@@ -81,10 +85,24 @@ class ParticipantService
                 $surveyId,
             ];
 
-            $participants = $this
-                ->client
-                ->run(MethodType::LIST_PARTICIPANTS, $arguments)
-                ->getData();
+            try {
+                $participants = $this
+                    ->client
+                    ->run(MethodType::LIST_PARTICIPANTS, $arguments)
+                    ->getData();
+            } catch (CannotProcessDataException $exception) {
+                $reason = $exception->getReason();
+
+                /*
+                 * Reason of the exception is different than "Oops, there is no participants. Everything else is fine."?
+                 * Let's throw the exception
+                 */
+                if (ReasonType::NO_PARTICIPANTS_FOUND !== $reason) {
+                    throw $exception;
+                }
+
+                $participants = new Collection();
+            }
 
             $this
                 ->allParticipants

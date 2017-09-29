@@ -17,15 +17,34 @@ namespace Meritoo\LimeSurvey\ApiClient\Exception;
 class CannotProcessDataException extends \Exception
 {
     /**
+     * Reason why data cannot be processed, e.g. "Invalid user name or password"
+     *
+     * @var string
+     */
+    private $reason;
+
+    /**
      * Class constructor
      *
      * @param string $reason Reason why data cannot be processed, e.g. "Invalid user name or password"
      */
     public function __construct($reason)
     {
+        $this->reason = $reason;
+
         $template = 'Raw data returned by the LimeSurvey\'s API cannot be processed. Reason: \'%s\'.';
-        $message = sprintf($template, $reason);
+        $message = sprintf($template, $this->reason);
 
         parent::__construct($message);
+    }
+
+    /**
+     * Returns reason why data cannot be processed, e.g. "Invalid user name or password"
+     *
+     * @return string
+     */
+    public function getReason()
+    {
+        return $this->reason;
     }
 }
