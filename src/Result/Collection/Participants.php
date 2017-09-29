@@ -41,6 +41,14 @@ class Participants extends Collection
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function has($element)
+    {
+        throw new DisabledMethodException(__METHOD__, 'hasParticipantsOfSurvey');
+    }
+
+    /**
      * Adds participants of given survey
      *
      * @param Collection $participants Participants to add. Collection of Participant classes.

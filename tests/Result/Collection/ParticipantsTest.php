@@ -61,6 +61,12 @@ class ParticipantsTest extends BaseTestCase
         (new Participants())->addMultiple([]);
     }
 
+    public function testHas()
+    {
+        $this->expectException(DisabledMethodException::class);
+        (new Participants())->has(new Participant());
+    }
+
     public function testAddParticipantsWithoutParticipants()
     {
         $surveyId = 1;
