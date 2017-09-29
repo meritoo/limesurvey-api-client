@@ -9,7 +9,6 @@
 namespace Meritoo\LimeSurvey\Test\ApiClient\Service;
 
 use Exception;
-use Meritoo\Common\Collection\Collection;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Client\Client;
@@ -17,6 +16,7 @@ use Meritoo\LimeSurvey\ApiClient\Configuration\ConnectionConfiguration;
 use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
 use Meritoo\LimeSurvey\ApiClient\Manager\JsonRpcClientManager;
 use Meritoo\LimeSurvey\ApiClient\Manager\SessionManager;
+use Meritoo\LimeSurvey\ApiClient\Result\Collection\Surveys;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Survey;
 use Meritoo\LimeSurvey\ApiClient\Service\SurveyService;
 use Meritoo\LimeSurvey\ApiClient\Type\ReasonType;
@@ -203,7 +203,7 @@ class SurveyServiceTest extends BaseTestCase
         $configuration = $this->getConnectionConfiguration();
         $client = new Client($configuration, $rpcClientManager, $sessionManager);
 
-        $allSurveys = new Collection([
+        $allSurveys = new Surveys([
             new Survey([
                 'sid'            => 1,
                 'surveyls_title' => 'Test',

@@ -11,6 +11,7 @@ namespace Meritoo\LimeSurvey\ApiClient\Service;
 use Meritoo\Common\Collection\Collection;
 use Meritoo\LimeSurvey\ApiClient\Client\Client;
 use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
+use Meritoo\LimeSurvey\ApiClient\Result\Collection\Surveys;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Survey;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 use Meritoo\LimeSurvey\ApiClient\Type\ReasonType;
@@ -31,22 +32,23 @@ class SurveyService
     private $client;
 
     /**
-     * All surveys
+     * All surveys.
+     * Collection of surveys (the Survey class instances).
      *
-     * @var Collection
+     * @var Surveys
      */
     private $allSurveys;
 
     /**
      * Class constructor
      *
-     * @param Client     $client     Client of the LimeSurvey's API
-     * @param Collection $allSurveys (optional) All surveys
+     * @param Client  $client     Client of the LimeSurvey's API
+     * @param Surveys $allSurveys (optional) All surveys. Collection of surveys (the Survey class instances).
      */
-    public function __construct(Client $client, Collection $allSurveys = null)
+    public function __construct(Client $client, Surveys $allSurveys = null)
     {
         if (null === $allSurveys) {
-            $allSurveys = new Collection();
+            $allSurveys = new Surveys();
         }
 
         $this->client = $client;
@@ -66,12 +68,16 @@ class SurveyService
     /**
      * Returns all surveys
      *
-     * @return Collection
+     * @param bool $onlyActive (optional) If is set to true, active surveys are returned only. Otherwise - all.
+     * @return Surveys
+     *
      * @throws CannotProcessDataException
      */
-    public function getAllSurveys()
+    public function getAllSurveys($onlyActive = false)
     {
         if ($this->allSurveys->isEmpty()) {
+            $surveys = new Surveys();
+
             try {
                 $surveys = $this
                     ->client
@@ -87,16 +93,14 @@ class SurveyService
                 if (ReasonType::NO_SURVEYS_FOUND !== $reason) {
                     throw $exception;
                 }
-
-                $surveys = new Collection();
             }
 
-            if (null !== $surveys) {
-                $this->allSurveys = $surveys;
+            if (null !== $surveys && $surveys instanceof Collection) {
+                $this->allSurveys = new Surveys($surveys->toArray());
             }
         }
 
-        return $this->allSurveys;
+        return $this->allSurveys->getAll($onlyActive);
     }
 
     /**
