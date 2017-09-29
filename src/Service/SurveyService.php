@@ -106,12 +106,14 @@ class SurveyService
     /**
      * Returns information if survey with given ID exists
      *
-     * @param int $surveyId ID of survey to verify
+     * @param int  $surveyId       ID of survey to verify
+     * @param bool $shouldBeActive (optional) If is set to true, survey should be active. If it's not, it shouldn't
+     *                             be returned, even if exists. Otherwise - it doesn't matter.
      * @return bool
      */
-    public function isExistingSurvey($surveyId)
+    public function isExistingSurvey($surveyId, $shouldBeActive = false)
     {
-        $allSurveys = $this->getAllSurveys();
+        $allSurveys = $this->getAllSurveys($shouldBeActive);
 
         /*
          * No surveys?

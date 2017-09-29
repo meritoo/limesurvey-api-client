@@ -94,30 +94,62 @@ class SurveyServiceTest extends BaseTestCase
 
     public function testGetAllSurveys()
     {
-        $rpcClientManager = $this->getJsonRpcClientManager(1);
-        $sessionManager = $this->getSessionManager();
-
-        $this->createServiceWithoutSurveys($rpcClientManager, $sessionManager);
-        $this->createServiceWithSurveys($rpcClientManager, $sessionManager);
-
-        static::assertCount(0, $this->serviceWithoutSurveys->getAllSurveys());
-        static::assertCount(2, $this->serviceWithSurveys->getAllSurveys());
-    }
-
-    public function testIsExistingSurvey()
-    {
         $rpcClientManager = $this->getJsonRpcClientManager(2);
         $sessionManager = $this->getSessionManager();
 
         $this->createServiceWithoutSurveys($rpcClientManager, $sessionManager);
         $this->createServiceWithSurveys($rpcClientManager, $sessionManager);
 
-        static::assertFalse($this->serviceWithoutSurveys->isExistingSurvey(1));
-        static::assertFalse($this->serviceWithoutSurveys->isExistingSurvey(2));
+        /*
+         * If there are no surveys, count of all or active only surveys is the same
+         */
+        static::assertCount(0, $this->serviceWithoutSurveys->getAllSurveys());
+        static::assertCount(0, $this->serviceWithoutSurveys->getAllSurveys(true));
 
+        /*
+         * If there are surveys, here we've got difference between count of all or active only surveys
+         */
+        static::assertCount(3, $this->serviceWithSurveys->getAllSurveys());
+        static::assertCount(2, $this->serviceWithSurveys->getAllSurveys(true));
+    }
+
+    public function testIsExistingSurvey()
+    {
+        $rpcClientManager = $this->getJsonRpcClientManager(4);
+        $sessionManager = $this->getSessionManager();
+
+        $this->createServiceWithoutSurveys($rpcClientManager, $sessionManager);
+        $this->createServiceWithSurveys($rpcClientManager, $sessionManager);
+
+        /*
+         * If there are no surveys, verification of existence any survey always return false
+         */
+        static::assertFalse($this->serviceWithoutSurveys->isExistingSurvey(1));
+        static::assertFalse($this->serviceWithoutSurveys->isExistingSurvey(1, true));
+
+        static::assertFalse($this->serviceWithoutSurveys->isExistingSurvey(2));
+        static::assertFalse($this->serviceWithoutSurveys->isExistingSurvey(2, true));
+
+        /*
+         * If there are surveys, verification of existence active survey always return true
+         */
         static::assertTrue($this->serviceWithSurveys->isExistingSurvey(1));
+        static::assertTrue($this->serviceWithSurveys->isExistingSurvey(1, true));
+
         static::assertTrue($this->serviceWithSurveys->isExistingSurvey(2));
-        static::assertFalse($this->serviceWithSurveys->isExistingSurvey(3));
+        static::assertTrue($this->serviceWithSurveys->isExistingSurvey(2, true));
+
+        /*
+         * If there are surveys, verification of existence of non-active survey shows difference
+         */
+        static::assertTrue($this->serviceWithSurveys->isExistingSurvey(3));
+        static::assertFalse($this->serviceWithSurveys->isExistingSurvey(3, true));
+
+        /*
+         * If there are surveys, verification of existence non-existing survey always return false
+         */
+        static::assertFalse($this->serviceWithSurveys->isExistingSurvey(4));
+        static::assertFalse($this->serviceWithSurveys->isExistingSurvey(4, true));
     }
 
     /**
@@ -207,10 +239,16 @@ class SurveyServiceTest extends BaseTestCase
             new Survey([
                 'sid'            => 1,
                 'surveyls_title' => 'Test',
+                'active'         => 'Y',
             ]),
             new Survey([
                 'sid'            => 2,
                 'surveyls_title' => 'Another Test',
+                'active'         => 'Y',
+            ]),
+            new Survey([
+                'sid'            => 3,
+                'surveyls_title' => 'I am inactive',
             ]),
         ]);
 
