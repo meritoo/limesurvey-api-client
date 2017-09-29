@@ -126,8 +126,29 @@ class ParticipantServiceTest extends BaseTestCase
         static::assertFalse($this->serviceWithParticipants->hasParticipant(3, 'john@scott.com'));
     }
 
+    public function testAddParticipantForNotExistingSurvey()
+    {
+        $this->expectException(CannotProcessDataException::class);
+        $exception = new CannotProcessDataException(ReasonType::NOT_EXISTING_SURVEY_ID);
+
+        $rpcClientManager = $this->getJsonRpcClientManagerWithException(1, $exception);
+        $sessionManager = $this->getSessionManager();
+
+        $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
+        $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
+
+        $surveyId = 1;
+        $firstName = 'John';
+        $lastName = 'Scott';
+        $email = 'john@scott.com';
+
+        $this->serviceWithoutParticipants->addParticipant($surveyId, $firstName, $lastName, $email);
+        $this->serviceWithParticipants->addParticipant($surveyId, $firstName, $lastName, $email);
+    }
+
     public function testAddParticipant()
     {
+        $surveyId = 1;
         $firstName = 'John';
         $lastName = 'Scott';
         $email = 'john@scott.com';
@@ -143,10 +164,14 @@ class ParticipantServiceTest extends BaseTestCase
 
         $rpcClientManager = $this->getJsonRpcClientManager($runMethodCallCount, $runMethodCallResults);
         $sessionManager = $this->getSessionManager();
-        $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
 
-        $result = $this->serviceWithoutParticipants->addParticipant(1, $firstName, $lastName, $email);
+        $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
+        $result = $this->serviceWithoutParticipants->addParticipant($surveyId, $firstName, $lastName, $email);
+
         static::assertInstanceOf(Participant::class, $result);
+        static::assertEquals($firstName, $result->getFirstName());
+        static::assertEquals($lastName, $result->getLastName());
+        static::assertEquals($email, $result->getEmail());
     }
 
     public function testGetParticipant()

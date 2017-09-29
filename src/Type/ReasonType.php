@@ -13,6 +13,13 @@ use Meritoo\Common\Type\Base\BaseType;
 class ReasonType extends BaseType
 {
     /**
+     * Reason of exception when there is no survey with given ID
+     *
+     * @var string
+     */
+    const NOT_EXISTING_SURVEY_ID = 'Error: Invalid survey ID';
+
+    /**
      * Reason of exception when there is no participants of survey
      *
      * @var string

@@ -30,9 +30,10 @@ class ReasonTypeTest extends BaseTypeTestCase
     protected function getAllExpectedTypes()
     {
         return [
-            'NO_PARTICIPANTS_FOUND' => ReasonType::NO_PARTICIPANTS_FOUND,
-            'NO_SURVEYS_FOUND'      => ReasonType::NO_SURVEYS_FOUND,
-            'NO_TOKEN_TABLE'        => ReasonType::NO_TOKEN_TABLE,
+            'NOT_EXISTING_SURVEY_ID' => ReasonType::NOT_EXISTING_SURVEY_ID,
+            'NO_PARTICIPANTS_FOUND'  => ReasonType::NO_PARTICIPANTS_FOUND,
+            'NO_SURVEYS_FOUND'       => ReasonType::NO_SURVEYS_FOUND,
+            'NO_TOKEN_TABLE'         => ReasonType::NO_TOKEN_TABLE,
         ];
     }
 
@@ -57,6 +58,11 @@ class ReasonTypeTest extends BaseTypeTestCase
         yield[
             'lorem',
             false,
+        ];
+
+        yield[
+            ReasonType::NOT_EXISTING_SURVEY_ID,
+            true,
         ];
 
         yield[
