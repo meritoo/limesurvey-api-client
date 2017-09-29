@@ -67,7 +67,7 @@ class ParticipantsTest extends BaseTestCase
         (new Participants())->has(new Participant());
     }
 
-    public function testAddParticipantsWithoutParticipants()
+    public function testAddParticipantsUsingEmptyCollection()
     {
         $surveyId = 1;
 
@@ -119,6 +119,53 @@ class ParticipantsTest extends BaseTestCase
 
         static::assertEquals($this->participantsOfOneSurvey, $result);
         static::assertCount(2, $this->participantsOfOneSurvey->getBySurvey($surveyId));
+    }
+
+    public function testAddParticipantFirstParticipant()
+    {
+        $surveyId = 1;
+        $email = 'john@scott.com';
+        $participant = new Participant();
+
+        $participant->setValues([
+            'firstname' => 'John',
+            'lastname'  => 'Scott',
+            'email'     => $email,
+            'completed' => 'Y',
+        ]);
+
+        $participants = new Participants();
+        $result = $participants->addParticipant($participant, $surveyId);
+
+        static::assertEquals($participants, $result);
+        static::assertEquals($participant, $participants->getParticipantOfSurvey($surveyId, $email));
+
+        static::assertTrue($participants->hasParticipantsOfSurvey($surveyId));
+        static::assertFalse($participants->hasParticipantsOfSurvey(2));
+    }
+
+    public function testAddParticipantNotFirstParticipant()
+    {
+        $surveyId = 1;
+        $email = 'john@scott.com';
+        $participant = new Participant();
+
+        $participant->setValues([
+            'firstname' => 'John',
+            'lastname'  => 'Scott',
+            'email'     => $email,
+            'completed' => 'Y',
+        ]);
+
+        $result = $this
+            ->participantsOfOneSurvey
+            ->addParticipant($participant, $surveyId);
+
+        static::assertEquals($this->participantsOfOneSurvey, $result);
+        static::assertEquals($participant, $this->participantsOfOneSurvey->getParticipantOfSurvey($surveyId, $email));
+
+        static::assertTrue($this->participantsOfOneSurvey->hasParticipantsOfSurvey($surveyId));
+        static::assertFalse($this->participantsOfOneSurvey->hasParticipantsOfSurvey(2));
     }
 
     /**
