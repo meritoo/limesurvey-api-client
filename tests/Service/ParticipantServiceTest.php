@@ -29,16 +29,16 @@ use PHPUnit_Framework_MockObject_MockObject;
 class ParticipantServiceTest extends BaseTestCase
 {
     /**
-     * Serves participants.
-     * Service without participants.
+     * Service that serves participants.
+     * Without participants.
      *
      * @var ParticipantService
      */
     private $serviceWithoutParticipants;
 
     /**
-     * Serves participants.
-     * Service with participants.
+     * Service that serves participants.
+     * With participants.
      *
      * @var ParticipantService
      */

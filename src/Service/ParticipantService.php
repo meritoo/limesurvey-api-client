@@ -15,7 +15,7 @@ use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 
 /**
- * Serves participants
+ * Service that serves participants
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
