@@ -86,7 +86,7 @@ class Survey extends BaseItem
                 break;
 
             case 'active':
-                $this->active = 'Y' === trim($value);
+                $this->active = 'Y' === trim(strtoupper($value));
                 break;
         }
     }

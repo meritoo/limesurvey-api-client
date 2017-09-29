@@ -193,11 +193,11 @@ class QuestionShort extends BaseItem
                 break;
 
             case 'other':
-                $this->other = 'Y' === trim($value);
+                $this->other = 'Y' === trim(strtoupper($value));
                 break;
 
             case 'mandatory':
-                $this->mandatory = 'Y' === trim($value);
+                $this->mandatory = 'Y' === trim(strtoupper($value));
                 break;
 
             case 'question_order':

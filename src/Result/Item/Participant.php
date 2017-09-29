@@ -183,15 +183,15 @@ class Participant extends BaseItem
                 break;
 
             case 'blacklisted':
-                $this->blacklisted = 'Y' === trim($value);
+                $this->blacklisted = 'Y' === trim(strtoupper($value));
                 break;
 
             case 'sent':
-                $this->sent = 'Y' === trim($value);
+                $this->sent = 'Y' === trim(strtoupper($value));
                 break;
 
             case 'remindersent':
-                $this->reminderSent = 'Y' === trim($value);
+                $this->reminderSent = 'Y' === trim(strtoupper($value));
                 break;
 
             case 'remindercount':
@@ -199,7 +199,7 @@ class Participant extends BaseItem
                 break;
 
             case 'completed':
-                $this->completed = 'Y' === trim($value);
+                $this->completed = 'Y' === trim(strtoupper($value));
                 break;
 
             case 'usesleft':
