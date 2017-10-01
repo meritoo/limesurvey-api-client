@@ -90,7 +90,6 @@ class ParticipantShortTest extends BaseTestCase
         return [
             [
                 'tid'              => '123',
-                'token'            => uniqid(),
                 'participant_info' => [
                     'firstname' => 'Lorem',
                     'lastname'  => 'Ipsum',
@@ -99,7 +98,6 @@ class ParticipantShortTest extends BaseTestCase
             ],
             [
                 'tid'              => '456',
-                'token'            => uniqid(),
                 'participant_info' => [
                     'firstname' => 'Dolor',
                     'lastname'  => 'Sit',

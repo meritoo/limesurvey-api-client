@@ -184,8 +184,8 @@ class ParticipantServiceTest extends BaseTestCase
 
         static::assertNull($this->serviceWithoutParticipants->getParticipant(1, 'john@scott.com'));
         $participant = $this->serviceWithParticipants->getParticipant(1, 'john@scott.com');
-        static::assertInstanceOf(Participant::class, $participant);
 
+        static::assertInstanceOf(Participant::class, $participant);
         static::assertEquals('John', $participant->getFirstName());
         static::assertEquals('Scott', $participant->getLastName());
         static::assertEquals('john@scott.com', $participant->getEmail());

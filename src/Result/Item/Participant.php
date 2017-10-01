@@ -13,7 +13,7 @@ use Meritoo\Common\Utilities\Date;
 use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseItem;
 
 /**
- * One item of the result/data: full data of participant
+ * One item of the result/data: full data of one participant
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl

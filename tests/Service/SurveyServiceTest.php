@@ -170,7 +170,7 @@ class SurveyServiceTest extends BaseTestCase
         $this->createServiceWithSurveys($rpcClientManager, $sessionManager);
 
         $surveyId = 123;
-        $token = 'djf28b47dha0mo83';
+        $token = uniqid();
         $expectedUrl = sprintf('%s/%d?token=%s', $this->connectionBaseUrl, $surveyId, $token);
 
         $participant = new Participant([
