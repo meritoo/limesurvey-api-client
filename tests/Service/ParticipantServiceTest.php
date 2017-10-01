@@ -64,7 +64,7 @@ class ParticipantServiceTest extends BaseTestCase
         static::assertInstanceOf(Client::class, $this->serviceWithoutParticipants->getClient());
         static::assertInstanceOf(Client::class, $this->serviceWithParticipants->getClient());
 
-        $connectionConfiguration = new ConnectionConfiguration('http://test.com', 'test', 'test');
+        $connectionConfiguration = $this->getConnectionConfiguration();
         $client = new Client($connectionConfiguration);
         $participantService = new ParticipantService($client);
 

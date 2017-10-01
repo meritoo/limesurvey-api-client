@@ -62,7 +62,7 @@ class SurveyServiceTest extends BaseTestCase
         static::assertInstanceOf(Client::class, $this->serviceWithoutSurveys->getClient());
         static::assertInstanceOf(Client::class, $this->serviceWithSurveys->getClient());
 
-        $connectionConfiguration = new ConnectionConfiguration('http://test.com', 'test', 'test');
+        $connectionConfiguration = $this->getConnectionConfiguration();
         $client = new Client($connectionConfiguration);
         $surveyService = new SurveyService($client);
 
