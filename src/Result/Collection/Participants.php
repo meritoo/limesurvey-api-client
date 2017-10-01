@@ -51,7 +51,7 @@ class Participants extends Collection
     /**
      * Adds participants of given survey
      *
-     * @param Collection $participants Participants to add. Collection of Participant classes.
+     * @param Collection $participants Participants to add. Collection of ParticipantShort classes.
      * @param int        $surveyId     ID of survey
      * @return $this
      */

@@ -20,6 +20,7 @@ use Meritoo\LimeSurvey\ApiClient\Manager\JsonRpcClientManager;
 use Meritoo\LimeSurvey\ApiClient\Manager\SessionManager;
 use Meritoo\LimeSurvey\ApiClient\Result\Collection\Participants;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
+use Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort;
 use Meritoo\LimeSurvey\ApiClient\Service\ParticipantService;
 use Meritoo\LimeSurvey\ApiClient\Type\ReasonType;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -185,7 +186,7 @@ class ParticipantServiceTest extends BaseTestCase
         static::assertNull($this->serviceWithoutParticipants->getParticipant(1, 'john@scott.com'));
         $participant = $this->serviceWithParticipants->getParticipant(1, 'john@scott.com');
 
-        static::assertInstanceOf(Participant::class, $participant);
+        static::assertInstanceOf(ParticipantShort::class, $participant);
         static::assertEquals('John', $participant->getFirstName());
         static::assertEquals('Scott', $participant->getLastName());
         static::assertEquals('john@scott.com', $participant->getEmail());
@@ -314,20 +315,25 @@ class ParticipantServiceTest extends BaseTestCase
 
         $allParticipants = new Participants([
             1 => new Collection([
-                new Participant([
-                    'firstname' => 'John',
-                    'lastname'  => 'Scott',
-                    'email'     => 'john@scott.com',
-                    'completed' => 'Y',
+                new ParticipantShort([
+                    'tid'              => 1,
+                    'participant_info' => [
+                        'firstname' => 'John',
+                        'lastname'  => 'Scott',
+                        'email'     => 'john@scott.com',
+                    ],
                 ]),
-                new Participant([
-                    'firstname' => 'Mary',
-                    'lastname'  => 'Jane',
-                    'email'     => 'mary@jane.com',
+                new ParticipantShort([
+                    'tid'              => 2,
+                    'participant_info' => [
+                        'firstname' => 'Mary',
+                        'lastname'  => 'Jane',
+                        'email'     => 'mary@jane.com',
+                    ],
                 ]),
             ]),
             2 => new Collection([
-                new Participant(),
+                new ParticipantShort(),
             ]),
         ]);
 

@@ -103,4 +103,26 @@ class ParticipantShort extends BaseItem
     {
         return $this->email;
     }
+
+    /**
+     * Returns short data of participant created from full data of participant
+     *
+     * @param Participant $participant Full data of participant
+     * @return $this
+     */
+    public static function fromParticipant(Participant $participant)
+    {
+        $info = [
+            'firstname' => $participant->getFirstName(),
+            'lastname'  => $participant->getLastName(),
+            'email'     => $participant->getEmail(),
+        ];
+
+        $data = [
+            'tid'              => $participant->getId(),
+            'participant_info' => $info,
+        ];
+
+        return new self($data);
+    }
 }

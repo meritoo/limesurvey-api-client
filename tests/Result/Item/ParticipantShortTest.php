@@ -10,6 +10,7 @@ namespace Meritoo\LimeSurvey\Test\ApiClient\Result\Item;
 
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort;
 use Meritoo\LimeSurvey\ApiClient\Result\Processor\ResultProcessor;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
@@ -78,6 +79,52 @@ class ParticipantShortTest extends BaseTestCase
     {
         static::assertEquals('lorem@ipsum.com', $this->participant1stInstance->getEmail());
         static::assertEquals('dolor@sit.com', $this->participant2ndInstance->getEmail());
+    }
+
+    public function testFromParticipantUsingEmptyParticipant()
+    {
+        $participant = new Participant();
+        $participantShort = ParticipantShort::fromParticipant($participant);
+
+        static::assertEquals(0, $participantShort->getId());
+        static::assertEquals('', $participantShort->getFirstName());
+        static::assertEquals('', $participantShort->getLastName());
+        static::assertEquals('', $participantShort->getEmail());
+
+        static::assertEquals($participant->getId(), $participantShort->getId());
+        static::assertEquals($participant->getFirstName(), $participantShort->getFirstName());
+        static::assertEquals($participant->getLastName(), $participantShort->getLastName());
+        static::assertEquals($participant->getEmail(), $participantShort->getEmail());
+    }
+
+    public function testFromParticipant()
+    {
+        $participant1 = new Participant([
+            'tid'       => $this->rawData[0]['tid'],
+            'firstname' => $this->rawData[0]['participant_info']['firstname'],
+            'lastname'  => $this->rawData[0]['participant_info']['lastname'],
+            'email'     => $this->rawData[0]['participant_info']['email'],
+        ]);
+
+        $participant2 = new Participant([
+            'tid'       => $this->rawData[1]['tid'],
+            'firstname' => $this->rawData[1]['participant_info']['firstname'],
+            'lastname'  => $this->rawData[1]['participant_info']['lastname'],
+            'email'     => $this->rawData[1]['participant_info']['email'],
+        ]);
+
+        $participantShort1 = ParticipantShort::fromParticipant($participant1);
+        $participantShort2 = ParticipantShort::fromParticipant($participant2);
+
+        static::assertEquals($participant1->getId(), $participantShort1->getId());
+        static::assertEquals($participant1->getFirstName(), $participantShort1->getFirstName());
+        static::assertEquals($participant1->getLastName(), $participantShort1->getLastName());
+        static::assertEquals($participant1->getEmail(), $participantShort1->getEmail());
+
+        static::assertEquals($participant2->getId(), $participantShort2->getId());
+        static::assertEquals($participant2->getFirstName(), $participantShort2->getFirstName());
+        static::assertEquals($participant2->getLastName(), $participantShort2->getLastName());
+        static::assertEquals($participant2->getEmail(), $participantShort2->getEmail());
     }
 
     /**

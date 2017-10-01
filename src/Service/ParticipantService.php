@@ -164,9 +164,16 @@ class ParticipantService
             ->run(MethodType::ADD_PARTICIPANTS, $arguments)
             ->getData();
 
+        /* @var Participant $addedParticipant */
+        $addedParticipant = $participantCollection->getFirst();
+
+        $participants = new Collection([
+            ParticipantShort::fromParticipant($addedParticipant),
+        ]);
+
         $this
             ->allParticipants
-            ->addParticipants($participantCollection, $surveyId);
+            ->addParticipants($participants, $surveyId);
 
         return $participantCollection->getFirst();
     }
