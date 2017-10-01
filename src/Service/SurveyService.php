@@ -12,6 +12,7 @@ use Meritoo\Common\Collection\Collection;
 use Meritoo\LimeSurvey\ApiClient\Client\Client;
 use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
 use Meritoo\LimeSurvey\ApiClient\Result\Collection\Surveys;
+use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Survey;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 use Meritoo\LimeSurvey\ApiClient\Type\ReasonType;
@@ -38,6 +39,19 @@ class SurveyService
      * @var Surveys
      */
     private $allSurveys;
+
+    /**
+     * Template of the url used to start survey
+     *
+     * Example:
+     * - url: https://your.limesurvey.instance/12345?token=q1w2e3r4t5y6
+     * - LimeSurvey frontend: https://your.limesurvey.instance
+     * - survey ID: 12345
+     * - token: q1w2e3r4t5y6
+     *
+     * @var string
+     */
+    private $startSurveyUrlTemplate = '%s/%d?token=%s';
 
     /**
      * Class constructor
@@ -133,5 +147,22 @@ class SurveyService
         }
 
         return false;
+    }
+
+    /**
+     * Returns url used to start survey for given survey and participant
+     *
+     * @param int         $surveyId    ID of survey to start
+     * @param Participant $participant Participant who would like to start survey
+     * @return string
+     */
+    public function getStartSurveyUrl($surveyId, Participant $participant)
+    {
+        $baseUrl = $this
+            ->client
+            ->getConfiguration()
+            ->getBaseUrl();
+
+        return sprintf($this->startSurveyUrlTemplate, $baseUrl, $surveyId, $participant->getToken());
     }
 }

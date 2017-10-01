@@ -17,6 +17,7 @@ use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
 use Meritoo\LimeSurvey\ApiClient\Manager\JsonRpcClientManager;
 use Meritoo\LimeSurvey\ApiClient\Manager\SessionManager;
 use Meritoo\LimeSurvey\ApiClient\Result\Collection\Surveys;
+use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Survey;
 use Meritoo\LimeSurvey\ApiClient\Service\SurveyService;
 use Meritoo\LimeSurvey\ApiClient\Type\ReasonType;
@@ -45,6 +46,14 @@ class SurveyServiceTest extends BaseTestCase
      * @var SurveyService
      */
     private $serviceWithSurveys;
+
+    /**
+     * Base url of LimeSurvey's instance.
+     * Used to prepare configuration of connection.
+     *
+     * @var string
+     */
+    private $connectionBaseUrl = 'http://test.com';
 
     public function testConstructorVisibilityAndArguments()
     {
@@ -152,6 +161,30 @@ class SurveyServiceTest extends BaseTestCase
         static::assertFalse($this->serviceWithSurveys->isExistingSurvey(4, true));
     }
 
+    public function testGetStartSurveyUrl()
+    {
+        $rpcClientManager = $this->getJsonRpcClientManager(0);
+        $sessionManager = $this->getSessionManager();
+
+        $this->createServiceWithoutSurveys($rpcClientManager, $sessionManager);
+        $this->createServiceWithSurveys($rpcClientManager, $sessionManager);
+
+        $surveyId = 123;
+        $token = 'djf28b47dha0mo83';
+        $expectedUrl = sprintf('%s/%d?token=%s', $this->connectionBaseUrl, $surveyId, $token);
+
+        $participant = new Participant([
+            'tid'       => 1,
+            'firstname' => 'John',
+            'lastname'  => 'Scott',
+            'email'     => 'john@scott.com',
+            'token'     => $token,
+        ]);
+
+        static::assertEquals($expectedUrl, $this->serviceWithoutSurveys->getStartSurveyUrl($surveyId, $participant));
+        static::assertEquals($expectedUrl, $this->serviceWithSurveys->getStartSurveyUrl($surveyId, $participant));
+    }
+
     /**
      * Returns configuration used while connecting to LimeSurvey's API
      *
@@ -159,7 +192,7 @@ class SurveyServiceTest extends BaseTestCase
      */
     private function getConnectionConfiguration()
     {
-        return new ConnectionConfiguration('http://test.com', 'test', 'test');
+        return new ConnectionConfiguration($this->connectionBaseUrl, 'test', 'test');
     }
 
     /**
