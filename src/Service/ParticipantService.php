@@ -203,7 +203,10 @@ class ParticipantService
     {
         if ($this->hasParticipant($surveyId, $email)) {
             $arguments = [
-                'email' => $email,
+                $surveyId,
+                [
+                    'email' => $email,
+                ],
             ];
 
             /* @var Participant $participant */
