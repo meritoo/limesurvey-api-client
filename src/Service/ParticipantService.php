@@ -14,6 +14,7 @@ use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
 use Meritoo\LimeSurvey\ApiClient\Exception\MissingParticipantOfSurveyException;
 use Meritoo\LimeSurvey\ApiClient\Result\Collection\Participants;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
+use Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 use Meritoo\LimeSurvey\ApiClient\Type\ReasonType;
 
@@ -175,7 +176,7 @@ class ParticipantService
      *
      * @param int    $surveyId ID of survey
      * @param string $email    E-mail address of the participant
-     * @return Participant|null
+     * @return ParticipantShort|null
      */
     public function getParticipant($surveyId, $email)
     {
@@ -201,9 +202,17 @@ class ParticipantService
     public function hasParticipantFilledSurvey($surveyId, $email)
     {
         if ($this->hasParticipant($surveyId, $email)) {
-            return true === $this
-                    ->getParticipant($surveyId, $email)
-                    ->isCompleted();
+            $arguments = [
+                'email' => $email,
+            ];
+
+            /* @var Participant $participant */
+            $participant = $this
+                ->client
+                ->run(MethodType::GET_PARTICIPANT_PROPERTIES, $arguments)
+                ->getData();
+
+            return true === $participant->isCompleted();
         }
 
         throw new MissingParticipantOfSurveyException($surveyId, $email);

@@ -14,6 +14,7 @@ use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Result\Collection\Participants;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
+use Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort;
 
 /**
  * Test case of the collection of participants (of surveys)
@@ -126,11 +127,13 @@ class ParticipantsTest extends BaseTestCase
         $surveyId = 1;
         $email = 'john@scott.com';
 
-        $participant = new Participant([
-            'firstname' => 'John',
-            'lastname'  => 'Scott',
-            'email'     => $email,
-            'completed' => 'Y',
+        $participant = new ParticipantShort([
+            'tid'              => 1,
+            'participant_info' => [
+                'firstname' => 'John',
+                'lastname'  => 'Scott',
+                'email'     => $email,
+            ],
         ]);
 
         $participants = new Participants();
@@ -148,11 +151,13 @@ class ParticipantsTest extends BaseTestCase
         $surveyId = 1;
         $email = 'john@scott.com';
 
-        $participant = new Participant([
-            'firstname' => 'John',
-            'lastname'  => 'Scott',
-            'email'     => $email,
-            'completed' => 'Y',
+        $participant = new ParticipantShort([
+            'tid'              => 1,
+            'participant_info' => [
+                'firstname' => 'John',
+                'lastname'  => 'Scott',
+                'email'     => $email,
+            ],
         ]);
 
         $result = $this

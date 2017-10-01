@@ -202,14 +202,31 @@ class ParticipantServiceTest extends BaseTestCase
         $this->serviceWithoutParticipants->hasParticipantFilledSurvey(1, 'john@scott.com');
     }
 
-    public function testHasParticipantFilledSurvey()
+    public function testHasParticipantFilledSurveyUsingExistingParticipant()
     {
-        $rpcClientManager = $this->getJsonRpcClientManager(0);
+        $runMethodCallResults = [
+            'firstname' => 'John',
+            'lastname'  => 'Scott',
+            'email'     => 'john@scott.com',
+            'completed' => 'Y',
+        ];
+
+        $rpcClientManager = $this->getJsonRpcClientManager(1, $runMethodCallResults);
         $sessionManager = $this->getSessionManager();
         $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
 
         static::assertTrue($this->serviceWithParticipants->hasParticipantFilledSurvey(1, 'john@scott.com'));
-        static::assertFalse($this->serviceWithParticipants->hasParticipantFilledSurvey(1, 'mary@jane.com'));
+    }
+
+    public function testHasParticipantFilledSurveyUsingNotExistingParticipant()
+    {
+        $this->expectException(MissingParticipantOfSurveyException::class);
+
+        $rpcClientManager = $this->getJsonRpcClientManager(1);
+        $sessionManager = $this->getSessionManager();
+        $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
+
+        $this->serviceWithParticipants->hasParticipantFilledSurvey(3, 'mary@jane.com');
     }
 
     /**

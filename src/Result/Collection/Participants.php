@@ -10,7 +10,7 @@ namespace Meritoo\LimeSurvey\ApiClient\Result\Collection;
 
 use Meritoo\Common\Collection\Collection;
 use Meritoo\Common\Exception\Method\DisabledMethodException;
-use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
+use Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort;
 
 /**
  * Collection of participants (of surveys).
@@ -75,11 +75,11 @@ class Participants extends Collection
     /**
      * Adds participant of given survey
      *
-     * @param Participant $participant Participant to add
-     * @param int         $surveyId    ID of survey
+     * @param ParticipantShort $participant Participant to add
+     * @param int              $surveyId    ID of survey
      * @return $this
      */
-    public function addParticipant(Participant $participant, $surveyId)
+    public function addParticipant(ParticipantShort $participant, $surveyId)
     {
         $this
             ->getBySurvey($surveyId)
@@ -128,7 +128,7 @@ class Participants extends Collection
      *
      * @param int    $surveyId         ID of survey
      * @param string $participantEmail E-mail of searched participant
-     * @return Participant|null
+     * @return ParticipantShort|null
      */
     public function getParticipantOfSurvey($surveyId, $participantEmail)
     {
@@ -139,7 +139,7 @@ class Participants extends Collection
             return null;
         }
 
-        /* @var Participant $participant */
+        /* @var ParticipantShort $participant */
         foreach ($participants as $participant) {
             if ($participant->getEmail() == $participantEmail) {
                 return $participant;

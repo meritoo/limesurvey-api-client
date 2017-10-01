@@ -128,7 +128,11 @@ class Result
             ->getResultProcessor()
             ->process($this->method, $rawData);
 
-        if (null === $processed || is_array($processed)) {
+        /*
+         * Result is unknown and it should be iterable the result is an array?
+         * Let's prepare and return collection
+         */
+        if ((null === $processed && MethodType::isResultIterable($this->method)) || is_array($processed)) {
             $collection = new Collection();
 
             if (is_array($processed)) {
