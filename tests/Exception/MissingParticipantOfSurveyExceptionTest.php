@@ -45,13 +45,13 @@ class MissingParticipantOfSurveyExceptionTest extends BaseTestCase
         yield[
             1,
             'lorem@ipsum.com',
-            sprintf($template, 1, 'lorem@ipsum.com'),
+            sprintf($template, 'lorem@ipsum.com', 1),
         ];
 
         yield[
             1234,
             'another@email.comm',
-            sprintf($template, 1234, 'another@email.comm'),
+            sprintf($template, 'another@email.comm', 1234),
         ];
     }
 }

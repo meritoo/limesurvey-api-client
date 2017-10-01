@@ -25,7 +25,7 @@ class MissingParticipantOfSurveyException extends \Exception
     public function __construct($surveyId, $email)
     {
         $template = 'Participant with e-mail %s of survey with ID %s is missing. Maybe was not added to the survey?';
-        $message = sprintf($template, $surveyId, $email);
+        $message = sprintf($template, $email, $surveyId);
 
         parent::__construct($message);
     }
