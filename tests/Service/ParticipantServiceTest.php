@@ -192,6 +192,41 @@ class ParticipantServiceTest extends BaseTestCase
         static::assertEquals('john@scott.com', $participant->getEmail());
     }
 
+    public function testGetParticipantDetails()
+    {
+        $sessionManager = $this->getSessionManager();
+
+        $rpcClientManager = $this->getJsonRpcClientManager(1);
+        $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
+
+        $runMethodCallResults = [
+            'tid'       => 1,
+            'firstname' => 'John',
+            'lastname'  => 'Scott',
+            'email'     => 'john@scott.com',
+            'token'     => uniqid(),
+            'sent'      => 'N',
+            'completed' => 'N',
+        ];
+
+        $rpcClientManager = $this->getJsonRpcClientManager(1, $runMethodCallResults);
+        $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
+
+        static::assertNull($this->serviceWithoutParticipants->getParticipantDetails(1, 'john@scott.com'));
+        $participant = $this->serviceWithParticipants->getParticipantDetails(1, 'john@scott.com');
+
+        static::assertInstanceOf(Participant::class, $participant);
+        static::assertEquals($runMethodCallResults['tid'], $participant->getId());
+        static::assertEquals($runMethodCallResults['firstname'], $participant->getFirstName());
+        static::assertEquals($runMethodCallResults['lastname'], $participant->getLastName());
+        static::assertEquals($runMethodCallResults['email'], $participant->getEmail());
+        static::assertEquals($runMethodCallResults['token'], $participant->getToken());
+        static::assertFalse($participant->isSent());
+        static::assertFalse($participant->isCompleted());
+        static::assertNull($participant->isBlacklisted());
+        static::assertNull($participant->getValidFrom());
+    }
+
     public function testHasParticipantFilledSurveyWithException()
     {
         $this->expectException(MissingParticipantOfSurveyException::class);

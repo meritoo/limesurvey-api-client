@@ -179,7 +179,7 @@ class ParticipantService
     }
 
     /**
-     * Returns participant with given e-mail of given survey
+     * Returns short data of one participant with given e-mail of given survey
      *
      * @param int    $surveyId ID of survey
      * @param string $email    E-mail address of the participant
@@ -195,6 +195,31 @@ class ParticipantService
         return $this
             ->allParticipants
             ->getParticipantOfSurvey($surveyId, $email);
+    }
+
+    /**
+     * Returns full data of participant with given e-mail of given survey
+     *
+     * @param int    $surveyId ID of survey
+     * @param string $email    E-mail address of the participant
+     * @return Participant|null
+     */
+    public function getParticipantDetails($surveyId, $email)
+    {
+        $arguments = [
+            $surveyId,
+            [
+                'email' => $email,
+            ],
+        ];
+
+        $participant = $this
+            ->client
+            ->run(MethodType::GET_PARTICIPANT_PROPERTIES, $arguments)
+            ->getData();
+
+        /* @var Participant $participant */
+        return $participant;
     }
 
     /**
