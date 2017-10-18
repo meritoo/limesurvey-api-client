@@ -11,6 +11,7 @@
         }
     ],
     "require": {
+        "php": ">=5.6",
         "fguillot/json-rpc": "^1.2",
         "meritoo/common-library": "~0.0.1"
     },

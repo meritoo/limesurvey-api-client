@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+    php-cli:
+        image: meritoo/limesurvey-api-client
+        container_name: meritoo-limesurvey-api-client
+        working_dir: /project
+        entrypoint: php
+        command: -S 0.0.0.0:9999
+        build:
+            context: ./.docker/config
+            args:
+                - TIMEZONE=$TIMEZONE
+        volumes:
+            - .:/project
