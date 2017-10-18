@@ -59,7 +59,7 @@ composer.validate = false
 
 # System directories
 #
-dir.data = ${project.basedir}/data
+dir.data = ${project.basedir}/.data
 dir.src = ${project.basedir}/src
 dir.tests = ${project.basedir}/tests
 
@@ -67,7 +67,7 @@ dir.tests = ${project.basedir}/tests
 # Build directories
 # --------------------------------------------------------------------------------
 
-dir.build = ${project.basedir}/build
+dir.build = ${project.basedir}/.build
 dir.reports = ${dir.build}/logs
 dir.reports.pdepend = ${dir.reports}/pdepend
 dir.reports.coverage = ${dir.reports}/phpunit_coverage

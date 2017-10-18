@@ -30,6 +30,6 @@
     </groups>
 
     <logging>
-        <log type="coverage-html" target="./build/logs/phpunit_coverage/html" />
+        <log type="coverage-html" target="./.build/logs/phpunit_coverage/html" />
     </logging>
 </phpunit>

@@ -2,12 +2,12 @@
 <project name="Meritoo Package" basedir="." default="build:main" phingVersion="2.14.0">
     <!-- Properties -->
     <if>
-        <available file="phing/properties" property="custom.properties.available"/>
+        <available file=".phing/properties" property="custom.properties.available"/>
         <then>
-            <property file="phing/properties" />
+            <property file=".phing/properties" />
         </then>
         <else>
-            <property file="phing/properties.dist" />
+            <property file=".phing/properties.dist" />
         </else>
     </if>
 
