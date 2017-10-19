@@ -10,7 +10,6 @@ namespace Meritoo\Common\Test\Base;
 
 use DateTime;
 use Meritoo\Common\Exception\Type\UnknownOopVisibilityTypeException;
-use Meritoo\Common\Iterator\CommonIterator;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\Utilities\Miscellaneous;
 use PHPUnit\Framework\TestCase;
@@ -35,19 +34,19 @@ abstract class BaseTestCase extends TestCase
     /**
      * Provides an empty value
      *
-     * @return CommonIterator
+     * @return array
      * //return Generator
      */
     public function provideEmptyValue()
     {
-        return new CommonIterator([
-            '',
-            '   ',
-            null,
-            0,
-            false,
-            [],
-        ]);
+        return [
+            [''],
+            ['   '],
+            [null],
+            [0],
+            [false],
+            [[]],
+        ];
 
         /*
         yield[''];
@@ -62,15 +61,15 @@ abstract class BaseTestCase extends TestCase
     /**
      * Provides boolean value
      *
-     * @return CommonIterator
+     * @return array
      * //return Generator
      */
     public function provideBooleanValue()
     {
-        return new CommonIterator([
-            true,
-            false,
-        ]);
+        return [
+            [true],
+            [false],
+        ];
 
         /*
         yield[false];
@@ -81,17 +80,17 @@ abstract class BaseTestCase extends TestCase
     /**
      * Provides instance of DateTime class
      *
-     * @return CommonIterator
+     * @return array
      * //return Generator
      */
     public function provideDateTimeInstance()
     {
-        return new CommonIterator([
-            new DateTime(),
-            new DateTime('yesterday'),
-            new DateTime('now'),
-            new DateTime('tomorrow'),
-        ]);
+        return [
+            [new DateTime()],
+            [new DateTime('yesterday')],
+            [new DateTime('now')],
+            [new DateTime('tomorrow')],
+        ];
 
         /*
         yield[new DateTime()];
@@ -104,24 +103,24 @@ abstract class BaseTestCase extends TestCase
     /**
      * Provides relative / compound format of DateTime
      *
-     * @return CommonIterator
+     * @return array
      * //return Generator
      */
     public function provideDateTimeRelativeFormat()
     {
-        return new CommonIterator([
-            'now',
-            'yesterday',
-            'tomorrow',
-            'back of 10',
-            'front of 10',
-            'last day of February',
-            'first day of next month',
-            'last day of previous month',
-            'last day of next month',
-            'Y-m-d',
-            'Y-m-d 10:00',
-        ]);
+        return [
+            ['now'],
+            ['yesterday'],
+            ['tomorrow'],
+            ['back of 10'],
+            ['front of 10'],
+            ['last day of February'],
+            ['first day of next month'],
+            ['last day of previous month'],
+            ['last day of next month'],
+            ['Y-m-d'],
+            ['Y-m-d 10:00'],
+        ];
 
         /*
         yield['now'];
@@ -141,16 +140,16 @@ abstract class BaseTestCase extends TestCase
     /**
      * Provides path of not existing file, e.g. "lorem/ipsum.jpg"
      *
-     * @return CommonIterator
+     * @return array
      * //return Generator
      */
     public function provideNotExistingFilePath()
     {
-        return new CommonIterator([
-            'lets-test.doc',
-            'lorem/ipsum.jpg',
-            'surprise/me/one/more/time.txt',
-        ]);
+        return [
+            ['lets-test.doc'],
+            ['lorem/ipsum.jpg'],
+            ['surprise/me/one/more/time.txt'],
+        ];
 
         /*
         yield['lets-test.doc'];
