@@ -22,7 +22,7 @@ class MissingParticipantOfSurveyExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(MissingParticipantOfSurveyException::class, OopVisibilityType::IS_PUBLIC, 2, 2);
+        static::assertConstructorVisibilityAndArguments(MissingParticipantOfSurveyException::className, OopVisibilityType::IS_PUBLIC, 2, 2);
     }
 
     /**
@@ -41,12 +41,27 @@ class MissingParticipantOfSurveyExceptionTest extends BaseTestCase
     /**
      * Provides ID of survey and e-mail address of the participant
      *
-     * @return Generator
+     * @return array
+     * //return Generator
      */
     public function provideSurveyIdAndEmail()
     {
         $template = 'Participant with e-mail %s of survey with ID %s is missing. Maybe was not added to the survey?';
 
+        return [
+            [
+                1,
+                'lorem@ipsum.com',
+                sprintf($template, 'lorem@ipsum.com', 1),
+            ],
+            [
+                1234,
+                'another@email.comm',
+                sprintf($template, 'another@email.comm', 1234),
+            ],
+        ];
+
+        /*
         yield[
             1,
             'lorem@ipsum.com',
@@ -58,5 +73,6 @@ class MissingParticipantOfSurveyExceptionTest extends BaseTestCase
             'another@email.comm',
             sprintf($template, 'another@email.comm', 1234),
         ];
+        */
     }
 }

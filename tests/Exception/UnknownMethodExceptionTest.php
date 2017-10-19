@@ -8,7 +8,6 @@
 
 namespace Meritoo\LimeSurvey\Test\ApiClient\Exception;
 
-use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Exception\UnknownMethodException;
@@ -24,7 +23,7 @@ class UnknownMethodExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(UnknownMethodException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(UnknownMethodException::className, OopVisibilityType::IS_PUBLIC, 1, 1);
     }
 
     /**
@@ -42,7 +41,8 @@ class UnknownMethodExceptionTest extends BaseTestCase
     /**
      * Provides name of called method
      *
-     * @return Generator
+     * @return array
+     * //return Generator
      */
     public function provideUnknownType()
     {
@@ -51,6 +51,18 @@ class UnknownMethodExceptionTest extends BaseTestCase
         $template = 'The \'%s\' type of name of method used while talking to the LimeSurvey\'s API is unknown. Probably'
             . ' doesn\'t exist or there is a typo. You should use one of these types: %s.';
 
+        return [
+            [
+                MethodType::ADD_PARTICIPANTS,
+                sprintf($template, MethodType::ADD_PARTICIPANTS, $allMethods),
+            ],
+            [
+                MethodType::ADD_PARTICIPANTS,
+                sprintf($template, MethodType::ADD_PARTICIPANTS, $allMethods),
+            ],
+        ];
+
+        /*
         yield[
             MethodType::ADD_PARTICIPANTS,
             sprintf($template, MethodType::ADD_PARTICIPANTS, $allMethods),
@@ -60,5 +72,6 @@ class UnknownMethodExceptionTest extends BaseTestCase
             MethodType::ADD_PARTICIPANTS,
             sprintf($template, MethodType::ADD_PARTICIPANTS, $allMethods),
         ];
+        */
     }
 }

@@ -8,7 +8,6 @@
 
 namespace Meritoo\LimeSurvey\Test\ApiClient\Exception;
 
-use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
@@ -23,7 +22,7 @@ class CannotProcessDataExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(CannotProcessDataException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(CannotProcessDataException::className, OopVisibilityType::IS_PUBLIC, 1, 1);
     }
 
     /**
@@ -41,12 +40,25 @@ class CannotProcessDataExceptionTest extends BaseTestCase
     /**
      * Provides reason why data cannot be processed
      *
-     * @return Generator
+     * @return array
+     * //return Generator
      */
     public function provideReason()
     {
         $template = 'Raw data returned by the LimeSurvey\'s API cannot be processed. Reason: \'%s\'.';
 
+        return [
+            [
+                'unknown',
+                sprintf($template, 'unknown'),
+            ],
+            [
+                'Invalid user name or password',
+                sprintf($template, 'Invalid user name or password'),
+            ],
+        ];
+
+        /*
         yield[
             'unknown',
             sprintf($template, 'unknown'),
@@ -56,5 +68,6 @@ class CannotProcessDataExceptionTest extends BaseTestCase
             'Invalid user name or password',
             sprintf($template, 'Invalid user name or password'),
         ];
+        */
     }
 }

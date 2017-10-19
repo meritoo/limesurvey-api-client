@@ -8,7 +8,6 @@
 
 namespace Meritoo\LimeSurvey\Test\ApiClient\Type;
 
-use Generator;
 use Meritoo\Common\Test\Base\BaseTypeTestCase;
 use Meritoo\LimeSurvey\ApiClient\Exception\UnknownMethodException;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
@@ -24,7 +23,7 @@ class MethodTypeTest extends BaseTypeTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertHasNoConstructor(MethodType::class);
+        static::assertHasNoConstructor(MethodType::className);
     }
 
     /**
@@ -33,7 +32,7 @@ class MethodTypeTest extends BaseTypeTestCase
      */
     public function testGetValidatedMethodWithIncorrectMethod($incorrectMethod)
     {
-        $this->expectException(UnknownMethodException::class);
+        $this->setExpectedException(UnknownMethodException::className);
         MethodType::getValidatedMethod($incorrectMethod);
     }
 
@@ -52,7 +51,7 @@ class MethodTypeTest extends BaseTypeTestCase
      */
     public function testIsResultIterableWithIncorrectMethod($incorrectMethod)
     {
-        $this->expectException(UnknownMethodException::class);
+        $this->setExpectedException(UnknownMethodException::className);
         MethodType::isResultIterable($incorrectMethod);
     }
 
@@ -70,10 +69,33 @@ class MethodTypeTest extends BaseTypeTestCase
     /**
      * Provides correct type of method
      *
-     * @return Generator
+     * @return array
+     * //return Generator
      */
     public function provideMethod()
     {
+        return [
+            [
+                MethodType::ADD_RESPONSE,
+            ],
+            [
+                MethodType::EXPORT_STATISTICS,
+            ],
+            [
+                MethodType::GET_PARTICIPANT_PROPERTIES,
+            ],
+            [
+                MethodType::LIST_SURVEYS,
+            ],
+            [
+                SystemMethodType::GET_SESSION_KEY,
+            ],
+            [
+                SystemMethodType::RELEASE_SESSION_KEY,
+            ],
+        ];
+
+        /*
         yield[
             MethodType::ADD_RESPONSE,
         ];
@@ -97,15 +119,36 @@ class MethodTypeTest extends BaseTypeTestCase
         yield[
             SystemMethodType::RELEASE_SESSION_KEY,
         ];
+        */
     }
 
     /**
      * Provides incorrect type of method
      *
-     * @return Generator
+     * @return array
+     * //return Generator
      */
     public function provideIncorrectMethod()
     {
+        return [
+            [
+                '',
+            ],
+            [
+                null,
+            ],
+            [
+                true,
+            ],
+            [
+                false,
+            ],
+            [
+                'lorem',
+            ],
+        ];
+
+        /*
         yield[
             '',
         ];
@@ -125,15 +168,45 @@ class MethodTypeTest extends BaseTypeTestCase
         yield[
             'lorem',
         ];
+        */
     }
 
     /**
      * Provides type of method who result provided by the API is iterable and information if it's iterable
      *
-     * @return Generator
+     * @return array
+     * //return Generator
      */
     public function provideIterableType()
     {
+        return [
+            [
+                MethodType::ADD_RESPONSE,
+                false,
+            ],
+            [
+                MethodType::GET_PARTICIPANT_PROPERTIES,
+                false,
+            ],
+            [
+                MethodType::LIST_PARTICIPANTS,
+                true,
+            ],
+            [
+                MethodType::LIST_QUESTIONS,
+                true,
+            ],
+            [
+                MethodType::LIST_SURVEYS,
+                true,
+            ],
+            [
+                MethodType::LIST_USERS,
+                true,
+            ],
+        ];
+
+        /*
         yield[
             MethodType::ADD_RESPONSE,
             false,
@@ -163,6 +236,7 @@ class MethodTypeTest extends BaseTypeTestCase
             MethodType::LIST_USERS,
             true,
         ];
+        */
     }
 
     /**
@@ -196,6 +270,26 @@ class MethodTypeTest extends BaseTypeTestCase
      */
     public function provideTypeToVerify()
     {
+        return [
+            [
+                '',
+                false,
+            ],
+            [
+                'lorem',
+                false,
+            ],
+            [
+                MethodType::ADD_RESPONSE,
+                true,
+            ],
+            [
+                MethodType::GET_PARTICIPANT_PROPERTIES,
+                true,
+            ],
+        ];
+
+        /*
         yield[
             '',
             false,
@@ -215,5 +309,6 @@ class MethodTypeTest extends BaseTypeTestCase
             MethodType::GET_PARTICIPANT_PROPERTIES,
             true,
         ];
+        */
     }
 }

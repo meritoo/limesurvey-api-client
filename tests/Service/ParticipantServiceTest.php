@@ -51,7 +51,7 @@ class ParticipantServiceTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(ParticipantService::class, OopVisibilityType::IS_PUBLIC, 2, 1);
+        static::assertConstructorVisibilityAndArguments(ParticipantService::className, OopVisibilityType::IS_PUBLIC, 2, 1);
     }
 
     public function testGetClient()
@@ -62,8 +62,8 @@ class ParticipantServiceTest extends BaseTestCase
         $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
         $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
 
-        static::assertInstanceOf(Client::class, $this->serviceWithoutParticipants->getClient());
-        static::assertInstanceOf(Client::class, $this->serviceWithParticipants->getClient());
+        static::assertInstanceOf(Client::className, $this->serviceWithoutParticipants->getClient());
+        static::assertInstanceOf(Client::className, $this->serviceWithParticipants->getClient());
 
         $connectionConfiguration = $this->getConnectionConfiguration();
         $client = new Client($connectionConfiguration);
@@ -90,7 +90,7 @@ class ParticipantServiceTest extends BaseTestCase
 
     public function testGetSurveyParticipantsWithImportantException()
     {
-        $this->expectException(CannotProcessDataException::class);
+        $this->setExpectedException(CannotProcessDataException::className);
         $exception = new CannotProcessDataException(ReasonType::NO_TOKEN_TABLE);
 
         $rpcClientManager = $this->getJsonRpcClientManagerWithException(1, $exception);
@@ -129,7 +129,7 @@ class ParticipantServiceTest extends BaseTestCase
 
     public function testAddParticipantForNotExistingSurvey()
     {
-        $this->expectException(CannotProcessDataException::class);
+        $this->setExpectedException(CannotProcessDataException::className);
         $exception = new CannotProcessDataException(ReasonType::NOT_EXISTING_SURVEY_ID);
 
         $rpcClientManager = $this->getJsonRpcClientManagerWithException(1, $exception);
@@ -169,7 +169,7 @@ class ParticipantServiceTest extends BaseTestCase
         $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
         $result = $this->serviceWithoutParticipants->addParticipant($surveyId, $firstName, $lastName, $email);
 
-        static::assertInstanceOf(Participant::class, $result);
+        static::assertInstanceOf(Participant::className, $result);
         static::assertEquals($firstName, $result->getFirstName());
         static::assertEquals($lastName, $result->getLastName());
         static::assertEquals($email, $result->getEmail());
@@ -186,7 +186,7 @@ class ParticipantServiceTest extends BaseTestCase
         static::assertNull($this->serviceWithoutParticipants->getParticipant(1, 'john@scott.com'));
         $participant = $this->serviceWithParticipants->getParticipant(1, 'john@scott.com');
 
-        static::assertInstanceOf(ParticipantShort::class, $participant);
+        static::assertInstanceOf(ParticipantShort::className, $participant);
         static::assertEquals('John', $participant->getFirstName());
         static::assertEquals('Scott', $participant->getLastName());
         static::assertEquals('john@scott.com', $participant->getEmail());
@@ -215,7 +215,7 @@ class ParticipantServiceTest extends BaseTestCase
         static::assertNull($this->serviceWithoutParticipants->getParticipantDetails(1, 'john@scott.com'));
         $participant = $this->serviceWithParticipants->getParticipantDetails(1, 'john@scott.com');
 
-        static::assertInstanceOf(Participant::class, $participant);
+        static::assertInstanceOf(Participant::className, $participant);
         static::assertEquals($runMethodCallResults['tid'], $participant->getId());
         static::assertEquals($runMethodCallResults['firstname'], $participant->getFirstName());
         static::assertEquals($runMethodCallResults['lastname'], $participant->getLastName());
@@ -229,7 +229,7 @@ class ParticipantServiceTest extends BaseTestCase
 
     public function testHasParticipantFilledSurveyWithException()
     {
-        $this->expectException(MissingParticipantOfSurveyException::class);
+        $this->setExpectedException(MissingParticipantOfSurveyException::className);
 
         $rpcClientManager = $this->getJsonRpcClientManager(1);
         $sessionManager = $this->getSessionManager();
@@ -256,7 +256,7 @@ class ParticipantServiceTest extends BaseTestCase
 
     public function testHasParticipantFilledSurveyUsingNotExistingParticipant()
     {
-        $this->expectException(MissingParticipantOfSurveyException::class);
+        $this->setExpectedException(MissingParticipantOfSurveyException::className);
 
         $rpcClientManager = $this->getJsonRpcClientManager(1);
         $sessionManager = $this->getSessionManager();
@@ -282,7 +282,7 @@ class ParticipantServiceTest extends BaseTestCase
      */
     private function getSessionManager()
     {
-        return $this->createMock(SessionManager::class);
+        return $this->createMock(SessionManager::className);
     }
 
     /**
@@ -294,7 +294,7 @@ class ParticipantServiceTest extends BaseTestCase
      */
     private function getJsonRpcClientManager($runMethodCallCount, array $runMethodCallResults = [])
     {
-        $rpcClientManager = $this->createMock(JsonRpcClientManager::class);
+        $rpcClientManager = $this->createMock(JsonRpcClientManager::className);
 
         $rpcClientManager
             ->expects(static::exactly($runMethodCallCount))
@@ -314,7 +314,7 @@ class ParticipantServiceTest extends BaseTestCase
      */
     private function getJsonRpcClientManagerWithException($runMethodCallCount, Exception $exception)
     {
-        $rpcClientManager = $this->createMock(JsonRpcClientManager::class);
+        $rpcClientManager = $this->createMock(JsonRpcClientManager::className);
 
         $rpcClientManager
             ->expects(static::exactly($runMethodCallCount))

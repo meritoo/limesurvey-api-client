@@ -11,22 +11,24 @@
         }
     ],
     "require": {
-        "php": ">=5.6",
+        "php": ">=5.4",
         "fguillot/json-rpc": "^1.2",
-        "meritoo/common-library": "~0.0.1"
+        "gedmo/doctrine-extensions": "^2.4",
+        "symfony/http-foundation": "^2.8"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.7",
-        "squizlabs/php_codesniffer": "^2.9",
+        "phpunit/phpunit": "^4.8",
+        "squizlabs/php_codesniffer": "^3.1",
         "phpmd/phpmd": "^2.6",
-        "sebastian/phpcpd": "^3.0",
+        "sebastian/phpcpd": "^2.0",
         "pdepend/pdepend": "^2.5",
-        "phploc/phploc": "^4.0",
-        "friendsofphp/php-cs-fixer": "^2.6"
+        "phploc/phploc": "^2.1",
+        "friendsofphp/php-cs-fixer": "^2.2"
     },
     "autoload": {
         "psr-4": {
-            "Meritoo\\LimeSurvey\\ApiClient\\": "src/"
+            "Meritoo\\Common\\": "src/Common/",
+            "Meritoo\\LimeSurvey\\ApiClient\\": "src/LimeSurvey/"
         }
     },
     "autoload-dev": {

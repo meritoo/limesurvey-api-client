@@ -87,7 +87,7 @@ class ResultTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(Result::class, OopVisibilityType::IS_PUBLIC, 2, 2);
+        static::assertConstructorVisibilityAndArguments(Result::className, OopVisibilityType::IS_PUBLIC, 2, 2);
     }
 
     public function testIsEmpty()
@@ -108,7 +108,7 @@ class ResultTest extends BaseTestCase
 
         static::assertCount(count($this->emptyData), $emptyData);
         static::assertCount(count($this->iterableData), $iterableData);
-        static::assertInstanceOf(BaseItem::class, $notIterableData);
+        static::assertInstanceOf(BaseItem::className, $notIterableData);
     }
 
     public function testGetDataUsingRawData()
@@ -128,18 +128,18 @@ class ResultTest extends BaseTestCase
 
     public function testGetDataUsingProcessedDataWhoCannotBeProcessed()
     {
-        $this->expectException(CannotProcessDataException::class);
+        $this->setExpectedException(CannotProcessDataException::className);
         $this->statusInsteadDataResult->getData();
     }
 
     public function testGetProcessedDataVisibilityAndArguments()
     {
-        static::assertMethodVisibilityAndArguments(Result::class, 'getProcessedData', OopVisibilityType::IS_PRIVATE, 1, 1);
+        static::assertMethodVisibilityAndArguments(Result::className, 'getProcessedData', OopVisibilityType::IS_PRIVATE, 1, 1);
     }
 
     public function testGetResultProcessorVisibilityAndArguments()
     {
-        static::assertMethodVisibilityAndArguments(Result::class, 'getResultProcessor', OopVisibilityType::IS_PRIVATE);
+        static::assertMethodVisibilityAndArguments(Result::className, 'getResultProcessor', OopVisibilityType::IS_PRIVATE);
     }
 
     public function testGetStatusWhenIsNotProvided()
@@ -218,6 +218,6 @@ class ResultTest extends BaseTestCase
      */
     private function getResultMock($constructorArguments)
     {
-        return $this->getMockForAbstractClass(Result::class, $constructorArguments);
+        return $this->getMockForAbstractClass(Result::className, $constructorArguments);
     }
 }

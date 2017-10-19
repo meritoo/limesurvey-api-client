@@ -45,7 +45,7 @@ class QuestionShortTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(QuestionShort::class, OopVisibilityType::IS_PUBLIC, 1, 0);
+        static::assertConstructorVisibilityAndArguments(QuestionShort::className, OopVisibilityType::IS_PUBLIC, 1, 0);
     }
 
     public function testCreateOfTheQuestionShort()

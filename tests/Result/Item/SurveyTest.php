@@ -46,7 +46,7 @@ class SurveyTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(Survey::class, OopVisibilityType::IS_PUBLIC, 1, 0);
+        static::assertConstructorVisibilityAndArguments(Survey::className, OopVisibilityType::IS_PUBLIC, 1, 0);
     }
 
     public function testCreateOfTheSurvey()

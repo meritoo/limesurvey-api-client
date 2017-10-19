@@ -46,7 +46,7 @@ class ParticipantShortTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(ParticipantShort::class, OopVisibilityType::IS_PUBLIC, 1, 0);
+        static::assertConstructorVisibilityAndArguments(ParticipantShort::className, OopVisibilityType::IS_PUBLIC, 1, 0);
     }
 
     public function testCreateOfTheParticipant()

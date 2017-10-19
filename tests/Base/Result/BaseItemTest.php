@@ -22,11 +22,11 @@ class BaseItemTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(BaseItem::class, OopVisibilityType::IS_PUBLIC, 1, 0);
+        static::assertConstructorVisibilityAndArguments(BaseItem::className, OopVisibilityType::IS_PUBLIC, 1, 0);
     }
 
     public function testSetValuesVisibilityAndArguments()
     {
-        static::assertMethodVisibilityAndArguments(BaseItem::class, 'setValues', OopVisibilityType::IS_PRIVATE, 1, 1);
+        static::assertMethodVisibilityAndArguments(BaseItem::className, 'setValues', OopVisibilityType::IS_PRIVATE, 1, 1);
     }
 }

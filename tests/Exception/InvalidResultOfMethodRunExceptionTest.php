@@ -9,7 +9,6 @@
 namespace Meritoo\LimeSurvey\Test\ApiClient\Exception;
 
 use Exception;
-use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Exception\InvalidResultOfMethodRunException;
@@ -25,7 +24,7 @@ class InvalidResultOfMethodRunExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(InvalidResultOfMethodRunException::class, OopVisibilityType::IS_PUBLIC, 3, 2);
+        static::assertConstructorVisibilityAndArguments(InvalidResultOfMethodRunException::className, OopVisibilityType::IS_PUBLIC, 3, 2);
     }
 
     /**
@@ -45,7 +44,8 @@ class InvalidResultOfMethodRunExceptionTest extends BaseTestCase
     /**
      * Provides previous exception, name and arguments of called method
      *
-     * @return Generator
+     * @return array
+     * //return Generator
      */
     public function providePreviousExceptionAndMethod()
     {
@@ -54,6 +54,26 @@ class InvalidResultOfMethodRunExceptionTest extends BaseTestCase
             . "- method: %s,\n"
             . '- arguments: %s.';
 
+        return [
+            [
+                new Exception('Lorem ipsum'),
+                MethodType::ADD_RESPONSE,
+                [],
+                sprintf($template, 'Lorem ipsum', MethodType::ADD_RESPONSE, '(no arguments)'),
+            ],
+            [
+                new Exception('Dolor sit amet'),
+                MethodType::LIST_SURVEYS,
+                [
+                    'fist_name' => 'John',
+                    'last_name' => 'Scott',
+                    'email'     => 'john@scott.com',
+                ],
+                sprintf($template, 'Dolor sit amet', MethodType::LIST_SURVEYS, 'fist_name="John", last_name="Scott", email="john@scott.com"'),
+            ],
+        ];
+
+        /*
         yield[
             new Exception('Lorem ipsum'),
             MethodType::ADD_RESPONSE,
@@ -71,5 +91,6 @@ class InvalidResultOfMethodRunExceptionTest extends BaseTestCase
             ],
             sprintf($template, 'Dolor sit amet', MethodType::LIST_SURVEYS, 'fist_name="John", last_name="Scott", email="john@scott.com"'),
         ];
+        */
     }
 }

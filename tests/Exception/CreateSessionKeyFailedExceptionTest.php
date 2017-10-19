@@ -8,7 +8,6 @@
 
 namespace Meritoo\LimeSurvey\Test\ApiClient\Exception;
 
-use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Exception\CreateSessionKeyFailedException;
@@ -23,7 +22,7 @@ class CreateSessionKeyFailedExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(CreateSessionKeyFailedException::class, OopVisibilityType::IS_PUBLIC, 1, 0);
+        static::assertConstructorVisibilityAndArguments(CreateSessionKeyFailedException::className, OopVisibilityType::IS_PUBLIC, 1, 0);
     }
 
     /**
@@ -41,13 +40,26 @@ class CreateSessionKeyFailedExceptionTest extends BaseTestCase
     /**
      * Provides reason of failure
      *
-     * @return Generator
+     * @return array
+     * //return Generator
      */
     public function provideReason()
     {
         $shortMessage = 'Create of the session key has failed';
         $longMessageTemplate = sprintf('%s. Reason: \'%s\'.', $shortMessage, '%s');
 
+        return [
+            [
+                '',
+                $shortMessage,
+            ],
+            [
+                'Invalid user name or password',
+                sprintf($longMessageTemplate, 'Invalid user name or password'),
+            ],
+        ];
+
+        /*
         yield[
             '',
             $shortMessage,
@@ -57,5 +69,6 @@ class CreateSessionKeyFailedExceptionTest extends BaseTestCase
             'Invalid user name or password',
             sprintf($longMessageTemplate, 'Invalid user name or password'),
         ];
+        */
     }
 }

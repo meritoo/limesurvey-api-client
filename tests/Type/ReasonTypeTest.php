@@ -21,7 +21,7 @@ class ReasonTypeTest extends BaseTypeTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertHasNoConstructor(ReasonType::class);
+        static::assertHasNoConstructor(ReasonType::className);
     }
 
     /**
@@ -50,6 +50,34 @@ class ReasonTypeTest extends BaseTypeTestCase
      */
     public function provideTypeToVerify()
     {
+        return [
+            [
+                '',
+                false,
+            ],
+            [
+                'lorem',
+                false,
+            ],
+            [
+                ReasonType::NOT_EXISTING_SURVEY_ID,
+                true,
+            ],
+            [
+                ReasonType::NO_PARTICIPANTS_FOUND,
+                true,
+            ],
+            [
+                ReasonType::NO_SURVEYS_FOUND,
+                true,
+            ],
+            [
+                ReasonType::NO_TOKEN_TABLE,
+                true,
+            ],
+        ];
+
+        /*
         yield[
             '',
             false,
@@ -79,5 +107,6 @@ class ReasonTypeTest extends BaseTypeTestCase
             ReasonType::NO_TOKEN_TABLE,
             true,
         ];
+        */
     }
 }

@@ -45,7 +45,7 @@ class QuestionTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(Question::class, OopVisibilityType::IS_PUBLIC, 1, 0);
+        static::assertConstructorVisibilityAndArguments(Question::className, OopVisibilityType::IS_PUBLIC, 1, 0);
     }
 
     public function testCreateOfTheQuestionShort()
@@ -53,7 +53,7 @@ class QuestionTest extends BaseTestCase
         $processor = new ResultProcessor();
         $processed = $processor->process(MethodType::GET_QUESTION_PROPERTIES, $this->rawData);
 
-        static::assertInstanceOf(Question::class, $processed);
+        static::assertInstanceOf(Question::className, $processed);
     }
 
     public function testGetId()

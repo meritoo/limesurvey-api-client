@@ -1,4 +1,4 @@
-FROM php:5.6-cli
+FROM php:5.4-cli
 
 #
 # Tools & libraries
@@ -32,11 +32,14 @@ ARG TIMEZONE
 RUN echo "\n""date.timezone = $TIMEZONE""\n" >> /usr/local/etc/php/php.ini
 
 #
+# Disabled, because:
+# PHP versions below 5.5 are not supported
+#
 # Xdebug
 #
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
-COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+#RUN pecl install xdebug \
+#    && docker-php-ext-enable xdebug
+#COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 #
 # Phing

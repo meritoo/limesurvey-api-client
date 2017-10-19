@@ -27,7 +27,7 @@ class ResultProcessorTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertHasNoConstructor(ResultProcessor::class);
+        static::assertHasNoConstructor(ResultProcessor::className);
     }
 
     public function testProcessWithEmptyRawData()
@@ -72,17 +72,17 @@ class ResultProcessorTest extends BaseTestCase
 
         static::assertNotEmpty($processed);
         static::assertFalse(is_array($processed));
-        static::assertInstanceOf(BaseItem::class, $processed);
+        static::assertInstanceOf(BaseItem::className, $processed);
     }
 
     public function testGetItemClassNameVisibilityAndArguments()
     {
-        static::assertMethodVisibilityAndArguments(ResultProcessor::class, 'getItemClassName', OopVisibilityType::IS_PRIVATE, 1, 1);
+        static::assertMethodVisibilityAndArguments(ResultProcessor::className, 'getItemClassName', OopVisibilityType::IS_PRIVATE, 1, 1);
     }
 
     public function testRunWithUnknownResultClass()
     {
-        $this->expectException(UnknownInstanceOfResultItem::class);
+        $this->setExpectedException(UnknownInstanceOfResultItem::className);
 
         $rawData = [
             'lorem' => 'ipsum',

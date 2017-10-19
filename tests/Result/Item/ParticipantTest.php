@@ -46,7 +46,7 @@ class ParticipantTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(Participant::class, OopVisibilityType::IS_PUBLIC, 1, 0);
+        static::assertConstructorVisibilityAndArguments(Participant::className, OopVisibilityType::IS_PUBLIC, 1, 0);
     }
 
     public function testCreateOfTheParticipant()
@@ -54,7 +54,7 @@ class ParticipantTest extends BaseTestCase
         $processor = new ResultProcessor();
         $processed = $processor->process(MethodType::GET_PARTICIPANT_PROPERTIES, $this->rawData[0]);
 
-        static::assertInstanceOf(Participant::class, $processed);
+        static::assertInstanceOf(Participant::className, $processed);
     }
 
     public function testGetId()

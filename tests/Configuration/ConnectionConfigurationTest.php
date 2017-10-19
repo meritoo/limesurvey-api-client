@@ -8,7 +8,6 @@
 
 namespace Meritoo\LimeSurvey\Test\ApiClient\Configuration;
 
-use Generator;
 use Meritoo\Common\Exception\Regex\InvalidUrlException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
@@ -38,7 +37,7 @@ class ConnectionConfigurationTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(ConnectionConfiguration::class, OopVisibilityType::IS_PUBLIC, 5, 3);
+        static::assertConstructorVisibilityAndArguments(ConnectionConfiguration::className, OopVisibilityType::IS_PUBLIC, 5, 3);
     }
 
     /**
@@ -47,7 +46,7 @@ class ConnectionConfigurationTest extends BaseTestCase
      */
     public function testConstructorWithEmptyBaseUrl($emptyBaseUrl)
     {
-        $this->expectException(InvalidUrlException::class);
+        $this->setExpectedException(InvalidUrlException::className);
         new ConnectionConfiguration($emptyBaseUrl, '', '');
     }
 
@@ -57,7 +56,7 @@ class ConnectionConfigurationTest extends BaseTestCase
      */
     public function testConstructorWithInvalidBaseUrl($invalidBaseUrl)
     {
-        $this->expectException(InvalidUrlException::class);
+        $this->setExpectedException(InvalidUrlException::className);
         new ConnectionConfiguration($invalidBaseUrl, '', '');
     }
 
@@ -94,10 +93,17 @@ class ConnectionConfigurationTest extends BaseTestCase
     /**
      * Provides empty base url
      *
-     * @return Generator
+     * @return array
+     * //return Generator
      */
     public function provideEmptyBaseUrl()
     {
+        return [
+            [''],
+            [null],
+        ];
+
+        /*
         yield[
             '',
         ];
@@ -105,15 +111,24 @@ class ConnectionConfigurationTest extends BaseTestCase
         yield[
             null,
         ];
+        */
     }
 
     /**
      * Provides invalid base url
      *
-     * @return Generator
+     * @return array
+     * //return Generator
      */
     public function provideInvalidBaseUrl()
     {
+        return [
+            ['lorem'],
+            ['ipsum'],
+            ['htp:/dolor.com'],
+        ];
+
+        /*
         yield[
             'lorem',
         ];
@@ -125,6 +140,7 @@ class ConnectionConfigurationTest extends BaseTestCase
         yield[
             'htp:/dolor.com',
         ];
+        */
     }
 
     /**

@@ -21,7 +21,7 @@ class SystemMethodTypeTest extends BaseTypeTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertHasNoConstructor(SystemMethodType::class);
+        static::assertHasNoConstructor(SystemMethodType::className);
     }
 
     /**
@@ -48,6 +48,26 @@ class SystemMethodTypeTest extends BaseTypeTestCase
      */
     public function provideTypeToVerify()
     {
+        return [
+            [
+                '',
+                false,
+            ],
+            [
+                'lorem',
+                false,
+            ],
+            [
+                SystemMethodType::GET_SESSION_KEY,
+                true,
+            ],
+            [
+                SystemMethodType::RELEASE_SESSION_KEY,
+                true,
+            ],
+        ];
+
+        /*
         yield[
             '',
             false,
@@ -67,5 +87,6 @@ class SystemMethodTypeTest extends BaseTypeTestCase
             SystemMethodType::RELEASE_SESSION_KEY,
             true,
         ];
+        */
     }
 }

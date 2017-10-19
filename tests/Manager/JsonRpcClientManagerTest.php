@@ -8,7 +8,6 @@
 
 namespace Meritoo\LimeSurvey\Test\ApiClient\Manager;
 
-use JsonRPC\Client as RpcClient;
 use JsonRPC\Exception\InvalidJsonFormatException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
@@ -35,15 +34,15 @@ class JsonRpcClientManagerTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(JsonRpcClientManager::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(JsonRpcClientManager::className, OopVisibilityType::IS_PUBLIC, 1, 1);
     }
 
     public function testRunMethodWithEmptyArrayReturned()
     {
-        $rpcClient = $this->createMock(RpcClient::class);
+        $rpcClient = $this->createMock('\JsonRPC\Client');
 
         $manager = $this
-            ->getMockBuilder(JsonRpcClientManager::class)
+            ->getMockBuilder(JsonRpcClientManager::className)
             ->setConstructorArgs([
                 $this->configuration,
             ])
@@ -68,8 +67,8 @@ class JsonRpcClientManagerTest extends BaseTestCase
 
     public function testRunMethodWithRawDataReturned()
     {
-        $rpcClient = $this->createMock(RpcClient::class);
-        $manager = $this->createPartialMock(JsonRpcClientManager::class, ['getRpcClient']);
+        $rpcClient = $this->createMock('\JsonRPC\Client');
+        $manager = $this->getMock(JsonRpcClientManager::className, ['getRpcClient'], [], '', false);
 
         $rpcClient
             ->expects(static::once())
@@ -87,10 +86,10 @@ class JsonRpcClientManagerTest extends BaseTestCase
 
     public function testRunMethodWithException()
     {
-        $this->expectException(InvalidResultOfMethodRunException::class);
+        $this->setExpectedException(InvalidResultOfMethodRunException::className);
 
-        $manager = $this->createPartialMock(JsonRpcClientManager::class, ['getRpcClient']);
-        $rpcClient = $this->createMock(RpcClient::class);
+        $manager = $this->getMock(JsonRpcClientManager::className, ['getRpcClient'], [], '', false);
+        $rpcClient = $this->createMock('\JsonRPC\Client');
 
         $rpcClient
             ->expects(self::once())
@@ -108,7 +107,7 @@ class JsonRpcClientManagerTest extends BaseTestCase
 
     public function testGetRpcClientVisibilityAndArguments()
     {
-        static::assertMethodVisibilityAndArguments(JsonRpcClientManager::class, 'getRpcClient', OopVisibilityType::IS_PROTECTED);
+        static::assertMethodVisibilityAndArguments(JsonRpcClientManager::className, 'getRpcClient', OopVisibilityType::IS_PROTECTED);
     }
 
     /**

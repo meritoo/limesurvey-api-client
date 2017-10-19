@@ -47,24 +47,24 @@ class ParticipantsTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(Participants::class, OopVisibilityType::IS_PUBLIC, 1, 0);
+        static::assertConstructorVisibilityAndArguments(Participants::className, OopVisibilityType::IS_PUBLIC, 1, 0);
     }
 
     public function testAdd()
     {
-        $this->expectException(DisabledMethodException::class);
+        $this->setExpectedException(DisabledMethodException::className);
         (new Participants())->add('');
     }
 
     public function testAddMultiple()
     {
-        $this->expectException(DisabledMethodException::class);
+        $this->setExpectedException(DisabledMethodException::className);
         (new Participants())->addMultiple([]);
     }
 
     public function testHas()
     {
-        $this->expectException(DisabledMethodException::class);
+        $this->setExpectedException(DisabledMethodException::className);
         (new Participants())->has(new Participant());
     }
 

@@ -8,15 +8,12 @@
 
 namespace Meritoo\LimeSurvey\Test\ApiClient\Client;
 
-use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Client\Client;
 use Meritoo\LimeSurvey\ApiClient\Configuration\ConnectionConfiguration;
-use Meritoo\LimeSurvey\ApiClient\Exception\UnknownMethodException;
 use Meritoo\LimeSurvey\ApiClient\Manager\JsonRpcClientManager;
 use Meritoo\LimeSurvey\ApiClient\Manager\SessionManager;
-use Meritoo\LimeSurvey\ApiClient\Result\Result;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 
 /**
@@ -36,7 +33,7 @@ class ClientTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(Client::class, OopVisibilityType::IS_PUBLIC, 3, 1);
+        static::assertConstructorVisibilityAndArguments(Client::className, OopVisibilityType::IS_PUBLIC, 3, 1);
     }
 
     /**
@@ -45,7 +42,7 @@ class ClientTest extends BaseTestCase
      */
     public function testRunWithIncorrectMethod($incorrectMethod)
     {
-        $this->expectException(UnknownMethodException::class);
+        $this->setExpectedException('Meritoo\LimeSurvey\ApiClient\Exception\UnknownMethodException');
 
         $client = new Client($this->configuration);
         $client->run($incorrectMethod);
@@ -61,8 +58,8 @@ class ClientTest extends BaseTestCase
      */
     public function testRun($method, $arguments, $debugMode, $expectedRawData)
     {
-        $sessionManager = $this->createMock(SessionManager::class);
-        $rpcClientManager = $this->createMock(JsonRpcClientManager::class);
+        $sessionManager = $this->createMock(SessionManager::className);
+        $rpcClientManager = $this->createMock(JsonRpcClientManager::className);
 
         $rpcClientManager
             ->expects(static::any())
@@ -78,7 +75,7 @@ class ClientTest extends BaseTestCase
         );
 
         $client = new Client($configuration, $rpcClientManager, $sessionManager);
-        static::assertInstanceOf(Result::class, $client->run($method, $arguments));
+        static::assertInstanceOf('Meritoo\LimeSurvey\ApiClient\Result\Result', $client->run($method, $arguments));
     }
 
     public function testGetConfiguration()
@@ -89,21 +86,29 @@ class ClientTest extends BaseTestCase
 
     public function testGetRpcClientManagerVisibilityAndArguments()
     {
-        static::assertMethodVisibilityAndArguments(Client::class, 'getRpcClientManager', OopVisibilityType::IS_PRIVATE);
+        static::assertMethodVisibilityAndArguments(Client::className, 'getRpcClientManager', OopVisibilityType::IS_PRIVATE);
     }
 
     public function testGetSessionManagerVisibilityAndArguments()
     {
-        static::assertMethodVisibilityAndArguments(Client::class, 'getRpcClientManager', OopVisibilityType::IS_PRIVATE);
+        static::assertMethodVisibilityAndArguments(Client::className, 'getRpcClientManager', OopVisibilityType::IS_PRIVATE);
     }
 
     /**
      * Provides incorrect name of method
      *
-     * @return Generator
+     * @return array
+     * //return Generator
      */
     public function provideIncorrectMethod()
     {
+        return [
+            ['lorem'],
+            ['ipsum'],
+            [''],
+        ];
+
+        /*
         yield[
             'lorem',
         ];
@@ -115,15 +120,39 @@ class ClientTest extends BaseTestCase
         yield[
             '',
         ];
+        */
     }
 
     /**
      * Provides correct name of method
      *
-     * @return Generator
+     * @return array
+     * //return Generator
      */
     public function provideMethod()
     {
+        return [
+            [
+                MethodType::GET_PARTICIPANT_PROPERTIES,
+                [],
+                true,
+                [],
+            ],
+            [
+                MethodType::LIST_SURVEYS,
+                [],
+                false,
+                [],
+            ],
+            [
+                MethodType::LIST_PARTICIPANTS,
+                [],
+                false,
+                null,
+            ],
+        ];
+
+        /*
         yield[
             MethodType::GET_PARTICIPANT_PROPERTIES,
             [],
@@ -144,6 +173,7 @@ class ClientTest extends BaseTestCase
             false,
             null,
         ];
+        */
 
         /*
          * todo: Use/Verify other types of methods
