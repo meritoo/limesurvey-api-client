@@ -10,7 +10,7 @@ namespace Meritoo\Common\Exception\Regex;
  */
 class InvalidUrlException extends \Exception
 {
-    const className = '\Meritoo\Common\Exception\Regex\InvalidUrlException';
+    const className = 'Meritoo\Common\Exception\Regex\InvalidUrlException';
 
     /**
      * Class constructor

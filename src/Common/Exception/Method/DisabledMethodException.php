@@ -18,7 +18,7 @@ use Exception;
  */
 class DisabledMethodException extends Exception
 {
-    const className = '\Meritoo\Common\Exception\Method\DisabledMethodException';
+    const className = 'Meritoo\Common\Exception\Method\DisabledMethodException';
 
     /**
      * Class constructor

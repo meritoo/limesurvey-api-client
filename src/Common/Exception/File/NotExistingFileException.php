@@ -16,6 +16,8 @@ namespace Meritoo\Common\Exception\File;
  */
 class NotExistingFileException extends \Exception
 {
+    const className = 'Meritoo\Common\Exception\File\NotExistingFileException';
+
     /**
      * Class constructor
      *

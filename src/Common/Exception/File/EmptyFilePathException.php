@@ -16,6 +16,8 @@ namespace Meritoo\Common\Exception\File;
  */
 class EmptyFilePathException extends \Exception
 {
+    const className = 'Meritoo\Common\Exception\File\EmptyFilePathException';
+
     /**
      * Class constructor
      */
