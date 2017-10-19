@@ -38,6 +38,11 @@ class MissingParticipantOfSurveyExceptionTest extends BaseTestCase
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 
+    /**
+     * Provides ID of survey and e-mail address of the participant
+     *
+     * @return Generator
+     */
     public function provideSurveyIdAndEmail()
     {
         $template = 'Participant with e-mail %s of survey with ID %s is missing. Maybe was not added to the survey?';
