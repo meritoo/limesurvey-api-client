@@ -216,7 +216,7 @@ class Participant extends BaseItem
                     break;
                 }
 
-                $this->validFrom = Date::getDateTime($value, false, 'Y-m-d H:i:s');
+                $this->validFrom = Date::getDateTime($value, true);
                 break;
 
             case 'validuntil':
@@ -224,7 +224,7 @@ class Participant extends BaseItem
                     break;
                 }
 
-                $this->validUntil = Date::getDateTime($value, false, 'Y-m-d H:i:s');
+                $this->validUntil = Date::getDateTime($value, true);
                 break;
         }
     }

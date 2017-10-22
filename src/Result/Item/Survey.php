@@ -74,7 +74,7 @@ class Survey extends BaseItem
                     break;
                 }
 
-                $this->startsAt = Date::getDateTime($value, false, 'Y-m-d H:i:s');
+                $this->startsAt = Date::getDateTime($value, true);
                 break;
 
             case 'expires':
@@ -82,7 +82,7 @@ class Survey extends BaseItem
                     break;
                 }
 
-                $this->expiresAt = Date::getDateTime($value, false, 'Y-m-d H:i:s');
+                $this->expiresAt = Date::getDateTime($value, true);
                 break;
 
             case 'active':
