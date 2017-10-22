@@ -201,7 +201,12 @@ class Participant extends BaseItem
                 break;
 
             case 'completed':
-                $this->completed = 'Y' === trim(strtoupper($value));
+                if ('N' === trim(strtoupper($value))) {
+                    $this->completed = false;
+                    break;
+                }
+
+                $this->completed = Date::isValidDate($value, true);
                 break;
 
             case 'usesleft':

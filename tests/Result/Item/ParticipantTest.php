@@ -200,7 +200,7 @@ class ParticipantTest extends BaseTestCase
                 'sent'           => 'Y',
                 'remindersent'   => 'N',
                 'remindercount'  => 1,
-                'completed'      => 'Y',
+                'completed'      => (new DateTime())->format('Y-m-d H:i'),
                 'usesleft'       => 5,
                 'validfrom'      => (new DateTime())->format('Y-m-d H:i:s'),
                 'validuntil'     => null,
