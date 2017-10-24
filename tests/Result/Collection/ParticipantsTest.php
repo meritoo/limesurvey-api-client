@@ -17,7 +17,7 @@ use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort;
 
 /**
- * Test case of the collection of participants (of surveys)
+ * Test case of the collection of participants' short data
  *
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
@@ -25,7 +25,7 @@ use Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort;
 class ParticipantsTest extends BaseTestCase
 {
     /**
-     * An empty collection of participants (of surveys)
+     * An empty collection of participants' short data
      *
      * @var Participants
      */

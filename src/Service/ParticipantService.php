@@ -34,7 +34,7 @@ class ParticipantService
     private $client;
 
     /**
-     * Collection of participants (of surveys).
+     * Collection of participants' short data.
      * All participants grouped per survey.
      *
      * @var Participants
@@ -45,7 +45,7 @@ class ParticipantService
      * Class constructor
      *
      * @param Client       $client          Client of the LimeSurvey's API
-     * @param Participants $allParticipants (optional) Collection of participants (of surveys). All participants
+     * @param Participants $allParticipants (optional) Collection of participants' short data. All participants
      *                                      grouped per survey.
      */
     public function __construct(Client $client, Participants $allParticipants = null)
@@ -179,7 +179,7 @@ class ParticipantService
     }
 
     /**
-     * Returns short data of one participant with given e-mail of given survey
+     * Returns short data of one participant with given e-mail (participant of given survey)
      *
      * @param int    $surveyId ID of survey
      * @param string $email    E-mail address of the participant
@@ -198,7 +198,7 @@ class ParticipantService
     }
 
     /**
-     * Returns full data of participant with given e-mail of given survey
+     * Returns full data of participant with given e-mail (participant of given survey)
      *
      * @param int    $surveyId ID of survey
      * @param string $email    E-mail address of the participant
