@@ -8,13 +8,13 @@
 
 namespace Meritoo\LimeSurvey\Test\ApiClient\Result\Result;
 
-use DateTime;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseItem;
 use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
 use Meritoo\LimeSurvey\ApiClient\Result\Result;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
+use Meritoo\LimeSurvey\Test\ApiClient\Utilities\DateUtility;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
@@ -179,7 +179,7 @@ class ResultTest extends BaseTestCase
             [
                 'sid'            => '456',
                 'surveyls_title' => 'Another Test',
-                'startdate'      => (new DateTime())->format('Y-m-d H:i:s'),
+                'startdate'      => DateUtility::getDateTime(),
                 'expires'        => null,
                 'active'         => 'Y',
             ],

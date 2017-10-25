@@ -14,6 +14,7 @@ use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Result\Processor\ResultProcessor;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
+use Meritoo\LimeSurvey\Test\ApiClient\Utilities\DateUtility;
 
 /**
  * Test case of the one item of the result/data: full data of participant
@@ -196,7 +197,7 @@ class ParticipantTest extends BaseTestCase
                 'completed'      => 'N',
                 'usesleft'       => 10,
                 'validfrom'      => null,
-                'validuntil'     => (new DateTime())->format('Y-m-d H:i:s'),
+                'validuntil'     => DateUtility::getDateTime(),
             ],
             [
                 'tid'            => '456',
@@ -212,9 +213,9 @@ class ParticipantTest extends BaseTestCase
                 'sent'           => 'Y',
                 'remindersent'   => 'N',
                 'remindercount'  => 1,
-                'completed'      => (new DateTime())->format('Y-m-d H:i'),
+                'completed'      => DateUtility::getDateTime(false),
                 'usesleft'       => 5,
-                'validfrom'      => (new DateTime())->format('Y-m-d H:i:s'),
+                'validfrom'      => DateUtility::getDateTime(),
                 'validuntil'     => null,
             ],
         ];

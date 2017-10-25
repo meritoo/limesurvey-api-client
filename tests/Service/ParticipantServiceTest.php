@@ -8,7 +8,6 @@
 
 namespace Meritoo\LimeSurvey\Test\ApiClient\Service;
 
-use DateTime;
 use Exception;
 use Meritoo\Common\Collection\Collection;
 use Meritoo\Common\Test\Base\BaseTestCase;
@@ -23,6 +22,7 @@ use Meritoo\LimeSurvey\ApiClient\Result\Collection\ParticipantsDetails;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Service\ParticipantService;
 use Meritoo\LimeSurvey\ApiClient\Type\ReasonType;
+use Meritoo\LimeSurvey\Test\ApiClient\Utilities\DateUtility;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
@@ -209,10 +209,10 @@ class ParticipantServiceTest extends BaseTestCase
                 'sent'           => 'Y',
                 'remindersent'   => 'N',
                 'remindercount'  => 0,
-                'completed'      => (new DateTime())->format('Y-m-d H:i:s'),
+                'completed'      => DateUtility::getDateTime(),
                 'usesleft'       => 10,
                 'validfrom'      => null,
-                'validuntil'     => (new DateTime())->format('Y-m-d H:i:s'),
+                'validuntil'     => DateUtility::getDateTime(),
             ],
             [
                 'tid'            => 2,
@@ -231,7 +231,7 @@ class ParticipantServiceTest extends BaseTestCase
                 'completed'      => 'N',
                 'usesleft'       => 10,
                 'validfrom'      => null,
-                'validuntil'     => (new DateTime())->format('Y-m-d H:i:s'),
+                'validuntil'     => DateUtility::getDateTime(),
             ],
         ];
     }
