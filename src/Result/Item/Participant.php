@@ -10,7 +10,7 @@ namespace Meritoo\LimeSurvey\ApiClient\Result\Item;
 
 use DateTime;
 use Meritoo\Common\Utilities\Date;
-use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseItem;
+use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseParticipant;
 
 /**
  * One item of the result/data: full data of one participant
@@ -18,15 +18,8 @@ use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseItem;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class Participant extends BaseItem
+class Participant extends BaseParticipant
 {
-    /**
-     * ID of the participant
-     *
-     * @var int
-     */
-    private $id;
-
     /**
      * Another ID of the participant?
      * Don't know where it is used.
@@ -41,27 +34,6 @@ class Participant extends BaseItem
      * @var int
      */
     private $mpId;
-
-    /**
-     * First name of the participant
-     *
-     * @var string
-     */
-    private $firstName;
-
-    /**
-     * Last name of the participant
-     *
-     * @var string
-     */
-    private $lastName;
-
-    /**
-     * E-mail of the participant
-     *
-     * @var string
-     */
-    private $email;
 
     /**
      * Status of the e-mail
@@ -230,16 +202,6 @@ class Participant extends BaseItem
     }
 
     /**
-     * Returns ID of the participant
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * Returns another ID of the participant?
      * Don't know where it is used.
      *
@@ -258,36 +220,6 @@ class Participant extends BaseItem
     public function getMpId()
     {
         return $this->mpId;
-    }
-
-    /**
-     * Returns first name of the participant
-     *
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * Returns last name of the participant
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * Returns e-mail of the participant
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
     }
 
     /**

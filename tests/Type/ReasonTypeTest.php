@@ -30,10 +30,11 @@ class ReasonTypeTest extends BaseTypeTestCase
     protected function getAllExpectedTypes()
     {
         return [
-            'NOT_EXISTING_SURVEY_ID' => ReasonType::NOT_EXISTING_SURVEY_ID,
-            'NO_PARTICIPANTS_FOUND'  => ReasonType::NO_PARTICIPANTS_FOUND,
-            'NO_SURVEYS_FOUND'       => ReasonType::NO_SURVEYS_FOUND,
-            'NO_TOKEN_TABLE'         => ReasonType::NO_TOKEN_TABLE,
+            'NOT_EXISTING_SURVEY_ID'    => ReasonType::NOT_EXISTING_SURVEY_ID,
+            'NO_PARTICIPANTS_FOUND'     => ReasonType::NO_PARTICIPANTS_FOUND,
+            'NO_PARTICIPANT_PROPERTIES' => ReasonType::NO_PARTICIPANT_PROPERTIES,
+            'NO_SURVEYS_FOUND'          => ReasonType::NO_SURVEYS_FOUND,
+            'NO_TOKEN_TABLE'            => ReasonType::NO_TOKEN_TABLE,
         ];
     }
 

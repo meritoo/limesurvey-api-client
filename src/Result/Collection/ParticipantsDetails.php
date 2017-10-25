@@ -11,7 +11,7 @@ namespace Meritoo\LimeSurvey\ApiClient\Result\Collection;
 use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseParticipantsCollection;
 
 /**
- * Collection of participants' short data.
+ * Collection of participants' full data.
  * All participants grouped per survey.
  *
  * It's a collection of participants' collections.
@@ -20,6 +20,17 @@ use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseParticipantsCollection;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class Participants extends BaseParticipantsCollection
+class ParticipantsDetails extends BaseParticipantsCollection
 {
+    /**
+     * Returns information if survey with given ID has participant with given e-mail address
+     *
+     * @param int    $surveyId         ID of survey
+     * @param string $participantEmail E-mail of searched participant
+     * @return bool
+     */
+    public function hasParticipantOfSurvey($surveyId, $participantEmail)
+    {
+        return null !== $this->getParticipantOfSurvey($surveyId, $participantEmail);
+    }
 }
