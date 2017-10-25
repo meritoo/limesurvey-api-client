@@ -176,6 +176,7 @@ class MethodTypeTest extends BaseTypeTestCase
             'EXPORT_STATISTICS'          => MethodType::EXPORT_STATISTICS,
             'GET_PARTICIPANT_PROPERTIES' => MethodType::GET_PARTICIPANT_PROPERTIES,
             'GET_QUESTION_PROPERTIES'    => MethodType::GET_QUESTION_PROPERTIES,
+            'GET_SUMMARY'                => MethodType::GET_SUMMARY,
             'LIST_PARTICIPANTS'          => MethodType::LIST_PARTICIPANTS,
             'LIST_QUESTIONS'             => MethodType::LIST_QUESTIONS,
             'LIST_SURVEYS'               => MethodType::LIST_SURVEYS,

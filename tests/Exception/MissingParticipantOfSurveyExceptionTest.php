@@ -8,6 +8,7 @@
 
 namespace Meritoo\LimeSurvey\Test\ApiClient\Exception;
 
+use Generator;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Exception\MissingParticipantOfSurveyException;

@@ -17,6 +17,7 @@ use Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Question;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\QuestionShort;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Survey;
+use Meritoo\LimeSurvey\ApiClient\Result\Item\SurveySummary;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 
 /**
@@ -93,6 +94,10 @@ class ResultProcessor
 
             case MethodType::GET_QUESTION_PROPERTIES:
                 $className = Question::class;
+                break;
+
+            case MethodType::GET_SUMMARY:
+                $className = SurveySummary::class;
                 break;
 
             case MethodType::LIST_PARTICIPANTS:
