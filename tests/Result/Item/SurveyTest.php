@@ -14,6 +14,7 @@ use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Survey;
 use Meritoo\LimeSurvey\ApiClient\Result\Processor\ResultProcessor;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
+use Meritoo\LimeSurvey\Test\ApiClient\Utilities\DateUtility;
 
 /**
  * Test case of the one item of the result/data: survey
@@ -99,13 +100,13 @@ class SurveyTest extends BaseTestCase
                 'sid'            => '123',
                 'surveyls_title' => 'Test',
                 'startdate'      => null,
-                'expires'        => (new DateTime())->format('Y-m-d H:i:s'),
+                'expires'        => DateUtility::getDateTime(),
                 'active'         => 'N',
             ],
             [
                 'sid'            => '456',
                 'surveyls_title' => 'Another Test',
-                'startdate'      => (new DateTime())->format('Y-m-d H:i:s'),
+                'startdate'      => DateUtility::getDateTime(),
                 'expires'        => null,
                 'active'         => 'Y',
             ],
