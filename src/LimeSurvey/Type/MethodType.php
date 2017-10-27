@@ -61,6 +61,13 @@ class MethodType extends BaseType
     const GET_QUESTION_PROPERTIES = 'get_question_properties';
 
     /**
+     * Get survey summary, regarding token usage and survey participation
+     *
+     * @var string
+     */
+    const GET_SUMMARY = 'get_summary';
+
+    /**
      * Return the IDs and properties of token/participants of a survey
      *
      * @var string

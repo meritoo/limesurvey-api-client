@@ -19,9 +19,8 @@ use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
 use Meritoo\LimeSurvey\ApiClient\Exception\MissingParticipantOfSurveyException;
 use Meritoo\LimeSurvey\ApiClient\Manager\JsonRpcClientManager;
 use Meritoo\LimeSurvey\ApiClient\Manager\SessionManager;
-use Meritoo\LimeSurvey\ApiClient\Result\Collection\Participants;
+use Meritoo\LimeSurvey\ApiClient\Result\Collection\ParticipantsDetails;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
-use Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort;
 use Meritoo\LimeSurvey\ApiClient\Service\ParticipantService;
 use Meritoo\LimeSurvey\ApiClient\Type\ReasonType;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -34,6 +33,13 @@ use PHPUnit_Framework_MockObject_MockObject;
  */
 class ParticipantServiceTest extends BaseTestCase
 {
+    /**
+     * Raw data of participants
+     *
+     * @var array
+     */
+    private $participantsRawData;
+
     /**
      * Service that serves participants.
      * Without participants.
@@ -52,7 +58,7 @@ class ParticipantServiceTest extends BaseTestCase
 
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(ParticipantService::className, OopVisibilityType::IS_PUBLIC, 3, 1);
+        static::assertConstructorVisibilityAndArguments(ParticipantService::className, OopVisibilityType::IS_PUBLIC, 2, 1);
     }
 
     public function testGetClient()
@@ -73,45 +79,6 @@ class ParticipantServiceTest extends BaseTestCase
         static::assertEquals($client, $participantService->getClient());
     }
 
-    public function testGetSurveyParticipants()
-    {
-        $rpcClientManager = $this->getJsonRpcClientManager(3);
-        $sessionManager = $this->getSessionManager();
-
-        $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
-        $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
-
-        static::assertCount(0, $this->serviceWithoutParticipants->getSurveyParticipants(1));
-        static::assertCount(0, $this->serviceWithoutParticipants->getSurveyParticipants(2));
-
-        static::assertCount(2, $this->serviceWithParticipants->getSurveyParticipants(1));
-        static::assertCount(1, $this->serviceWithParticipants->getSurveyParticipants(2));
-        static::assertCount(0, $this->serviceWithParticipants->getSurveyParticipants(3));
-    }
-
-    public function testGetSurveyParticipantsWithImportantException()
-    {
-        $this->setExpectedException(CannotProcessDataException::className);
-        $exception = new CannotProcessDataException(ReasonType::NO_TOKEN_TABLE);
-
-        $rpcClientManager = $this->getJsonRpcClientManagerWithException(1, $exception);
-        $sessionManager = $this->getSessionManager();
-
-        $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
-        $this->serviceWithParticipants->getSurveyParticipants(3);
-    }
-
-    public function testGetSurveyParticipantsWithNoParticipantsException()
-    {
-        $exception = new CannotProcessDataException(ReasonType::NO_PARTICIPANTS_FOUND);
-
-        $rpcClientManager = $this->getJsonRpcClientManagerWithException(1, $exception);
-        $sessionManager = $this->getSessionManager();
-
-        $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
-        static::assertCount(0, $this->serviceWithParticipants->getSurveyParticipants(3));
-    }
-
     public function testHasParticipantUsingServiceWithoutParticipants()
     {
         $rpcClientManager = $this->getJsonRpcClientManager(2);
@@ -126,25 +93,6 @@ class ParticipantServiceTest extends BaseTestCase
     {
         $runMethodCallResults = [
             [
-                'tid'            => '123',
-                'participant_id' => null,
-                'mpid'           => null,
-                'firstname'      => 'John',
-                'lastname'       => 'Scott',
-                'email'          => 'john@scott.com',
-                'emailstatus'    => 'OK',
-                'token'          => uniqid(),
-                'language'       => 'pl',
-                'blacklisted'    => 'N',
-                'sent'           => 'Y',
-                'remindersent'   => 'N',
-                'remindercount'  => 0,
-                'completed'      => 'N',
-                'usesleft'       => 10,
-                'validfrom'      => null,
-                'validuntil'     => (new DateTime())->format('Y-m-d H:i:s'),
-            ],
-            [
                 null,
             ],
             [
@@ -152,7 +100,7 @@ class ParticipantServiceTest extends BaseTestCase
             ],
         ];
 
-        $rpcClientManager = $this->getJsonRpcClientManager(3, $runMethodCallResults);
+        $rpcClientManager = $this->getJsonRpcClientManager(2, $runMethodCallResults);
         $sessionManager = $this->getSessionManager();
         $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
 
@@ -161,72 +109,16 @@ class ParticipantServiceTest extends BaseTestCase
         static::assertFalse($this->serviceWithParticipants->hasParticipant(3, 'john@scott.com'));
     }
 
-    public function testAddParticipantForNotExistingSurvey()
+    public function testGetParticipantDetailsWithException()
     {
-        $this->setExpectedException(CannotProcessDataException::className);
         $exception = new CannotProcessDataException(ReasonType::NOT_EXISTING_SURVEY_ID);
+        $this->setExpectedException(CannotProcessDataException::className, $exception->getMessage());
 
         $rpcClientManager = $this->getJsonRpcClientManagerWithException(1, $exception);
         $sessionManager = $this->getSessionManager();
-
-        $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
         $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
 
-        $surveyId = 1;
-        $firstName = 'John';
-        $lastName = 'Scott';
-        $email = 'john@scott.com';
-
-        $this->serviceWithoutParticipants->addParticipant($surveyId, $firstName, $lastName, $email);
-        $this->serviceWithParticipants->addParticipant($surveyId, $firstName, $lastName, $email);
-    }
-
-    public function testAddParticipant()
-    {
-        $surveyId = 1;
-        $firstName = 'John';
-        $lastName = 'Scott';
-        $email = 'john@scott.com';
-        $runMethodCallCount = 1;
-
-        $runMethodCallResults = [
-            [
-                [
-                    'firstname' => $firstName,
-                    'lastname'  => $lastName,
-                    'email'     => $email,
-                ],
-            ],
-        ];
-
-        $rpcClientManager = $this->getJsonRpcClientManager($runMethodCallCount, $runMethodCallResults);
-        $sessionManager = $this->getSessionManager();
-
-        $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
-        $result = $this->serviceWithoutParticipants->addParticipant($surveyId, $firstName, $lastName, $email);
-
-        static::assertInstanceOf(Participant::className, $result);
-        static::assertEquals($firstName, $result->getFirstName());
-        static::assertEquals($lastName, $result->getLastName());
-        static::assertEquals($email, $result->getEmail());
-    }
-
-    public function testGetParticipant()
-    {
-        $rpcClientManager = $this->getJsonRpcClientManager(1);
-        $sessionManager = $this->getSessionManager();
-
-        $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
-        $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
-
-        $participant1 = $this->serviceWithoutParticipants->getParticipant(1, 'john@scott.com');
-        $participant2 = $this->serviceWithParticipants->getParticipant(1, 'john@scott.com');
-
-        static::assertNull($participant1);
-        static::assertInstanceOf(ParticipantShort::className, $participant2);
-        static::assertEquals('John', $participant2->getFirstName());
-        static::assertEquals('Scott', $participant2->getLastName());
-        static::assertEquals('john@scott.com', $participant2->getEmail());
+        $this->serviceWithParticipants->getParticipantDetails(1, 'lorem@ipsum.com');
     }
 
     public function testGetParticipantDetails()
@@ -236,29 +128,18 @@ class ParticipantServiceTest extends BaseTestCase
         $rpcClientManager = $this->getJsonRpcClientManager(1);
         $this->createServiceWithoutParticipants($rpcClientManager, $sessionManager);
 
-        $id = 1;
-        $firstName = 'John';
-        $lastName = 'Scott';
-        $email = 'john@scott.com';
-        $token = uniqid();
-
-        $runMethodCallResults = [
-            [
-                'tid'       => $id,
-                'firstname' => $firstName,
-                'lastname'  => $lastName,
-                'email'     => $email,
-                'token'     => $token,
-                'sent'      => 'N',
-                'completed' => 'N',
-            ],
-        ];
-
-        $rpcClientManager = $this->getJsonRpcClientManager(1, $runMethodCallResults);
+        $rpcClientManager = $this->getJsonRpcClientManager(0);
         $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
 
         $participant1 = $this->serviceWithoutParticipants->getParticipantDetails(1, 'john@scott.com');
         $participant2 = $this->serviceWithParticipants->getParticipantDetails(1, 'john@scott.com');
+
+        $rawData = $this->participantsRawData[0];
+        $id = $rawData['tid'];
+        $firstName = $rawData['firstname'];
+        $lastName = $rawData['lastname'];
+        $email = $rawData['email'];
+        $token = $rawData['token'];
 
         static::assertNull($participant1);
         static::assertInstanceOf(Participant::className, $participant2);
@@ -267,9 +148,9 @@ class ParticipantServiceTest extends BaseTestCase
         static::assertEquals($lastName, $participant2->getLastName());
         static::assertEquals($email, $participant2->getEmail());
         static::assertEquals($token, $participant2->getToken());
-        static::assertFalse($participant2->isSent());
-        static::assertFalse($participant2->isCompleted());
-        static::assertNull($participant2->isBlacklisted());
+        static::assertTrue($participant2->isSent());
+        static::assertTrue($participant2->isCompleted());
+        static::assertFalse($participant2->isBlacklisted());
         static::assertNull($participant2->getValidFrom());
     }
 
@@ -286,16 +167,7 @@ class ParticipantServiceTest extends BaseTestCase
 
     public function testHasParticipantFilledSurveyUsingExistingParticipant()
     {
-        $runMethodCallResults = [
-            [
-                'firstname' => 'John',
-                'lastname'  => 'Scott',
-                'email'     => 'john@scott.com',
-                'completed' => (new DateTime())->format('Y-m-d H:i'),
-            ],
-        ];
-
-        $rpcClientManager = $this->getJsonRpcClientManager(1, $runMethodCallResults);
+        $rpcClientManager = $this->getJsonRpcClientManager(0);
         $sessionManager = $this->getSessionManager();
         $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
 
@@ -311,6 +183,55 @@ class ParticipantServiceTest extends BaseTestCase
         $this->createServiceWithParticipants($rpcClientManager, $sessionManager);
 
         $this->serviceWithParticipants->hasParticipantFilledSurvey(3, 'mary@jane.com');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->participantsRawData = [
+            [
+                'tid'            => 1,
+                'participant_id' => null,
+                'mpid'           => null,
+                'firstname'      => 'John',
+                'lastname'       => 'Scott',
+                'email'          => 'john@scott.com',
+                'emailstatus'    => 'OK',
+                'token'          => uniqid(),
+                'language'       => 'pl',
+                'blacklisted'    => 'N',
+                'sent'           => 'Y',
+                'remindersent'   => 'N',
+                'remindercount'  => 0,
+                'completed'      => (new DateTime())->format('Y-m-d H:i:s'),
+                'usesleft'       => 10,
+                'validfrom'      => null,
+                'validuntil'     => (new DateTime())->format('Y-m-d H:i:s'),
+            ],
+            [
+                'tid'            => 2,
+                'participant_id' => null,
+                'mpid'           => null,
+                'firstname'      => 'Mary',
+                'lastname'       => 'Jane',
+                'email'          => 'mary@jane.com',
+                'emailstatus'    => 'OK',
+                'token'          => uniqid(),
+                'language'       => 'pl',
+                'blacklisted'    => 'N',
+                'sent'           => 'Y',
+                'remindersent'   => 'N',
+                'remindercount'  => 0,
+                'completed'      => 'N',
+                'usesleft'       => 10,
+                'validfrom'      => null,
+                'validuntil'     => (new DateTime())->format('Y-m-d H:i:s'),
+            ],
+        ];
     }
 
     /**
@@ -408,30 +329,16 @@ class ParticipantServiceTest extends BaseTestCase
         $configuration = $this->getConnectionConfiguration();
         $client = new Client($configuration, $rpcClientManager, $sessionManager);
 
-        $allParticipants = new Participants([
+        $participantsDetails = new ParticipantsDetails([
             1 => new Collection([
-                new ParticipantShort([
-                    'tid'              => 1,
-                    'participant_info' => [
-                        'firstname' => 'John',
-                        'lastname'  => 'Scott',
-                        'email'     => 'john@scott.com',
-                    ],
-                ]),
-                new ParticipantShort([
-                    'tid'              => 2,
-                    'participant_info' => [
-                        'firstname' => 'Mary',
-                        'lastname'  => 'Jane',
-                        'email'     => 'mary@jane.com',
-                    ],
-                ]),
+                new Participant($this->participantsRawData[0]),
+                new Participant($this->participantsRawData[1]),
             ]),
             2 => new Collection([
-                new ParticipantShort(),
+                new Participant(),
             ]),
         ]);
 
-        $this->serviceWithParticipants = new ParticipantService($client, $allParticipants);
+        $this->serviceWithParticipants = new ParticipantService($client, $participantsDetails);
     }
 }

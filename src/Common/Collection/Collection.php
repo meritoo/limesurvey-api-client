@@ -23,6 +23,8 @@ use Meritoo\Common\Utilities\Arrays;
  */
 class Collection implements Countable, ArrayAccess, IteratorAggregate
 {
+    const className = 'Meritoo\Common\Collection\Collection';
+
     /**
      * The elements of collection
      *
