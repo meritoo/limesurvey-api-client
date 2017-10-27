@@ -160,11 +160,23 @@ class ParticipantTest extends BaseTestCase
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->rawData = static::getParticipantsRawData();
+
+        $this->participant1stInstance = new Participant($this->rawData[0]);
+        $this->participant2ndInstance = new Participant($this->rawData[1]);
+    }
+
+    /**
      * Returns raw data of participants
      *
      * @return array
      */
-    public static function getParticipantsRawData()
+    private static function getParticipantsRawData()
     {
         return [
             [
@@ -206,17 +218,5 @@ class ParticipantTest extends BaseTestCase
                 'validuntil'     => null,
             ],
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->rawData = static::getParticipantsRawData();
-
-        $this->participant1stInstance = new Participant($this->rawData[0]);
-        $this->participant2ndInstance = new Participant($this->rawData[1]);
     }
 }

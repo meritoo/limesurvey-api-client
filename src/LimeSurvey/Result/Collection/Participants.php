@@ -13,7 +13,7 @@ use Meritoo\Common\Exception\Method\DisabledMethodException;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort;
 
 /**
- * Collection of participants (of surveys).
+ * Collection of participants' short data.
  * All participants grouped per survey.
  *
  * It's a collection of participants' collections.

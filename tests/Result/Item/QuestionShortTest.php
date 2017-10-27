@@ -159,11 +159,23 @@ class QuestionShortTest extends BaseTestCase
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->rawData = static::getQuestionsRawData();
+
+        $this->question1stInstance = new QuestionShort($this->rawData[0]);
+        $this->question2ndInstance = new QuestionShort($this->rawData[1]);
+    }
+
+    /**
      * Returns raw data of questions
      *
      * @return array
      */
-    public static function getQuestionsRawData()
+    private static function getQuestionsRawData()
     {
         return [
             [
@@ -213,17 +225,5 @@ class QuestionShortTest extends BaseTestCase
                 'modulename'     => 'HR',
             ],
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->rawData = static::getQuestionsRawData();
-
-        $this->question1stInstance = new QuestionShort($this->rawData[0]);
-        $this->question2ndInstance = new QuestionShort($this->rawData[1]);
     }
 }

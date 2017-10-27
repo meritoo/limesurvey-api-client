@@ -195,11 +195,23 @@ class QuestionTest extends BaseTestCase
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->rawData = static::getQuestionsRawData();
+
+        $this->question1stInstance = new Question($this->rawData[0]);
+        $this->question2ndInstance = new Question($this->rawData[1]);
+    }
+
+    /**
      * Returns raw data of questions
      *
      * @return array
      */
-    public static function getQuestionsRawData()
+    private static function getQuestionsRawData()
     {
         return [
             [
@@ -275,17 +287,5 @@ class QuestionTest extends BaseTestCase
                 'defaultvalue'      => null,
             ],
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->rawData = static::getQuestionsRawData();
-
-        $this->question1stInstance = new Question($this->rawData[0]);
-        $this->question2ndInstance = new Question($this->rawData[1]);
     }
 }
