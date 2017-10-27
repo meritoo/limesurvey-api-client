@@ -192,6 +192,23 @@ class SurveyService
     }
 
     /**
+     * Returns url used to start survey for given survey and participant's token
+     *
+     * @param int    $surveyId         ID of survey to start
+     * @param string $participantToken Token of participant who would like to start survey
+     * @return string
+     */
+    public function getStartSurveyUrlByToken($surveyId, $participantToken)
+    {
+        $baseUrl = $this
+            ->client
+            ->getConfiguration()
+            ->getBaseUrl();
+
+        return sprintf($this->startSurveyUrlTemplate, $baseUrl, $surveyId, $participantToken);
+    }
+
+    /**
      * Returns url used to start survey for given survey and participant
      *
      * @param int         $surveyId    ID of survey to start
@@ -200,12 +217,7 @@ class SurveyService
      */
     public function getStartSurveyUrl($surveyId, Participant $participant)
     {
-        $baseUrl = $this
-            ->client
-            ->getConfiguration()
-            ->getBaseUrl();
-
-        return sprintf($this->startSurveyUrlTemplate, $baseUrl, $surveyId, $participant->getToken());
+        return $this->getStartSurveyUrlByToken($surveyId, $participant->getToken());
     }
 
     /**
