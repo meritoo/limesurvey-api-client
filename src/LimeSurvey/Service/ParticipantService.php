@@ -11,7 +11,6 @@ namespace Meritoo\LimeSurvey\ApiClient\Service;
 use Meritoo\LimeSurvey\ApiClient\Client\Client;
 use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
 use Meritoo\LimeSurvey\ApiClient\Exception\MissingParticipantOfSurveyException;
-use Meritoo\LimeSurvey\ApiClient\Result\Collection\Participants;
 use Meritoo\LimeSurvey\ApiClient\Result\Collection\ParticipantsDetails;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
@@ -38,7 +37,7 @@ class ParticipantService
      * Collection of participants' full data.
      * All participants grouped per survey.
      *
-     * @var Participants
+     * @var ParticipantsDetails
      */
     private $participantsDetails;
 
