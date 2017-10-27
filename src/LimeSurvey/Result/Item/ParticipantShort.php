@@ -8,7 +8,7 @@
 
 namespace Meritoo\LimeSurvey\ApiClient\Result\Item;
 
-use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseItem;
+use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseParticipant;
 
 /**
  * One item of the result/data: short data of one participant
@@ -16,37 +16,9 @@ use Meritoo\LimeSurvey\ApiClient\Base\Result\BaseItem;
  * @author    Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
  * @copyright Meritoo.pl
  */
-class ParticipantShort extends BaseItem
+class ParticipantShort extends BaseParticipant
 {
     const className = 'Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort';
-
-    /**
-     * ID of the participant
-     *
-     * @var int
-     */
-    private $id;
-
-    /**
-     * First name of the participant
-     *
-     * @var string
-     */
-    private $firstName;
-
-    /**
-     * Last name of the participant
-     *
-     * @var string
-     */
-    private $lastName;
-
-    /**
-     * E-mail of the participant
-     *
-     * @var string
-     */
-    private $email;
 
     /**
      * {@inheritdoc}
@@ -64,46 +36,6 @@ class ParticipantShort extends BaseItem
                 $this->email = trim($value['email']);
                 break;
         }
-    }
-
-    /**
-     * Returns ID of the participant
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Returns first name of the participant
-     *
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * Returns last name of the participant
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * Returns e-mail of the participant
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
     }
 
     /**

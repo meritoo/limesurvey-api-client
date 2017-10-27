@@ -29,6 +29,13 @@ class ReasonType extends BaseType
     const NO_PARTICIPANTS_FOUND = 'No survey participants found.';
 
     /**
+     * Reason of exception when there is no participant's properties/details
+     *
+     * @var string
+     */
+    const NO_PARTICIPANT_PROPERTIES = 'Error: No results were found based on your attributes.';
+
+    /**
      * Reason of exception when there is no surveys
      *
      * @var string

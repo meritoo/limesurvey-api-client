@@ -13,6 +13,7 @@ use Meritoo\LimeSurvey\ApiClient\Client\Client;
 use Meritoo\LimeSurvey\ApiClient\Exception\CannotProcessDataException;
 use Meritoo\LimeSurvey\ApiClient\Exception\MissingParticipantOfSurveyException;
 use Meritoo\LimeSurvey\ApiClient\Result\Collection\Participants;
+use Meritoo\LimeSurvey\ApiClient\Result\Collection\ParticipantsDetails;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\Participant;
 use Meritoo\LimeSurvey\ApiClient\Result\Item\ParticipantShort;
 use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
@@ -44,20 +45,38 @@ class ParticipantService
     private $allParticipants;
 
     /**
+     * Collection of participants' full data.
+     * All participants grouped per survey.
+     *
+     * @var Participants
+     */
+    private $participantsDetails;
+
+    /**
      * Class constructor
      *
-     * @param Client       $client          Client of the LimeSurvey's API
-     * @param Participants $allParticipants (optional) Collection of participants' short data. All participants
-     *                                      grouped per survey.
+     * @param Client              $client               Client of the LimeSurvey's API
+     * @param Participants        $allParticipants      (optional) Collection of participants' short data. All participants
+     *                                                  grouped per survey.
+     * @param ParticipantsDetails $participantsDetails  (optional) Collection of participants' full data. All
+     *                                                  participants grouped per survey.
      */
-    public function __construct(Client $client, Participants $allParticipants = null)
-    {
+    public function __construct(
+        Client $client,
+        Participants $allParticipants = null,
+        ParticipantsDetails $participantsDetails = null
+    ) {
         if (null === $allParticipants) {
             $allParticipants = new Participants();
         }
 
+        if (null === $participantsDetails) {
+            $participantsDetails = new ParticipantsDetails();
+        }
+
         $this->client = $client;
         $this->allParticipants = $allParticipants;
+        $this->participantsDetails = $participantsDetails;
     }
 
     /**
@@ -95,13 +114,10 @@ class ParticipantService
                     ->run(MethodType::LIST_PARTICIPANTS, $arguments)
                     ->getData();
             } catch (CannotProcessDataException $exception) {
-                $reason = $exception->getReason();
-
                 /*
-                 * Reason of the exception is different than "Oops, there is no participants. Everything else is fine."?
-                 * Let's throw the exception
+                 * Oops, something is broken, because the reason is different than "there are no participants"
                  */
-                if (ReasonType::NO_PARTICIPANTS_FOUND !== $reason) {
+                if (ReasonType::NO_PARTICIPANTS_FOUND !== $exception->getReason()) {
                     throw $exception;
                 }
 
@@ -127,14 +143,7 @@ class ParticipantService
      */
     public function hasParticipant($surveyId, $email)
     {
-        /*
-         * I have to get all participants of survey to avoid problem when participants exist but are not loaded
-         */
-        $this->getSurveyParticipants($surveyId);
-
-        return null !== $this
-                ->allParticipants
-                ->getParticipantOfSurvey($surveyId, $email);
+        return null !== $this->getParticipantDetails($surveyId, $email);
     }
 
     /**
@@ -194,9 +203,12 @@ class ParticipantService
          */
         $this->getSurveyParticipants($surveyId);
 
-        return $this
+        $participant = $this
             ->allParticipants
             ->getParticipantOfSurvey($surveyId, $email);
+
+        /* @var ParticipantShort $participant */
+        return $participant;
     }
 
     /**
@@ -205,22 +217,45 @@ class ParticipantService
      * @param int    $surveyId ID of survey
      * @param string $email    E-mail address of the participant
      * @return Participant|null
+     *
+     * @throws CannotProcessDataException
      */
     public function getParticipantDetails($surveyId, $email)
     {
-        $arguments = [
-            $surveyId,
-            [
-                'email' => $email,
-            ],
-        ];
+        if (!$this->participantsDetails->hasParticipantOfSurvey($surveyId, $email)) {
+            $participant = null;
+
+            $arguments = [
+                $surveyId,
+                [
+                    'email' => $email,
+                ],
+            ];
+
+            try {
+                /* @var Participant $participant */
+                $participant = $this
+                    ->client
+                    ->run(MethodType::GET_PARTICIPANT_PROPERTIES, $arguments)
+                    ->getData();
+            } catch (CannotProcessDataException $exception) {
+                /*
+                 * Oops, something is broken, because the reason is different than "participant was not found"
+                 */
+                if (ReasonType::NO_PARTICIPANT_PROPERTIES !== $exception->getReason()) {
+                    throw $exception;
+                }
+            }
+
+            if (null !== $participant) {
+                $this->participantsDetails->addParticipant($participant, $surveyId);
+            }
+        }
 
         $participant = $this
-            ->client
-            ->run(MethodType::GET_PARTICIPANT_PROPERTIES, $arguments)
-            ->getData();
+            ->participantsDetails
+            ->getParticipantOfSurvey($surveyId, $email);
 
-        /* @var Participant $participant */
         return $participant;
     }
 
@@ -236,20 +271,9 @@ class ParticipantService
     public function hasParticipantFilledSurvey($surveyId, $email)
     {
         if ($this->hasParticipant($surveyId, $email)) {
-            $arguments = [
-                $surveyId,
-                [
-                    'email' => $email,
-                ],
-            ];
-
-            /* @var Participant $participant */
-            $participant = $this
-                ->client
-                ->run(MethodType::GET_PARTICIPANT_PROPERTIES, $arguments)
-                ->getData();
-
-            return true === $participant->isCompleted();
+            return true === $this
+                    ->getParticipantDetails($surveyId, $email)
+                    ->isCompleted();
         }
 
         throw new MissingParticipantOfSurveyException($surveyId, $email);
