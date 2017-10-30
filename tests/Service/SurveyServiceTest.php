@@ -181,6 +181,22 @@ class SurveyServiceTest extends BaseTestCase
         static::assertFalse($this->serviceWithSurveys->isExistingSurvey(4, true));
     }
 
+    public function testGetStartSurveyUrlByToken()
+    {
+        $rpcClientManager = $this->getJsonRpcClientManager(0);
+        $sessionManager = $this->getSessionManager();
+
+        $this->createServiceWithoutSurveys($rpcClientManager, $sessionManager);
+        $this->createServiceWithSurveys($rpcClientManager, $sessionManager);
+
+        $surveyId = 123;
+        $token = uniqid();
+        $expectedUrl = sprintf('%s/%d?token=%s', $this->connectionBaseUrl, $surveyId, $token);
+
+        static::assertEquals($expectedUrl, $this->serviceWithoutSurveys->getStartSurveyUrlByToken($surveyId, $token));
+        static::assertEquals($expectedUrl, $this->serviceWithSurveys->getStartSurveyUrlByToken($surveyId, $token));
+    }
+
     public function testGetStartSurveyUrl()
     {
         $rpcClientManager = $this->getJsonRpcClientManager(0);
