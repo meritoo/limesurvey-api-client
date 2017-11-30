@@ -32,7 +32,7 @@ class SurveySummaryTest extends BaseTestCase
      * @param array $rawData Raw data of survey's summary
      * @dataProvider provideRawData
      */
-    public function testCreateOfTheSurveySummary($rawData)
+    public function testCreateOfTheSurveySummary(array $rawData)
     {
         $processor = new ResultProcessor();
         $processed = $processor->process(MethodType::GET_SUMMARY, $rawData);

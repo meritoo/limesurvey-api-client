@@ -3,7 +3,7 @@
     "description": "Client of LimeSurvey API",
     "type": "library",
     "license": "MIT",
-    "version": "0.0.11",
+    "version": "0.0.12",
     "authors": [
         {
             "name": "Meritoo",

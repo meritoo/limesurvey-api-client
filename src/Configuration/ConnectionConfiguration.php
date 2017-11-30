@@ -77,6 +77,7 @@ class ConnectionConfiguration
      *                                     turned off.
      * @param bool   $verifySslCertificate (optional) If is set to true, the SSL certificate verification is turned
      *                                     on. Otherwise - turned off.
+     * @throws InvalidUrlException
      */
     public function __construct($baseUrl, $username, $password, $debugMode = false, $verifySslCertificate = true)
     {
