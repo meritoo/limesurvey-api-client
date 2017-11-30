@@ -7,11 +7,23 @@ Client of the [LimeSurvey's API](https://manual.limesurvey.org/RemoteControl_2_A
 
 Run [Composer](https://getcomposer.org) to install this package in your project:
 
-    ```bash
-    $ composer require meritoo/limesurvey-api-client
-    ```
+```bash
+$ composer require meritoo/limesurvey-api-client
+```
 
 > How to install Composer: https://getcomposer.org/download
+
+## Configuration of LimeSurvey
+
+1. Login to the LimeSurvey administration, e.g. using https://your-domain/admin address
+2. Go to menu: `Configuration` -> `Global settings`
+3. Open `Interfaces` tab
+4. For `RPC interface enabled` select `JSON-RPC` option
+5. Enable `Publish API on /admin/remotecontrol` option
+
+It should look like here:
+![Configuration of LimeSurvey](http://www.meritoo.pl/packages/github/limesurvey-api-client/readme/configuration-interfaces.png)
+More information: https://manual.limesurvey.org/RemoteControl_2_API#Introduction
 
 ## Usage
 
