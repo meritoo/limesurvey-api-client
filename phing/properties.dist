@@ -9,7 +9,7 @@
 # not special chars. This way you can create pseudo-namespaces
 #
 # You can refer to values of other properties by enclosing their keys in "${}".
-# Example: dir.js = ${dir.web}/js
+# Example: dir.js = ${dir.public}/js
 #
 # Everything behind the equal sign is the value, you do
 # not have to enclose strings: text=This is some text, Your OS is ${php.os}
@@ -22,13 +22,15 @@
 #
 env = dev
 
-# Install assets using symlinks
-#
-assets.installWithSymlink = true
-
 # Clear cache with the "warmup" option
 #
-cache.clearWithWarmup = true
+# The cache:clear command should always be called with the --no-warmup option. Warmup should be done via the cache:warmup command.
+# https://github.com/symfony/symfony/blob/master/UPGRADE-3.3.md#frameworkbundle
+#
+# Meritoo <github@meritoo.pl>
+# 2017-06-06
+#
+cache.clearWithWarmup = false
 
 # --------------------------------------------------------------------------------
 # Composer
@@ -39,7 +41,6 @@ composer.download_command = php -r "eval('?>'.file_get_contents('https://getcomp
 # Path to composer executable or composer.phar file
 #
 composer.path = composer.phar
-#composer.path = /usr/local/bin/composer
 
 # Path to php executable used by composer
 #
@@ -49,77 +50,49 @@ composer.php = php
 #
 composer.self-update = false
 
-# Validate the composer.json file
-#
-composer.validate = false
-
 # --------------------------------------------------------------------------------
 # Directories
 # --------------------------------------------------------------------------------
 
 # System directories
 #
-dir.data = ${project.basedir}/.data
 dir.src = ${project.basedir}/src
+dir.var = ${project.basedir}/tests/Resources/var
+dir.cache = ${dir.var}/cache
+dir.logs = ${dir.var}/log
+dir.sessions = ${dir.var}/sessions
+dir.data = ${project.basedir}/data
 dir.tests = ${project.basedir}/tests
 
-# --------------------------------------------------------------------------------
 # Build directories
-# --------------------------------------------------------------------------------
-
-dir.build = ${project.basedir}/.build
+#
+dir.build = ${project.basedir}/build
 dir.reports = ${dir.build}/logs
 dir.reports.pdepend = ${dir.reports}/pdepend
-dir.reports.coverage = ${dir.reports}/phpunit_coverage
-#
-# Disabled, because unnecessary right now
-# phpdocumentor/phpdocumentor cannot be installed via Composer
-#
-# Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
-# 2017-02-22
-#
-#dir.docs = ${dir.build}/docs
-#dir.docs.phpdoc2 = ${dir.docs}/phpdoc2
 
-# --------------------------------------------------------------------------------
 # Data directories
-# --------------------------------------------------------------------------------
-
+#
 dir.data.tests = ${dir.data}/tests
 dir.data.temporary = ${dir.data}/tmp
+
+# Docker directories
+#
+dir.docker = ${project.basedir}/docker
+dir.docker.data = ${dir.docker}/data/db
+dir.docker.logs = ${dir.docker}/logs/nginx
 
 # --------------------------------------------------------------------------------
 # Testing
 # --------------------------------------------------------------------------------
 
+# Path of the PHP Coding Standards Fixer (http://cs.sensiolabs.org)
+#
+tests.cs_fixer.path = ./vendor/bin/php-cs-fixer
+
 # Test database path
 #
 tests.database = ${dir.data.temporary}/database.sqlite
 
+# Path of the framework used to run unit tests
 #
-# Disabled, because unnecessary right now
-# PHPUnit is installed and loaded by Composer
-#
-# Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
-# 2017-02-22
-#
-# Run PHPUnit using exec task instead of phpunitTask
-#phpunit.useExec = false
-
-#
-# Disabled, because unnecessary right now
-# We want generate code coverage always
-#
-# Krzysztof Niziol <krzysztof.niziol@meritoo.pl>
-# 2017-02-22
-#
-# Collect coverage data during tests
-#phpunit.withCoverage = true
-
-# Path of the PHPUnit (https://phpunit.de)
-#
-phpUnit.path = ./vendor/bin/phpunit
-
-# Path of the PHP Coding Standards Fixer (http://cs.sensiolabs.org)
-#
-phpCsFixer.path = ./vendor/bin/php-cs-fixer
+tests.framework.path = ./vendor/bin/phpunit --verbose --no-coverage

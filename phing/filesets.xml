@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Meritoo Package" basedir="." default="build:main" phingVersion="2.16.0">
+    <!-- Filesets -->
+    <fileset id="cache" dir="${dir.cache}">
+        <include name="**/*"/>
+        <exclude name=".gitkeep"/>
+    </fileset>
+    <fileset id="logs" dir="${dir.logs}">
+        <include name="**/*"/>
+        <exclude name=".gitkeep"/>
+    </fileset>
+    <fileset id="sessions" dir="${dir.sessions}">
+        <include name="**/*"/>
+        <exclude name=".gitkeep"/>
+    </fileset>
+
+    <!-- Directories to check -->
+    <property name="directoriesToCheck" value="
+        ${dir.cache},
+        ${dir.logs},
+        ${dir.sessions},
+        ${dir.data.tests},
+        ${dir.data.temporary},
+        ${dir.docker.data},
+        ${dir.docker.logs}"
+    />
+
+    <!-- Directories to empty -->
+    <property name="directoriesToEmpty" value="
+        ${dir.cache},
+        ${dir.logs},
+        ${dir.sessions},
+        ${dir.data.temporary}"
+    />
+</project>
