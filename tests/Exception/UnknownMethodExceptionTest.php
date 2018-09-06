@@ -24,7 +24,7 @@ class UnknownMethodExceptionTest extends BaseTestCase
 {
     public function testConstructorVisibilityAndArguments()
     {
-        static::assertConstructorVisibilityAndArguments(UnknownMethodException::class, OopVisibilityType::IS_PUBLIC, 1, 1);
+        static::assertConstructorVisibilityAndArguments(UnknownMethodException::class, OopVisibilityType::IS_PUBLIC, 3);
     }
 
     /**
@@ -35,7 +35,7 @@ class UnknownMethodExceptionTest extends BaseTestCase
      */
     public function testConstructorMessage($unknownType, $expectedMessage)
     {
-        $exception = new UnknownMethodException($unknownType);
+        $exception = UnknownMethodException::createException($unknownType);
         static::assertEquals($expectedMessage, $exception->getMessage());
     }
 

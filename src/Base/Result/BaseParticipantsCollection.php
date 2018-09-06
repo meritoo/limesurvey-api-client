@@ -18,7 +18,7 @@ abstract class BaseParticipantsCollection extends Collection
      */
     public function add($element, $index = null)
     {
-        throw new DisabledMethodException(__METHOD__, 'addParticipant');
+        throw DisabledMethodException::create(__METHOD__, 'addParticipant');
     }
 
     /**
@@ -26,7 +26,7 @@ abstract class BaseParticipantsCollection extends Collection
      */
     public function addMultiple($elements, $useIndexes = false)
     {
-        throw new DisabledMethodException(__METHOD__, 'addParticipants');
+        throw DisabledMethodException::create(__METHOD__, 'addParticipants');
     }
 
     /**
@@ -34,7 +34,7 @@ abstract class BaseParticipantsCollection extends Collection
      */
     public function has($element)
     {
-        throw new DisabledMethodException(__METHOD__, 'hasParticipantsOfSurvey');
+        throw DisabledMethodException::create(__METHOD__, 'hasParticipantsOfSurvey');
     }
 
     /**

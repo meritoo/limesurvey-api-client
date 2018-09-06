@@ -20,10 +20,16 @@ use Meritoo\LimeSurvey\ApiClient\Type\MethodType;
 class UnknownMethodException extends UnknownTypeException
 {
     /**
-     * {@inheritdoc}
+     * Creates exception
+     *
+     * @param string $unknownMethod Name of unknown method used while talking to the LimeSurvey's API
+     * @return UnknownMethodException
      */
-    public function __construct($unknownType)
+    public static function createException($unknownMethod)
     {
-        parent::__construct($unknownType, new MethodType(), 'name of method used while talking to the LimeSurvey\'s API');
+        /* @var UnknownMethodException $exception */
+        $exception = parent::create($unknownMethod, new MethodType(), 'name of method used while talking to the LimeSurvey\'s API');
+
+        return $exception;
     }
 }

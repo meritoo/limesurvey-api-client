@@ -25,7 +25,7 @@ class SurveysSummaries extends Collection
      */
     public function add($element, $index = null)
     {
-        throw new DisabledMethodException(__METHOD__, 'addSurveySummary');
+        throw DisabledMethodException::create(__METHOD__, 'addSurveySummary');
     }
 
     /**
@@ -33,7 +33,7 @@ class SurveysSummaries extends Collection
      */
     public function addMultiple($elements, $useIndexes = false)
     {
-        throw new DisabledMethodException(__METHOD__, 'addSurveysSummaries');
+        throw DisabledMethodException::create(__METHOD__, 'addSurveysSummaries');
     }
 
     /**
@@ -41,7 +41,7 @@ class SurveysSummaries extends Collection
      */
     public function has($element)
     {
-        throw new DisabledMethodException(__METHOD__, 'hasSurveySummary');
+        throw DisabledMethodException::create(__METHOD__, 'hasSurveySummary');
     }
 
     /**
