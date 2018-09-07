@@ -69,6 +69,7 @@ dir.tests = ${project.basedir}/tests
 dir.build = ${project.basedir}/build
 dir.reports = ${dir.build}/logs
 dir.reports.pdepend = ${dir.reports}/pdepend
+dir.reports.coverage = ${dir.reports}/phpunit_coverage
 
 # Data directories
 #
